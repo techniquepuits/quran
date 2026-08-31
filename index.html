@@ -4,26 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تطبيق ابن باديس - تثبيت حفظ القرآن الكريم</title>
+    <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="welcome-container">
-        <!-- زر الإعدادات (يظهر في الصفحة الرئيسية فقط) -->
+        <!-- زر الإعدادات -->
         <div id="settings-btn-icon" class="settings-icon" onclick="openSettings()" title="الإعدادات">☰</div>
         
-        <!-- زر حفظ والعودة (يظهر في الإعدادات فقط ويعيد للصفحة الأولى) -->
+        <!-- زر حفظ والعودة -->
         <button id="save-corner-btn" class="btn-save-corner hidden" onclick="saveSettingsAndGoHome()">حفظ والعودة</button>
 
-        <!-- الشاشة الرئيسية (الأولى) -->
+        <!-- الشاشة الرئيسية -->
         <div id="home-screen" class="home-content">
             <div class="app-icon">📖</div>
             <div class="app-title">ابن باديس</div>
             <div class="app-slogan">تثبيت حفظ القرآن الكريم</div>
 
             <button class="btn-main" onclick="startApp()">ابدأ الآن</button>
-            <button id="install-btn" class="btn-secondary">تنزيل التطبيق على الهاتف</button>
+            <button id="install-btn" class="btn-secondary">تنزيل التطبيق على الهاتف / الكمبيوتر</button>
         </div>
 
         <!-- شاشة الإعدادات -->
@@ -95,3 +96,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+

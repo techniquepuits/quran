@@ -283,6 +283,7 @@ function nextQuestion(rating) {
     loadRandomQuestion();
 }
 
+// كود التثبيت المباشر بضغطة زر
 let deferredPrompt;
 const installBtn = document.getElementById('install-btn');
 
@@ -295,8 +296,11 @@ installBtn.addEventListener('click', async () => {
     if (deferredPrompt) {
         deferredPrompt.prompt();
         let { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+            console.log('تم قبول تثبيت التطبيق');
+        }
         deferredPrompt = null;
     } else {
-        alert('لتثبيت التطبيق على هاتفك:\n- افتح خيارات المتصفح ثم اختر "إضافة إلى الشاشة الرئيسية".');
+        alert('التطبيق جاهز، أو أن متصفحك قام بتثبيته مسبقاً. إذا لم تظهر نافذة التثبيت، يمكنك حفظ الموقع من خيارات المتصفح.');
     }
 });
