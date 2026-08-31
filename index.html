@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق ابن باديس - تثبيت حفظ القرآن الكريم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="welcome-container">
+        <!-- زر الإعدادات (يظهر في الصفحة الرئيسية فقط) -->
+        <div id="settings-btn-icon" class="settings-icon" onclick="openSettings()" title="الإعدادات">☰</div>
+        
+        <!-- زر حفظ والعودة (يظهر في الإعدادات فقط ويعيد للصفحة الأولى) -->
+        <button id="save-corner-btn" class="btn-save-corner hidden" onclick="saveSettingsAndGoHome()">حفظ والعودة</button>
+
+        <!-- الشاشة الرئيسية (الأولى) -->
+        <div id="home-screen" class="home-content">
+            <div class="app-icon">📖</div>
+            <div class="app-title">ابن باديس</div>
+            <div class="app-slogan">تثبيت حفظ القرآن الكريم</div>
+
+            <button class="btn-main" onclick="startApp()">ابدأ الآن</button>
+            <button id="install-btn" class="btn-secondary">تنزيل التطبيق على الهاتف</button>
+        </div>
+
+        <!-- شاشة الإعدادات -->
+        <div id="settings-screen" class="settings-view hidden">
+            <div class="settings-header">
+                <h2 class="settings-title">إعدادات المراجعة</h2>
+            </div>
+            
+            <div class="setting-row-box">
+                <span class="setting-row-label">رواية القرآن الكريم:</span>
+                <div class="radio-options">
+                    <label class="radio-label">
+                        <input type="radio" name="riwaya" value="warsh" checked onchange="loadQuranSurahs()"> ورش
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="riwaya" value="hafs" onchange="loadQuranSurahs()"> حفص
+                    </label>
+                </div>
+            </div>
+
+            <div class="setting-row-box">
+                <span class="setting-row-label">عدد الآيات المستهدفة للمراجعة يومياً:</span>
+                <input type="number" id="daily-count" value="10" min="1" max="100">
+            </div>
+
+            <div class="setting-row-box">
+                <span class="setting-row-label">حفظ التقدم في الذاكرة (سجل المراجعة):</span>
+                <label class="switch">
+                    <input type="checkbox" id="save-progress-toggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div style="text-align: right; margin-bottom: 8px; font-weight: bold; color: #334155; font-size: 15px;">
+                السور المراد إدراجها (تفعيل وتحديد الحد الأقصى):
+            </div>
+            <div class="surah-list-container" id="surahs-checkboxes-container">
+                جاري تحميل سور القرآن...
+            </div>
+
+            <button class="btn-main" style="margin-top: 20px;" onclick="saveSettingsAndGoHome()">حفظ والعودة للرئيسية</button>
+        </div>
+
+        <!-- شاشة المراجعة -->
+        <div id="review-screen" class="hidden">
+            <div class="header-box">
+                <div id="surah-name" class="surah-title">سورة: جاري اختيار سورة عشوائية...</div>
+                <button class="btn-expand" onclick="expandContext()" title="إظهار الآية السابقة للمساعدة">+</button>
+            </div>
+
+            <div class="exercise-box" id="exercise-container">
+                <span id="prev-ayahs-container"></span>
+                <span id="prompt-ayah" class="ayah-blue">جاري التحميل...</span><span class="circle-num" id="prompt-num">1</span><span id="target-blank" class="blank-space">................</span><span class="circle-num" id="target-num" style="display:none;">2</span>
+            </div>
+
+            <div id="action-area">
+                <button id="show-btn" class="btn-main" onclick="revealAnswer()" disabled>عرض الإجابة</button>
+            </div>
+
+            <div id="rating-area" class="rating-buttons hidden">
+                <button class="btn-rate btn-forgot" onclick="nextQuestion('forgot')">نسيت</button>
+                <button class="btn-rate btn-hard" onclick="nextQuestion('hard')">صعب</button>
+                <button class="btn-rate btn-good" onclick="nextQuestion('good')">جيد</button>
+                <button class="btn-rate btn-easy" onclick="nextQuestion('easy')">سهل</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
