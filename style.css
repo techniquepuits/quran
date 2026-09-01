@@ -4,8 +4,8 @@ body {
     color: #2c3e50;
     text-align: center;
     margin: 0;
-    padding: 30px 0;
-    min-height: 100vh;
+    padding: 10px 0;
+    min-height: 95vh;
 }
 .welcome-container {
     position: relative;
@@ -20,10 +20,9 @@ body {
     box-sizing: border-box;
     text-align: right;
 }
-/* زر الإعدادات (الخطوط الثلاثة) */
 .settings-icon {
     position: absolute;
-    top: 20px;
+    top: 50px;
     left: 20px;
     background: #f1f5f9;
     border: 1px solid #cbd5e1;
@@ -44,7 +43,6 @@ body {
     color: white;
     border-color: #2d6a4f;
 }
-/* زر حفظ والعودة في الزاوية */
 .btn-save-corner {
     position: absolute;
     top: 20px;
@@ -63,7 +61,6 @@ body {
 .btn-save-corner:hover {
     background: #1b4d3e;
 }
-
 .home-content {
     text-align: center;
 }
@@ -133,8 +130,6 @@ body {
     background: #f1f5f9;
     border-color: #94a3b8;
 }
-
-/* تنسيق صفحة الإعدادات */
 .settings-header {
     text-align: center;
     border-bottom: 2px solid #e2e8f0;
@@ -147,7 +142,6 @@ body {
     color: #1b4d3e;
     margin: 0;
 }
-
 .setting-row-box {
     display: flex;
     align-items: center;
@@ -163,7 +157,6 @@ body {
     font-weight: bold;
     color: #1e293b;
 }
-
 .radio-options {
     display: flex;
     gap: 15px;
@@ -183,7 +176,6 @@ body {
     height: 16px;
     cursor: pointer;
 }
-
 .setting-row-box input[type="number"] {
     width: 80px;
     padding: 6px 10px;
@@ -195,7 +187,6 @@ body {
     background: #fff;
     box-sizing: border-box;
 }
-
 .surah-list-container {
     display: flex;
     flex-direction: column;
@@ -232,14 +223,13 @@ body {
     text-align: center;
     font-size: 14px !important;
 }
-
 .switch {
     position: relative;
     display: inline-block;
     width: 44px;
     height: 24px;
 }
-.switch input { 
+.switch input {
     opacity: 0;
     width: 0;
     height: 0;
@@ -269,21 +259,30 @@ input:checked + .slider {
 input:checked + .slider:before {
     transform: translateX(20px);
 }
-
-/* تنسيق واجهة المراجعة */
 .header-box {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     border-bottom: 1px solid #e2e8f0;
     padding-bottom: 10px;
 }
 .surah-title {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: bold;
     color: #1b4d3e;
 }
+.inline-counters {
+    display: inline-flex;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    margin: 0 15px;
+    vertical-align: middle;
+}
+.counter-blue { color: #2563eb; }
+.counter-red { color: #dc2626; }
+.counter-green { color: #16a34a; }
 .btn-expand {
     display: inline-flex;
     align-items: center;
@@ -304,46 +303,47 @@ input:checked + .slider:before {
     color: white;
 }
 .exercise-box {
-    background: #f9fbf9;
+    background: #ffffff;
     border: 2px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 40px 30px;
+    border-radius: 12px;
+    padding: 30px 25px;
     margin-bottom: 25px;
     text-align: right;
-    font-size: 26px;
-    line-height: 2.8;
+    font-size: 24px;
+    line-height: 3.2;
     direction: rtl;
-}
-.ayah-blue {
-    color: #1d4ed8;
+    word-spacing: 4px;
 }
 .ayah-prev {
-    color: #6b7280;
+    color: #475569;
+}
+.ayah-blue {
+    color: #2563eb !important;
+    font-weight: bold;
+}
+.blank-space {
+    display: inline;
+    visibility: hidden;
+    color: #16a34a !important;
+    font-weight: bold;
+    font-family: 'Amiri', serif;
+    margin: 0 4px;
+}
+.blank-space.revealed {
+    visibility: visible !important;
 }
 .circle-num {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
     border: 1.5px solid #2d6a4f;
     border-radius: 50%;
     font-size: 13px;
     color: #2d6a4f;
-    margin: 0 6px;
+    margin: 0 5px;
     vertical-align: middle;
-}
-.blank-space {
-    color: transparent;
-    background-color: #eef2f7;
-    border-radius: 4px;
-    padding: 0 6px;
-    user-select: none;
-    transition: all 0.3s ease;
-}
-.blank-space.revealed {
-    color: #15803d;
-    background-color: transparent;
 }
 .rating-buttons {
     display: flex;
@@ -358,12 +358,25 @@ input:checked + .slider:before {
     border-radius: 6px;
     cursor: pointer;
     color: white;
+    font-weight: bold;
 }
-.btn-forgot { background-color: #dc2626; } 
-.btn-hard { background-color: #d97706; }   
-.btn-good { background-color: #2563eb; }   
-.btn-easy { background-color: #16a34a; }   
-
+.btn-forgot { background-color: #dc2626; }
+.btn-hard { background-color: #d97706; }
+.btn-good { background-color: #2563eb; }
+.btn-easy { background-color: #16a34a; }
 .hidden {
     display: none !important;
+}
+#loading-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(255,255,255,0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    font-size: 20px;
+    color: #1b4d3e;
+    font-weight: bold;
 }
