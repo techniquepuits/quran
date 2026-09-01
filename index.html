@@ -4,30 +4,405 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تطبيق ابن باديس - تثبيت حفظ القرآن الكريم</title>
-    <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: 'Amiri', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #f0f4f1 0%, #d8e4dc 100%);
+            color: #2c3e50;
+            text-align: center;
+            margin: 0;
+            padding: 30px 0;
+            min-height: 100vh;
+        }
+        .welcome-container {
+            position: relative;
+            max-width: 850px;
+            width: 90%;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 45px 30px 40px 30px;
+            border-radius: 24px;
+            box-shadow: 0 12px 35px rgba(27, 77, 62, 0.08);
+            border: 1px solid rgba(45, 106, 79, 0.15);
+            box-sizing: border-box;
+            text-align: right;
+        }
+        .settings-icon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #1b4d3e;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+        .settings-icon:hover {
+            background: #2d6a4f;
+            color: white;
+            border-color: #2d6a4f;
+        }
+        .btn-save-corner {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #2d6a4f;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+            z-index: 10;
+        }
+        .btn-save-corner:hover {
+            background: #1b4d3e;
+        }
+        .home-content {
+            text-align: center;
+        }
+        .app-icon {
+            width: 75px;
+            height: 75px;
+            background: linear-gradient(135deg, #2d6a4f 0%, #1b4d3e 100%);
+            color: white;
+            font-size: 36px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 0 auto 20px auto;
+            box-shadow: 0 6px 15px rgba(45, 106, 79, 0.25);
+        }
+        .app-title {
+            font-size: 40px;
+            font-weight: bold;
+            color: #1b4d3e;
+            margin-bottom: 8px;
+        }
+        .app-slogan {
+            font-size: 16px;
+            color: #52796f;
+            margin-bottom: 35px;
+            font-weight: 700;
+        }
+        .btn-main {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, #2d6a4f 0%, #1b4d3e 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-sizing: border-box;
+            box-shadow: 0 4px 15px rgba(45, 106, 79, 0.3);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .btn-main:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(45, 106, 79, 0.4);
+        }
+        .btn-secondary {
+            background: #f8fafc;
+            border: 1.5px solid #cbd5e1;
+            color: #334155;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 13px 20px;
+            border-radius: 12px;
+            width: 100%;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        .btn-secondary:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+        .settings-header {
+            text-align: center;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+        .settings-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #1b4d3e;
+            margin: 0;
+        }
+        .setting-row-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f1f5f9;
+            padding: 12px 15px;
+            border-radius: 12px;
+            border: 1.5px solid #cbd5e1;
+            margin-bottom: 20px;
+        }
+        .setting-row-label {
+            font-size: 15px;
+            font-weight: bold;
+            color: #1e293b;
+        }
+        .radio-options {
+            display: flex;
+            gap: 15px;
+        }
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #334155;
+            cursor: pointer;
+        }
+        .radio-label input[type="radio"] {
+            accent-color: #2d6a4f;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+        .setting-row-box input[type="number"] {
+            width: 80px;
+            padding: 6px 10px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: 'Amiri', Tahoma, sans-serif;
+            font-size: 16px;
+            text-align: center;
+            background: #fff;
+            box-sizing: border-box;
+        }
+        .surah-list-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1.5px solid #e2e8f0;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        .surah-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 8px;
+            background: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        .surah-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .surah-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #1e293b;
+        }
+        .surah-ayah-limit {
+            width: 85px !important;
+            padding: 6px !important;
+            text-align: center;
+            font-size: 14px !important;
+        }
 
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #cbd5e1;
+            transition: .3s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #2d6a4f;
+        }
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
 
-<script>
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js')
-                .then((reg) => console.log('Service Worker registered successfully!', reg.scope))
-                .catch((err) => console.log('Service Worker registration failed:', err));
-        });
-    }
-</script>
+        .header-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+        .surah-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1b4d3e;
+        }
+        .inline-counters {
+            display: inline-flex;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            margin: 0 15px;
+            vertical-align: middle;
+        }
+        .counter-blue { color: #2563eb; }
+        .counter-red { color: #dc2626; }
+        .counter-green { color: #16a34a; }
+
+        .btn-expand {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: #e6f4f1;
+            color: #2d6a4f;
+            border: 1.5px solid #2d6a4f;
+            border-radius: 50%;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-expand:hover {
+            background-color: #2d6a4f;
+            color: white;
+        }
+        .exercise-box {
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 30px 25px;
+            margin-bottom: 25px;
+            text-align: right;
+            font-size: 24px;
+            line-height: 3.2;
+            direction: rtl;
+            word-spacing: 4px;
+        }
+        .ayah-prev {
+            color: #475569;
+        }
+        .ayah-blue {
+            color: #2563eb !important;
+            font-weight: bold;
+        }
+        .blank-space {
+            display: inline;
+            visibility: hidden;
+            color: #16a34a !important;
+            font-weight: bold;
+            font-family: 'Amiri', serif;
+            margin: 0 4px;
+        }
+        .blank-space.revealed {
+            visibility: visible !important;
+        }
+        .circle-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border: 1.5px solid #2d6a4f;
+            border-radius: 50%;
+            font-size: 13px;
+            color: #2d6a4f;
+            margin: 0 5px;
+            vertical-align: middle;
+        }
+        .rating-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .btn-rate {
+            padding: 10px 20px;
+            font-size: 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            color: white;
+            font-weight: bold;
+        }
+        .btn-forgot { background-color: #dc2626; }
+        .btn-hard { background-color: #d97706; }
+        .btn-good { background-color: #2563eb; }
+        .btn-easy { background-color: #16a34a; }
+
+        .hidden {
+            display: none !important;
+        }
+        #loading-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            font-size: 20px;
+            color: #1b4d3e;
+            font-weight: bold;
+        }
+    </style>
 </head>
-
-
 <body>
 
+    <div id="loading-overlay">
+        <div class="app-icon" style="margin-bottom: 15px;">📖</div>
+        <div id="loading-text">جاري تحميل بيانات المصاحف وإعداداتها محلياً لأول مرة...</div>
+    </div>
+
     <div class="welcome-container">
-        <!-- زر الإعدادات -->
         <div id="settings-btn-icon" class="settings-icon" onclick="openSettings()" title="الإعدادات">☰</div>
-        
-        <!-- زر حفظ والعودة -->
         <button id="save-corner-btn" class="btn-save-corner hidden" onclick="saveSettingsAndGoHome()">حفظ والعودة</button>
 
         <!-- الشاشة الرئيسية -->
@@ -45,15 +420,15 @@
             <div class="settings-header">
                 <h2 class="settings-title">إعدادات المراجعة</h2>
             </div>
-            
+
             <div class="setting-row-box">
                 <span class="setting-row-label">رواية القرآن الكريم:</span>
                 <div class="radio-options">
                     <label class="radio-label">
-                        <input type="radio" name="riwaya" value="warsh" checked onchange="loadQuranSurahs()"> ورش
+                        <input type="radio" name="riwaya" value="warsh" checked onchange="loadQuranSurahsToUI()"> ورش
                     </label>
                     <label class="radio-label">
-                        <input type="radio" name="riwaya" value="hafs" onchange="loadQuranSurahs()"> حفص
+                        <input type="radio" name="riwaya" value="hafs" onchange="loadQuranSurahsToUI()"> حفص
                     </label>
                 </div>
             </div>
@@ -61,6 +436,11 @@
             <div class="setting-row-box">
                 <span class="setting-row-label">عدد الآيات المستهدفة للمراجعة يومياً:</span>
                 <input type="number" id="daily-count" value="10" min="1" max="100">
+            </div>
+
+            <div class="setting-row-box">
+                <span class="setting-row-label">عدد الآيات الجديدة المضافة يومياً:</span>
+                <input type="number" id="new-items-count" value="3" min="0" max="50">
             </div>
 
             <div class="setting-row-box">
@@ -84,13 +464,30 @@
         <!-- شاشة المراجعة -->
         <div id="review-screen" class="hidden">
             <div class="header-box">
-                <div id="surah-name" class="surah-title">سورة: جاري اختيار سورة عشوائية...</div>
+                <button class="btn-home" onclick="returnHome()" title="العودة للصفحة الرئيسية" style="background-color: #64748b; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold;">🏠 الرئيسية</button>
+
+                <div style="display: flex; align-items: center;">
+                    <div class="inline-counters">
+                        <span id="count-blue" class="counter-blue">0</span>
+                        <span id="count-red" class="counter-red">0</span>
+                        <span id="count-green" class="counter-green">0</span>
+                    </div>
+                    <div id="surah-name" class="surah-title">سورة: جاري التحميل...</div>
+                </div>
+
                 <button class="btn-expand" onclick="expandContext()" title="إظهار الآية السابقة للمساعدة">+</button>
             </div>
 
             <div class="exercise-box" id="exercise-container">
                 <span id="prev-ayahs-container"></span>
-                <span id="prompt-ayah" class="ayah-blue">جاري التحميل...</span><span class="circle-num" id="prompt-num">1</span><span id="target-blank" class="blank-space">................</span><span class="circle-num" id="target-num" style="display:none;">2</span>
+                <span id="prompt-ayah" class="ayah-blue">جاري التحميل...</span>
+                <span class="circle-num" id="prompt-num">1</span>
+
+                <span id="target-blank-1" class="blank-space"></span>
+                <span class="circle-num" id="target-num-1">2</span>
+
+                <span id="target-blank-2" class="blank-space"></span>
+                <span class="circle-num" id="target-num-2">3</span>
             </div>
 
             <div id="action-area">
@@ -106,6 +503,595 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        const jsonUrls = {
+            warsh: 'https://raw.githubusercontent.com/techniquepuits/quran/refs/heads/main/quran_warsh.json',
+            hafs: 'https://raw.githubusercontent.com/techniquepuits/quran/refs/heads/main/quran_hafs.json'
+        };
+
+        const MS_PER_DAY = 24 * 60 * 60 * 1000;
+
+        let reviewPool = [];
+        let currentQuestionItem = null;
+        let extraPreviousCount = 0;
+
+        let countBlue = 0;
+        let countRed = 0;
+        let countGreen = 0;
+
+        function getSelectedRiwaya() {
+            const selected = document.querySelector('input[name="riwaya"]:checked');
+            return selected ? selected.value : 'warsh';
+        }
+
+        // ============ محرك التكرار المتباعد (SRS Engine) ============
+
+        function getVerseCategory(difficulty) {
+            if (difficulty > 9.5) return 'extreme'; // معامل قريب من 10: نسيان متكرر، تظهر إجبارياً
+            if (difficulty >= 6.5) return 'hard';
+            if (difficulty >= 3.5) return 'medium';
+            return 'easy';
+        }
+
+        function getMinIntervalDays(category) {
+            switch (category) {
+                case 'easy': return 30;
+                case 'medium': return 7;
+                case 'hard': return 1;
+                case 'extreme': return 0;
+                default: return 0;
+            }
+        }
+
+        function calculateNewDifficulty(oldDifficulty, userChoice) {
+            const targets = { forgot: 10.0, hard: 9.0, good: 5.0, easy: 1.0 };
+            const target = targets.hasOwnProperty(userChoice) ? targets[userChoice] : 5.0;
+            const newDifficulty = (oldDifficulty + target) / 2.0;
+            return Math.max(1.0, Math.min(10.0, newDifficulty));
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // alert() قد يُحجب أو يرمي استثناءً في بعض بيئات المعاينة/المتصفحات المقيدة،
+        // وإن رمى استثناءً فسيتوقف تنفيذ الدالة الحالية بصمت دون أي أثر ظاهر للمستخدم.
+        // نُغلّفه هنا حتى لا يوقف تدفق التطبيق أبداً.
+        function safeAlert(message) {
+            try {
+                alert(message);
+            } catch (e) {
+                console.warn('alert() blocked, message was:', message);
+            }
+        }
+
+        // فرز FIFO مع خلط عشوائي حقيقي عند تساوي مدة الانتظار
+        function sortByWaitingFIFO(queue) {
+            queue.sort((a, b) => b.waitingDuration - a.waitingDuration);
+            let grouped = [];
+            let i = 0;
+            while (i < queue.length) {
+                let j = i;
+                while (j < queue.length && queue[j].waitingDuration === queue[i].waitingDuration) j++;
+                let chunk = queue.slice(i, j);
+                shuffleArray(chunk);
+                grouped = grouped.concat(chunk);
+                i = j;
+            }
+            return grouped;
+        }
+
+        // learningItems: كل عنصر يمثل نقطة انطلاق تمرين واحدة، ويحمل anchorKey (مفتاح الآية i+1)
+        // التي تُخزَّن عليها difficulty/lastReviewed الفعليان المستعملان في الجدولة.
+        function generateDailyReviewQueue(learningItems, dailyQuota, newItemsQuota) {
+            const now = Date.now();
+
+            let newItemsQueueRaw = [];
+            let extremeQueue = [];
+            let hardQueue = [];
+            let mediumQueue = [];
+            let easyQueue = [];
+
+            learningItems.forEach(item => {
+                const anchor = item.ayasObj[item.anchorKey];
+                if (!anchor) return;
+
+                // آية لم تُراجَع أبداً من قبل -> طابور "الجديد" المستقل (كوطة مستقلة عن الاستثنائية)
+                if (anchor.lastReviewed === null || anchor.lastReviewed === undefined) {
+                    newItemsQueueRaw.push(item);
+                    return;
+                }
+
+                const category = getVerseCategory(anchor.difficulty);
+                const minDays = getMinIntervalDays(category);
+                const daysElapsed = (now - anchor.lastReviewed) / MS_PER_DAY;
+
+                if (category === 'extreme' || daysElapsed >= minDays) {
+                    const dueTime = anchor.lastReviewed + (minDays * MS_PER_DAY);
+                    item.waitingDuration = now - dueTime;
+
+                    if (category === 'extreme') extremeQueue.push(item);
+                    else if (category === 'hard') hardQueue.push(item);
+                    else if (category === 'medium') mediumQueue.push(item);
+                    else easyQueue.push(item);
+                }
+            });
+
+            // الآيات الجديدة كلياً: كوطة مستقلة (newItemsQuota)، لا علاقة لها بالاستثنائية
+            shuffleArray(newItemsQueueRaw);
+            const selectedNewItems = newItemsQueueRaw.slice(0, newItemsQuota);
+
+            extremeQueue = sortByWaitingFIFO(extremeQueue);
+            hardQueue = sortByWaitingFIFO(hardQueue);
+            mediumQueue = sortByWaitingFIFO(mediumQueue);
+            easyQueue = sortByWaitingFIFO(easyQueue);
+
+            // الاستثنائية (نسيان متكرر) تظهر كاملة، فوق الكوطة، إجبارياً
+            const selectedExtreme = extremeQueue;
+
+            let targetHardCount = Math.round(dailyQuota * 0.60);
+            let targetMediumCount = Math.round(dailyQuota * 0.20);
+            let targetEasyCount = dailyQuota - targetHardCount - targetMediumCount;
+
+            // تعويض تنازلي: صعب يستعير من متوسط، ثم متوسط (إن احتاج) يستعير من سهل
+            let selectedHard = hardQueue.splice(0, targetHardCount);
+            let hardDeficit = targetHardCount - selectedHard.length;
+            if (hardDeficit > 0) {
+                selectedHard = selectedHard.concat(mediumQueue.splice(0, hardDeficit));
+            }
+
+            let selectedMedium = mediumQueue.splice(0, targetMediumCount);
+            let mediumDeficit = targetMediumCount - selectedMedium.length;
+            if (mediumDeficit > 0) {
+                selectedMedium = selectedMedium.concat(easyQueue.splice(0, mediumDeficit));
+            }
+
+            let selectedEasy = easyQueue.splice(0, targetEasyCount);
+
+            // تعويض صاعد شامل (سهل ثم متوسط ثم صعب) لسد أي عجز إجمالي متبقٍ
+            let currentTotal = selectedHard.length + selectedMedium.length + selectedEasy.length;
+            let totalDeficit = dailyQuota - currentTotal;
+
+            if (totalDeficit > 0) {
+                const extraEasy = easyQueue.splice(0, totalDeficit);
+                selectedEasy = selectedEasy.concat(extraEasy);
+                totalDeficit -= extraEasy.length;
+            }
+            if (totalDeficit > 0) {
+                const extraMedium = mediumQueue.splice(0, totalDeficit);
+                selectedMedium = selectedMedium.concat(extraMedium);
+                totalDeficit -= extraMedium.length;
+            }
+            if (totalDeficit > 0) {
+                const extraHard = hardQueue.splice(0, totalDeficit);
+                selectedHard = selectedHard.concat(extraHard);
+                totalDeficit -= extraHard.length;
+            }
+
+            const finalQueue = [...selectedNewItems, ...selectedExtreme, ...selectedHard, ...selectedMedium, ...selectedEasy];
+
+            return {
+                queue: finalQueue,
+                newItemsCount: selectedNewItems.length,
+                extremeCount: selectedExtreme.length,
+                hasExtreme: selectedExtreme.length > 0
+            };
+        }
+
+        // ============ تحميل البيانات والإعدادات ============
+
+        async function initStorageAndApp() {
+            let loadingOverlay = document.getElementById('loading-overlay');
+            let loadingText = document.getElementById('loading-text');
+
+            try {
+                if (!localStorage.getItem('quran_warsh_data')) {
+                    loadingText.innerText = "جاري تحميل وتثبيت مصحف ورش محلياً...";
+                    let res = await fetch(jsonUrls.warsh);
+                    let data = await res.json();
+                    let rawQuran = data.quran_warsh || data;
+                    localStorage.setItem('quran_warsh_data', JSON.stringify(formatQuranStructure(rawQuran)));
+                }
+
+                if (!localStorage.getItem('quran_hafs_data')) {
+                    loadingText.innerText = "جاري تحميل وتثبيت مصحف حفص محلياً...";
+                    let res = await fetch(jsonUrls.hafs);
+                    let data = await res.json();
+                    let rawQuran = data.quran_hafs || data;
+                    localStorage.setItem('quran_hafs_data', JSON.stringify(formatQuranStructure(rawQuran)));
+                }
+
+                if (!localStorage.getItem('ibn_badis_settings')) {
+                    let defaultSettings = {
+                        dailyQuota: 10,
+                        newItemsQuota: 3,
+                        riwaya: 'warsh',
+                        surahsConfig: {}
+                    };
+                    localStorage.setItem('ibn_badis_settings', JSON.stringify(defaultSettings));
+                }
+
+                if (loadingOverlay) loadingOverlay.classList.add('hidden');
+                loadQuranSurahsToUI();
+
+            } catch (error) {
+                console.error(error);
+                loadingText.innerHTML = '<span style="color: #dc2626;">فشل الاتصال لجلب المصاحف. تحقق من الإنترنت وأعد المحاولة.</span>';
+            }
+        }
+
+        // القيمة الابتدائية للآية الجديدة: صعوبة 10.0 (استثنائية)، ولم تُراجَع أبداً (lastReviewed=null)
+        function formatQuranStructure(rawQuran) {
+            let formattedQuran = {};
+            Object.keys(rawQuran).forEach(surahKey => {
+                let surahObj = rawQuran[surahKey];
+                let formattedAyas = {};
+
+                let ayasObj = surahObj.ayas || {};
+                Object.keys(ayasObj).forEach(ayahKey => {
+                    let ayahText = typeof ayasObj[ayahKey] === 'object' ? ayasObj[ayahKey].text : ayasObj[ayahKey];
+                    formattedAyas[ayahKey] = {
+                        text: ayahText,
+                        difficulty: 10.0,
+                        lastReviewed: null
+                    };
+                });
+
+                formattedQuran[surahKey] = {
+                    name: surahObj.name,
+                    ayas: formattedAyas
+                };
+            });
+            return formattedQuran;
+        }
+
+        function loadQuranSurahsToUI() {
+            let riwaya = getSelectedRiwaya();
+            let storageKey = riwaya === 'hafs' ? 'quran_hafs_data' : 'quran_warsh_data';
+            let currentQuranData = JSON.parse(localStorage.getItem(storageKey)) || {};
+
+            const container = document.getElementById('surahs-checkboxes-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            let settings = JSON.parse(localStorage.getItem('ibn_badis_settings')) || {};
+            let savedSurahsConfig = settings.surahsConfig || {};
+
+            Object.keys(currentQuranData).forEach(surahKey => {
+                let surahObj = currentQuranData[surahKey];
+                let surahName = surahObj.name;
+                let ayasObj = surahObj.ayas;
+                let totalAyas = Object.keys(ayasObj).length;
+
+                let config = savedSurahsConfig[surahKey] || { enabled: false, maxAyah: totalAyas };
+
+                let itemDiv = document.createElement('div');
+                itemDiv.className = 'surah-item';
+
+                itemDiv.innerHTML = `
+                    <div class="surah-info">
+                        <label class="switch">
+                            <input type="checkbox" class="surah-toggle" id="surah-check-${surahKey}" data-key="${surahKey}" ${config.enabled ? 'checked' : ''}>
+                            <span class="slider"></span>
+                        </label>
+                        <label for="surah-check-${surahKey}" class="surah-name" style="cursor: pointer;">${surahName} (${totalAyas} آية)</label>
+                    </div>
+                    <div>
+                        <span style="font-size: 13px; color: #64748b; margin-left: 5px;">إلى آية:</span>
+                        <input type="number" id="surah-limit-${surahKey}" class="surah-ayah-limit" data-key="${surahKey}" value="${config.maxAyah}" min="1" max="${totalAyas}">
+                    </div>
+                `;
+                container.appendChild(itemDiv);
+            });
+        }
+
+        function openSettings() {
+            document.getElementById('home-screen').classList.add('hidden');
+            document.getElementById('review-screen').classList.add('hidden');
+            document.getElementById('settings-screen').classList.remove('hidden');
+            let settingsIcon = document.getElementById('settings-btn-icon');
+            let saveCornerBtn = document.getElementById('save-corner-btn');
+            if(settingsIcon) settingsIcon.classList.add('hidden');
+            if(saveCornerBtn) saveCornerBtn.classList.remove('hidden');
+            loadSettingsToUI();
+            loadQuranSurahsToUI();
+        }
+
+        function saveSettingsAndGoHome() {
+            saveSettingsFromUI();
+            returnHome();
+        }
+
+        function returnHome() {
+            document.getElementById('settings-screen').classList.add('hidden');
+            document.getElementById('review-screen').classList.add('hidden');
+            document.getElementById('home-screen').classList.remove('hidden');
+            let settingsIcon = document.getElementById('settings-btn-icon');
+            let saveCornerBtn = document.getElementById('save-corner-btn');
+            if(settingsIcon) settingsIcon.classList.remove('hidden');
+            if(saveCornerBtn) saveCornerBtn.classList.add('hidden');
+        }
+
+        function loadSettingsToUI() {
+            let settings = JSON.parse(localStorage.getItem('ibn_badis_settings')) || {
+                dailyQuota: 10,
+                newItemsQuota: 3,
+                riwaya: 'warsh'
+            };
+
+            let dailyCountElem = document.getElementById('daily-count');
+            let newItemsElem = document.getElementById('new-items-count');
+            if (dailyCountElem) dailyCountElem.value = settings.dailyQuota;
+            if (newItemsElem) newItemsElem.value = settings.newItemsQuota;
+
+            let riwayaRadios = document.getElementsByName('riwaya');
+            for (let radio of riwayaRadios) {
+                if (radio.value === settings.riwaya) radio.checked = true;
+            }
+        }
+
+        function saveSettingsFromUI() {
+            let dailyQuota = parseInt(document.getElementById('daily-count')?.value) || 10;
+            let newItemsQuota = parseInt(document.getElementById('new-items-count')?.value) || 3;
+            let riwaya = document.querySelector('input[name="riwaya"]:checked')?.value || 'warsh';
+
+            let surahsConfig = {};
+            document.querySelectorAll('.surah-toggle').forEach(toggle => {
+                let key = toggle.getAttribute('data-key');
+                let row = toggle.closest('.surah-item');
+                let limitInput = row.querySelector('.surah-ayah-limit');
+
+                surahsConfig[key] = {
+                    enabled: toggle.checked,
+                    maxAyah: limitInput && limitInput.value ? parseInt(limitInput.value, 10) : 0
+                };
+            });
+
+            let settings = { dailyQuota, newItemsQuota, riwaya, surahsConfig };
+            localStorage.setItem('ibn_badis_settings', JSON.stringify(settings));
+        }
+
+        // ============ بدء جلسة المراجعة (موصولة الآن بمحرك SRS فعلياً) ============
+
+        function startApp() {
+            let settings = JSON.parse(localStorage.getItem('ibn_badis_settings')) ||
+                { riwaya: 'warsh', dailyQuota: 10, newItemsQuota: 3, surahsConfig: {} };
+
+            let riwaya = settings.riwaya || 'warsh';
+            let storageKey = riwaya === 'hafs' ? 'quran_hafs_data' : 'quran_warsh_data';
+            let currentQuranData = JSON.parse(localStorage.getItem(storageKey)) || {};
+
+            let dailyQuota = settings.dailyQuota !== undefined ? settings.dailyQuota : 10;
+            let newItemsQuota = settings.newItemsQuota !== undefined ? settings.newItemsQuota : 3;
+            let savedConfig = settings.surahsConfig || {};
+
+            // بناء قائمة "نقاط التعلم" الممكنة من السور المفعّلة
+            // كل نقطة = آية عرض (prompt) + آيتان مستهدفتان (i+1, i+2)
+            // مرجع الجدولة (anchor) هو الآية i+1
+            let learningItems = [];
+            Object.keys(currentQuranData).forEach(surahKey => {
+                let config = savedConfig[surahKey];
+                if (config && config.enabled) {
+                    let surahObj = currentQuranData[surahKey];
+                    let ayasObj = surahObj.ayas;
+                    let ayasKeys = Object.keys(ayasObj);
+                    let limit = config.maxAyah ? Math.min(config.maxAyah, ayasKeys.length) : ayasKeys.length;
+
+                    for (let i = 0; i <= limit - 3; i++) {
+                        learningItems.push({
+                            surahKey: surahKey,
+                            surahName: surahObj.name,
+                            ayasKeys: ayasKeys,
+                            ayasObj: ayasObj,
+                            currentIndex: i,
+                            anchorKey: ayasKeys[i + 1]
+                        });
+                    }
+                }
+            });
+
+            if (learningItems.length === 0) {
+                safeAlert("الرجاء تفعيل سورة واحدة على الأقل تحتوي على 3 آيات من إعدادات التطبيق!");
+                openSettings();
+                return;
+            }
+
+            let result = generateDailyReviewQueue(learningItems, dailyQuota, newItemsQuota);
+
+            if (result.queue.length === 0) {
+                safeAlert("لا توجد آيات مستحقة للمراجعة اليوم بحسب جدولة التكرار المتباعد. عد لاحقاً أو فعّل سوراً إضافية.");
+                return;
+            }
+
+            if (result.hasExtreme) {
+                safeAlert("تنبيه: لديك " + result.extremeCount + " آية في حالة نسيان متكرر (استثنائية). ستظهر كلها اليوم فوق حصتك المعتادة — ضاعف جهدك.");
+            }
+
+            reviewPool = result.queue.map(item => Object.assign({ category: 'blue' }, item));
+
+            countBlue = reviewPool.length;
+            countRed = 0;
+            countGreen = 0;
+            updateCountersUI();
+
+            document.getElementById('home-screen').classList.add('hidden');
+            document.getElementById('settings-screen').classList.add('hidden');
+            document.getElementById('review-screen').classList.remove('hidden');
+            let settingsIcon = document.getElementById('settings-btn-icon');
+            let saveCornerBtn = document.getElementById('save-corner-btn');
+            if(settingsIcon) settingsIcon.classList.add('hidden');
+            if(saveCornerBtn) saveCornerBtn.classList.remove('hidden');
+
+            loadRandomQuestion();
+        }
+
+        function updateCountersUI() {
+            document.getElementById('count-blue').innerText = countBlue;
+            document.getElementById('count-red').innerText = countRed;
+            document.getElementById('count-green').innerText = countGreen;
+        }
+
+        function loadRandomQuestion() {
+            if (reviewPool.length === 0) {
+                safeAlert("تهانينا! لقد أكملت جميع بطاقات مراجعة اليوم.");
+                returnHome();
+                return;
+            }
+
+            let randomIndex = Math.floor(Math.random() * reviewPool.length);
+            currentQuestionItem = reviewPool[randomIndex];
+            extraPreviousCount = 0;
+
+            updateReviewView();
+            let showBtn = document.getElementById("show-btn");
+            if(showBtn) showBtn.disabled = false;
+        }
+
+        function updateReviewView() {
+            if (!currentQuestionItem) return;
+            let q = currentQuestionItem;
+
+            let key1 = q.ayasKeys[q.currentIndex];
+            let key2 = q.ayasKeys[q.currentIndex + 1];
+            let key3 = q.ayasKeys[q.currentIndex + 2];
+
+            let currentAyah = q.ayasObj[key1];
+            let nextAyah1 = q.ayasObj[key2];
+            let nextAyah2 = q.ayasObj[key3];
+
+            let surahNameElem = document.getElementById("surah-name");
+            if(surahNameElem) surahNameElem.innerText = "سورة: " + q.surahName;
+
+            let prevHtml = "";
+            for (let i = extraPreviousCount; i > 0; i--) {
+                let idx = q.currentIndex - i;
+                if (idx >= 0) {
+                    let prevKey = q.ayasKeys[idx];
+                    prevHtml += `<span class="ayah-prev">${q.ayasObj[prevKey].text}</span><span class="circle-num">${idx + 1}</span> `;
+                }
+            }
+            let prevContainer = document.getElementById("prev-ayahs-container");
+            if(prevContainer) prevContainer.innerHTML = prevHtml;
+
+            let promptAyah = document.getElementById("prompt-ayah");
+            if(promptAyah) promptAyah.innerText = currentAyah.text;
+
+            let promptNum = document.getElementById("prompt-num");
+            if(promptNum) promptNum.innerText = q.currentIndex + 1;
+
+            let blankBox1 = document.getElementById("target-blank-1");
+            if(blankBox1) {
+                blankBox1.innerText = " " + nextAyah1.text + " ";
+                blankBox1.classList.remove("revealed");
+                blankBox1.style.minWidth = Math.max(100, nextAyah1.text.length * 8) + "px";
+            }
+
+            let targetNumElem1 = document.getElementById("target-num-1");
+            if(targetNumElem1) {
+                targetNumElem1.innerText = q.currentIndex + 2;
+            }
+
+            let blankBox2 = document.getElementById("target-blank-2");
+            if(blankBox2) {
+                blankBox2.innerText = " " + nextAyah2.text + " ";
+                blankBox2.classList.remove("revealed");
+                blankBox2.style.minWidth = Math.max(100, nextAyah2.text.length * 8) + "px";
+            }
+
+            let targetNumElem2 = document.getElementById("target-num-2");
+            if(targetNumElem2) {
+                targetNumElem2.innerText = q.currentIndex + 3;
+            }
+
+            let showBtn = document.getElementById("show-btn");
+            let ratingArea = document.getElementById("rating-area");
+            if(showBtn) showBtn.classList.remove("hidden");
+            if(ratingArea) ratingArea.classList.add("hidden");
+        }
+
+        function expandContext() {
+            if (currentQuestionItem && currentQuestionItem.currentIndex - extraPreviousCount > 0) {
+                extraPreviousCount++;
+                updateReviewView();
+            } else {
+                safeAlert("هذه هي الآية الأولى في السورة، لا توجد آيات قبلها.");
+            }
+        }
+
+        function revealAnswer() {
+            let blankBox1 = document.getElementById("target-blank-1");
+            let blankBox2 = document.getElementById("target-blank-2");
+
+            if(blankBox1) blankBox1.classList.add("revealed");
+            if(blankBox2) blankBox2.classList.add("revealed");
+
+            let showBtn = document.getElementById("show-btn");
+            let ratingArea = document.getElementById("rating-area");
+            if(showBtn) showBtn.classList.add("hidden");
+            if(ratingArea) ratingArea.classList.remove("hidden");
+        }
+
+        function nextQuestion(rating) {
+            if (!currentQuestionItem) return;
+
+            // تحديث معامل الصعوبة للآيتين المستهدفتين معاً (i+1 و i+2)
+            updateAyahStatsInStorage(currentQuestionItem, rating);
+
+            let oldCat = currentQuestionItem.category;
+            if (oldCat === 'blue') countBlue--;
+            else if (oldCat === 'red') countRed--;
+
+            if (rating === 'forgot' || rating === 'hard') {
+                currentQuestionItem.category = 'red';
+                countRed++;
+            } else {
+                let index = reviewPool.indexOf(currentQuestionItem);
+                if (index > -1) {
+                    reviewPool.splice(index, 1);
+                }
+                countGreen++;
+            }
+
+            updateCountersUI();
+            loadRandomQuestion();
+        }
+
+        // تحديث معامل الصعوبة وتاريخ آخر مراجعة للآية المستهدفة الأولى فقط (i+1، وهي anchorKey)
+        // الآية الثانية (i+2) معروضة الآن كمعاينة فقط؛ ستصبح هي الآية الأولى المقيَّمة فعلياً
+        // في التمرين التالي (عندما يصبح prompt هو الآية i+1)، ولا تُقيَّم هنا مرتين
+        function updateAyahStatsInStorage(item, rating) {
+            let settings = JSON.parse(localStorage.getItem('ibn_badis_settings')) || { riwaya: 'warsh' };
+            let storageKey = settings.riwaya === 'hafs' ? 'quran_hafs_data' : 'quran_warsh_data';
+            let quranData = JSON.parse(localStorage.getItem(storageKey));
+
+            if (quranData && quranData[item.surahKey]) {
+                const now = Date.now();
+                const anchorKey = item.ayasKeys[item.currentIndex + 1];
+                let ayahObj = quranData[item.surahKey].ayas[anchorKey];
+
+                if (ayahObj) {
+                    let oldDifficulty = typeof ayahObj.difficulty === 'number' ? ayahObj.difficulty : 10.0;
+                    ayahObj.difficulty = calculateNewDifficulty(oldDifficulty, rating);
+                    ayahObj.lastReviewed = now; // رقم (Date.now())، وليس نص تاريخ
+                }
+
+                localStorage.setItem(storageKey, JSON.stringify(quranData));
+            }
+        }
+
+        window.onload = function() {
+            document.querySelectorAll('input[name="riwaya"]').forEach(radio => {
+                radio.addEventListener('change', () => {
+                    loadQuranSurahsToUI();
+                });
+            });
+
+            initStorageAndApp();
+        };
+    </script>
 </body>
 </html>
