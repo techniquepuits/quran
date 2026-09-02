@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق ابن باديس 0- تثبيت حفظ القرآن الكريم</title>
+    <title>تطبيق ابن باديس - تثبيت حفظ القرآن الكريم</title>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <!-- ربط ملف التنسيقات الخارجي -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=5.0">
 </head>
 <body>
 
@@ -17,7 +17,6 @@
 
     <div class="welcome-container">
         <div id="settings-btn-icon" class="settings-icon" onclick="openSettings()" title="الإعدادات">☰</div>
-       <!-- <button id="save-corner-btn" class="btn-save-corner hidden" onclick="saveSettingsAndGoHome()">حفظ والعودة</button>-->
 
         <!-- الشاشة الرئيسية -->
         <div id="home-screen" class="home-content">
@@ -88,11 +87,18 @@
                     </div>
                     <div id="surah-name" class="surah-title">سورة: جاري التحميل...</div>
                 </div>
-
-                <button class="btn-expand" onclick="expandContext()" title="إظهار الآية السابقة للمساعدة">+</button>
             </div>
 
+            <!-- إطار عرض الآيات (يحتوي بداخله على زر القوس المنحني في الأعلى على اليسار) -->
             <div class="exercise-box" id="exercise-container">
+                <!-- زر القوس الانحنائي لاسترجاع الآية السابقة (داخل الإطار في الأعلى على اليسار) -->
+                <button class="expand-arc-btn" onclick="expandContext()" title="إظهار الآية السابقة للمساعدة">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 14L4 9l5-5"></path>
+                        <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"></path>
+                    </svg>
+                </button>
+
                 <span id="prev-ayahs-container"></span>
                 <span id="prompt-ayah" class="ayah-blue">جاري التحميل...</span>
                 <span class="circle-num" id="prompt-num">1</span>
@@ -100,10 +106,10 @@
                 <span id="target-blank-1" class="blank-space"></span>
                 <span class="circle-num" id="target-num-1">2</span>
 
-                <span id="target-blank-2" class="blank-space"></span>
+                <span id="target-blank-2" class="blank-space-gray"></span>
                 <span class="circle-num" id="target-num-2">3</span>
             </div>
-
+            
             <div id="action-area">
                 <button id="show-btn" class="btn-main" onclick="revealAnswer()" disabled>عرض الإجابة</button>
             </div>
@@ -118,9 +124,9 @@
     </div>
 
     <!-- استدعاء ملفات الجافاسكريبت مقسمة ومرتبة -->
-    <script src="js/01-config.js"></script>
-    <script src="js/02-storage.js"></script>
-    <script src="js/03-ui.js"></script>
-    <script src="js/04-app.js"></script>
+    <script src="js/01-config.js?v=5.0"></script>
+    <script src="js/02-storage.js?v=5.0"></script>
+    <script src="js/03-ui.js?v=5.0"></script>
+    <script src="js/04-app.js?v=5.0"></script>
 </body>
 </html>

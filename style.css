@@ -22,7 +22,7 @@ body {
 }
 .settings-icon {
     position: absolute;
-    top: 50px;
+    top: 20px;
     left: 20px;
     background: #f1f5f9;
     border: 1px solid #cbd5e1;
@@ -283,30 +283,38 @@ input:checked + .slider:before {
 .counter-blue { color: #2563eb; }
 .counter-red { color: #dc2626; }
 .counter-green { color: #16a34a; }
-.btn-expand {
-    display: inline-flex;
+
+/* زر القوس الانحنائي لاسترجاع الآية السابقة داخل إطار الآيات في الأعلى على اليسار */
+.expand-arc-btn {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background-color: #e6f4f1;
+    border: 1.5px solid #2d6a4f;
+    color: #2d6a4f;
+    display: flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
-    background-color: #e6f4f1;
-    color: #2d6a4f;
-    border: 1.5px solid #2d6a4f;
-    border-radius: 50%;
-    font-size: 20px;
-    font-weight: bold;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
+    z-index: 5;
 }
-.btn-expand:hover {
+.expand-arc-btn:hover {
     background-color: #2d6a4f;
     color: white;
+    transform: scale(1.05);
 }
+
+/* إطار عرض الآيات الرئيسي (محدد بـ relative ليحتوي الزر المطلق بداخله) */
 .exercise-box {
+    position: relative;
     background: #ffffff;
     border: 2px solid #e2e8f0;
     border-radius: 12px;
-    padding: 30px 25px;
+    padding: 35px 25px 30px 25px;
     margin-bottom: 25px;
     text-align: right;
     font-size: 24px;
@@ -321,6 +329,7 @@ input:checked + .slider:before {
     color: #2563eb !important;
     font-weight: bold;
 }
+
 .blank-space {
     display: inline;
     visibility: hidden;
@@ -329,9 +338,25 @@ input:checked + .slider:before {
     font-family: 'Amiri', serif;
     margin: 0 4px;
 }
+
+/* فئة خاصة بالآية الموالية لضمان بقائها رمادية دائماً ومخفية حتى يتم كشف الإجابة */
+.blank-space-gray {
+    display: inline;
+    visibility: hidden;
+    color: #4b5563 !important;
+    font-weight: bold;
+    font-family: 'Amiri', serif;
+    margin: 0 4px;
+}
+
 .blank-space.revealed {
     visibility: visible !important;
 }
+
+.blank-space-gray.revealed {
+    visibility: visible !important;
+}
+
 .circle-num {
     display: inline-flex;
     align-items: center;
@@ -342,7 +367,7 @@ input:checked + .slider:before {
     border-radius: 50%;
     font-size: 13px;
     color: #2d6a4f;
-    margin: 0 5px;
+    margin: 0 1px;
     vertical-align: middle;
 }
 .rating-buttons {
@@ -379,4 +404,42 @@ input:checked + .slider:before {
     font-size: 20px;
     color: #1b4d3e;
     font-weight: bold;
+}
+
+
+/* تخصيص أحجام الخطوط والإطار للشاشات الصغيرة (الهواتف المحمولة) */
+@media screen and (max-width: 768px) {
+    .welcome-container {
+        padding: 20px 15px;
+        width: 95%;
+    }
+
+    .app-title {
+        font-size: 30px;
+    }
+
+    /* تصغير حجم نص الآيات داخل إطار المراجعة على الموبايل */
+    .exercise-box {
+        font-size: 19px !important;
+        line-height: 2.6;
+        padding: 25px 15px 20px 15px;
+        word-spacing: 2px;
+    }
+
+    /* تصغير حجم الدوائر الحاضنة لأرقام الآيات لتتناسب مع النص الصغير */
+    .circle-num {
+        width: 22px;
+        height: 22px;
+        font-size: 11px;
+    }
+
+    /* تصغير أزرار التقييم (نسيت، صعب، جيد، سهل) لتناسب شاشات الهواتف */
+    .btn-rate {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+
+    .surah-title {
+        font-size: 16px;
+    }
 }
