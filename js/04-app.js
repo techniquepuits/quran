@@ -103,13 +103,13 @@ function updateReviewView() {
     if (!currentQuestionItem) return;
     let q = currentQuestionItem;
 
-    let key1 = q.ayasKeys[q.currentIndex];
-    let key2 = q.ayasKeys[q.currentIndex + 1];
-    let key3 = q.ayasKeys[q.currentIndex + 2];
+    let key1 = q.ayasKeys[q.currentIndex];     
+    let key2 = q.ayasKeys[q.currentIndex + 1]; 
+    let key3 = q.ayasKeys[q.currentIndex + 2]; 
 
     let currentAyah = q.ayasObj[key1];
-    let nextAyah1 = q.ayasObj[key2];
-    let nextAyah2 = q.ayasObj[key3];
+    let nextAyah1 = q.ayasObj[key2]; 
+    let nextAyah2 = q.ayasObj[key3]; 
 
     let surahNameElem = document.getElementById("surah-name");
     if(surahNameElem) surahNameElem.innerText = "سورة: " + q.surahName;
@@ -131,28 +131,56 @@ function updateReviewView() {
     let promptNum = document.getElementById("prompt-num");
     if(promptNum) promptNum.innerText = q.currentIndex + 1;
 
+    // 1. الآية الرئيسية (الخضراء) - مخفية في البداية
     let blankBox1 = document.getElementById("target-blank-1");
     if(blankBox1) {
         blankBox1.innerText = " " + nextAyah1.text + " ";
-        blankBox1.classList.remove("revealed");
-        blankBox1.style.minWidth = Math.max(100, nextAyah1.text.length * 8) + "px";
+        blankBox1.style.visibility = 'hidden';
+        blankBox1.style.color = "#16a34a";
+        blankBox1.style.minWidth = Math.max(120, nextAyah1.text.length * 6) + "px";
     }
 
     let targetNumElem1 = document.getElementById("target-num-1");
     if(targetNumElem1) {
         targetNumElem1.innerText = q.currentIndex + 2;
+        targetNumElem1.classList.remove("hidden");
     }
 
+    // 2. الآية الموالية (أول 3 كلمات حقيقية فقط مع معالجة دقيقة للمسافات والتشكيل)
     let blankBox2 = document.getElementById("target-blank-2");
-    if(blankBox2) {
-        blankBox2.innerText = " " + nextAyah2.text + " ";
-        blankBox2.classList.remove("revealed");
-        blankBox2.style.minWidth = Math.max(100, nextAyah2.text.length * 8) + "px";
-    }
-
     let targetNumElem2 = document.getElementById("target-num-2");
-    if(targetNumElem2) {
-        targetNumElem2.innerText = q.currentIndex + 3;
+
+    if(blankBox2 && nextAyah2) {
+        let cleanText = nextAyah2.text.trim();
+        // تقسيم النص بناءً على المسافات الحقيقية واستخراج أول 3 كلمات حصراً
+        let words = cleanText.split(/\s+/);
+        
+        let firstThreeWords = "";
+        let isCompleteAyah = false;
+
+        if (words.length <= 3) {
+            firstThreeWords = cleanText;
+            isCompleteAyah = true;
+        } else {
+            firstThreeWords = words.slice(0, 3).join(" ");
+            isCompleteAyah = false;
+        }
+        
+        let displaySuffix = isCompleteAyah ? "" : " ...";
+        
+        blankBox2.innerText = " " + firstThreeWords + displaySuffix + " ";
+        blankBox2.style.visibility = 'hidden';
+        blankBox2.style.color = "#4b5563";
+        blankBox2.style.minWidth = Math.max(80, firstThreeWords.length * 8) + "px";
+
+        if(targetNumElem2) {
+            if(isCompleteAyah) {
+                targetNumElem2.innerText = q.currentIndex + 3;
+                targetNumElem2.classList.remove("hidden");
+            } else {
+                targetNumElem2.classList.add("hidden");
+            }
+        }
     }
 
     let showBtn = document.getElementById("show-btn");
@@ -171,11 +199,18 @@ function expandContext() {
 }
 
 function revealAnswer() {
+    // عند الضغط على زر "عرض الإجابة"، نظهرهما معاً بالخصائص الصحيحة
     let blankBox1 = document.getElementById("target-blank-1");
     let blankBox2 = document.getElementById("target-blank-2");
 
-    if(blankBox1) blankBox1.classList.add("revealed");
-    if(blankBox2) blankBox2.classList.add("revealed");
+    if(blankBox1) {
+        blankBox1.style.visibility = 'visible'; // إظهار الآية الرئيسية بالأخضر
+    }
+    
+    if(blankBox2) {
+        blankBox2.style.visibility = 'visible'; // إظهار الآية الموالية بالرمادي فقط
+        blankBox2.style.color = "#4b5563"; // التأكيد على بقائها رمادية حصراً
+    }
 
     let showBtn = document.getElementById("show-btn");
     let ratingArea = document.getElementById("rating-area");

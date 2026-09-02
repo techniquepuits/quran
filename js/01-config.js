@@ -12,27 +12,23 @@ function getSelectedRiwaya() {
     return selected ? selected.value : 'warsh';
 }
 
-// ============ محرك التكرار المتباعد (SRS Engine) ============
+// ============ محرك الدالة الأسية للتكرار المتباعد (Exponential SRS Engine) ============
 
-function getVerseCategory(difficulty) {
-    if (difficulty > 9.5) return 'extreme'; 
-    if (difficulty >= 6.5) return 'hard';
-    if (difficulty >= 3.5) return 'medium';
-    return 'easy';
+/**
+ * حساب الزمن المرجعي بالأيام بناءً على الدالة الأسية لمعامل الصعوبة (D من 1 إلى 10)
+ * T_ref(D) = 30 ^ ((10 - D) / 9)
+ */
+function calculateReferenceTime(difficulty) {
+    let D = Math.max(1.0, Math.min(10.0, difficulty));
+    return Math.pow(30, (10 - D) / 9);
 }
 
-function getMinIntervalDays(category) {
-    switch (category) {
-        case 'easy': return 30;
-        case 'medium': return 7;
-        case 'hard': return 1;
-        case 'extreme': return 0;
-        default: return 0;
-    }
-}
-
+/**
+ * تحديث معامل الصعوبة بناءً على تقييم المستخدم
+ */
 function calculateNewDifficulty(oldDifficulty, userChoice) {
-    const targets = { forgot: 10.0, hard: 9.0, good: 5.0, easy: 1.0 };
+    // التقييمات: forgot (نسيت), hard (صعب), good (جيد), easy (سهل)
+    const targets = { forgot: 10.0, hard: 8.0, good: 4.0, easy: 1.0 };
     const target = targets.hasOwnProperty(userChoice) ? targets[userChoice] : 5.0;
     const newDifficulty = (oldDifficulty + target) / 2.0;
     return Math.max(1.0, Math.min(10.0, newDifficulty));
@@ -46,107 +42,62 @@ function shuffleArray(array) {
     return array;
 }
 
-function sortByWaitingFIFO(queue) {
-    queue.sort((a, b) => b.waitingDuration - a.waitingDuration);
-    let grouped = [];
-    let i = 0;
-    while (i < queue.length) {
-        let j = i;
-        while (j < queue.length && queue[j].waitingDuration === queue[i].waitingDuration) j++;
-        let chunk = queue.slice(i, j);
-        shuffleArray(chunk);
-        grouped = grouped.concat(chunk);
-        i = j;
-    }
-    return grouped;
-}
-
+/**
+ * توليد طابور المراجعة اليومي بناءً على معامل الاستحقاق (Urgency Score - U)
+ */
 function generateDailyReviewQueue(learningItems, dailyQuota, newItemsQuota) {
     const now = Date.now();
 
     let newItemsQueueRaw = [];
-    let extremeQueue = [];
-    let hardQueue = [];
-    let mediumQueue = [];
-    let easyQueue = [];
+    let dueEvaluatedItems = [];
 
     learningItems.forEach(item => {
         const anchor = item.ayasObj[item.anchorKey];
         if (!anchor) return;
 
+        // إذا كانت الآية جديدة كلياً ولم تُراجع قط
         if (anchor.lastReviewed === null || anchor.lastReviewed === undefined) {
             newItemsQueueRaw.push(item);
             return;
         }
 
-        const category = getVerseCategory(anchor.difficulty);
-        const minDays = getMinIntervalDays(category);
-        const daysElapsed = (now - anchor.lastReviewed) / MS_PER_DAY;
+        // 1. حساب الزمن المنقضي بالأيام منذ آخر مراجعة
+        let elapsedDays = (now - anchor.lastReviewed) / MS_PER_DAY;
 
-        if (category === 'extreme' || daysElapsed >= minDays) {
-            const dueTime = anchor.lastReviewed + (minDays * MS_PER_DAY);
-            item.waitingDuration = now - dueTime;
+        // 2. حساب الزمن المرجعي T_ref باستخدام الدالة الأسية اعتماداً على الصعوبة D
+        let currentDifficulty = typeof anchor.difficulty === 'number' ? anchor.difficulty : 5.0;
+        let tRef = calculateReferenceTime(currentDifficulty);
 
-            if (category === 'extreme') extremeQueue.push(item);
-            else if (category === 'hard') hardQueue.push(item);
-            else if (category === 'medium') mediumQueue.push(item);
-            else easyQueue.push(item);
+        // 3. حساب معامل الاستحقاق (Urgency Score: U)
+        let urgencyScore = elapsedDays / tRef;
+
+        // إرفاق النتيجة للعنصر
+        item.urgencyScore = urgencyScore;
+        item.calculatedTRef = tRef;
+
+        // تصفية الآيات التي بلغ أو تجاوز وقت استحقاقها (U >= 1.0)
+        if (urgencyScore >= 1.0) {
+            dueEvaluatedItems.push(item);
         }
     });
 
+    // سحب الحصة المخصصة للآيات الجديدة وعشوائيتها
     shuffleArray(newItemsQueueRaw);
-    const selectedNewItems = newItemsQueueRaw.slice(0, newItemsQuota);
+    let selectedNewItems = newItemsQueueRaw.slice(0, newItemsQuota);
 
-    extremeQueue = sortByWaitingFIFO(extremeQueue);
-    hardQueue = sortByWaitingFIFO(hardQueue);
-    mediumQueue = sortByWaitingFIFO(mediumQueue);
-    easyQueue = sortByWaitingFIFO(easyQueue);
+    // ترتيب الآيات المستحقة تنازلياً حسب قيمة معامل الاستحقاق U (الأكثر إلحاحاً يظهر أولاً بغض النظر عن الصعوبة)
+    dueEvaluatedItems.sort((a, b) => b.urgencyScore - a.urgencyScore);
 
-    const selectedExtreme = extremeQueue;
+    // سحب العدد المطلوب لجلسة اليوم (dailyQuota) من الآيات المستحقة
+    let selectedDueItems = dueEvaluatedItems.slice(0, dailyQuota);
 
-    let targetHardCount = Math.round(dailyQuota * 0.60);
-    let targetMediumCount = Math.round(dailyQuota * 0.20);
-    let targetEasyCount = dailyQuota - targetHardCount - targetMediumCount;
-
-    let selectedHard = hardQueue.splice(0, targetHardCount);
-    let hardDeficit = targetHardCount - selectedHard.length;
-    if (hardDeficit > 0) {
-        selectedHard = selectedHard.concat(mediumQueue.splice(0, hardDeficit));
-    }
-
-    let selectedMedium = mediumQueue.splice(0, targetMediumCount);
-    let mediumDeficit = targetMediumCount - selectedMedium.length;
-    if (mediumDeficit > 0) {
-        selectedMedium = selectedMedium.concat(easyQueue.splice(0, mediumDeficit));
-    }
-
-    let selectedEasy = easyQueue.splice(0, targetEasyCount);
-
-    let currentTotal = selectedHard.length + selectedMedium.length + selectedEasy.length;
-    let totalDeficit = dailyQuota - currentTotal;
-
-    if (totalDeficit > 0) {
-        const extraEasy = easyQueue.splice(0, totalDeficit);
-        selectedEasy = selectedEasy.concat(extraEasy);
-        totalDeficit -= extraEasy.length;
-    }
-    if (totalDeficit > 0) {
-        const extraMedium = mediumQueue.splice(0, totalDeficit);
-        selectedMedium = selectedMedium.concat(extraMedium);
-        totalDeficit -= extraMedium.length;
-    }
-    if (totalDeficit > 0) {
-        const extraHard = hardQueue.splice(0, totalDeficit);
-        selectedHard = selectedHard.concat(extraHard);
-        totalDeficit -= extraHard.length;
-    }
-
-    const finalQueue = [...selectedNewItems, ...selectedExtreme, ...selectedHard, ...selectedMedium, ...selectedEasy];
+    // الدمج النهائي للطابور اليومي (الآيات الجديدة أولاً أو المراجعات بحسب الترتيب المفضل)
+    let finalQueue = [...selectedNewItems, ...selectedDueItems];
 
     return {
         queue: finalQueue,
         newItemsCount: selectedNewItems.length,
-        extremeCount: selectedExtreme.length,
-        hasExtreme: selectedExtreme.length > 0
+        dueCount: selectedDueItems.length,
+        hasExtreme: false // تم الاستغناء عنها لصالح المنظومة الأسية الموحدة
     };
 }
