@@ -1,29 +1,23 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#2d6a4f">
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تطبيق ابن باديس - تثبيت حفظ القرآن الكريم</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2d6a4f">
+    
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 
-    <!-- أسطر تمنع المتصفح من تخزين الصفحة الرئيسية القديمة وتجبره على جلبها من السيرفر -->
+    <!-- أسطر تمنع المتصفح من تخزين الصفحة القديمة -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
 
-    <!-- ربط ملف التنسيقات الخارجي -->
-    <link rel="stylesheet" href="style.css?v=1.1">
+    <link rel="stylesheet" href="style.css?v=2.0">
+<link rel="icon" href="data:,">
 </head>
-
-<head>
-
-
-
-
 <body>
 
     <div id="loading-overlay">
@@ -32,29 +26,20 @@
     </div>
 
     <div class="welcome-container">
-        <!-- زر الإعدادات في أعلى اليسار (تم تصحيح الـ ID ليطابق الدالة البرمجية) -->
         <div id="settings-btn-icon" class="settings-icon" onclick="openSettings()" title="الإعدادات">☰</div>
-        
-        <!-- زر الحفظ السريع داخل الإعدادات (يظهر عند الدخول للإعدادات) 
-        <button id="save-corner-btn" class="btn-save-corner hidden" onclick="saveSettingsAndGoHome()">حفظ</button>
-  -->
-
-        <!-- زر علامة الاستفهام في أعلى اليمين (لدخول صفحة لماذا هذا التطبيق) -->
         <div id="help-btn-icon" class="help-icon" onclick="openHelpScreen()" title="لماذا هذا التطبيق؟">؟</div>
 
         <!-- الشاشة الرئيسية -->
-        <!-- الشاشة الرئيسية -->
-<div id="home-screen" class="home-content">
-    <div class="app-icon">📖</div>
-    <div class="app-title">ابن باديس</div>
-    <div class="app-slogan">تثبيت حفظ القرآن الكريم</div>
+        <div id="home-screen" class="home-content">
+            <div class="app-icon">📖</div>
+            <div class="app-title">ابن باديس</div>
+            <div class="app-slogan">تثبيت حفظ القرآن الكريم</div>
 
-    <button class="btn-main" onclick="startApp()">ابدأ الآن</button>
-    <!-- تم إضافة id ودالة الضغط هنا -->
-    <button id="install-btn" class="btn-secondary" onclick="installApp()">تنزيل التطبيق على الهاتف / الكمبيوتر</button>
-</div>
+            <button class="btn-main" onclick="startApp()">ابدأ الآن</button>
+            <button id="install-btn" class="btn-secondary" onclick="installApp()">تنزيل التطبيق على الهاتف / الكمبيوتر</button>
+        </div>
 
-        <!-- شاشة "لماذا هذا التطبيق؟" (صفحة الشرح والفلسفة) -->
+        <!-- شاشة "لماذا هذا التطبيق؟" -->
         <div id="help-screen" class="help-view hidden">
             <div class="header-box">
                 <button class="btn-home" onclick="returnHomeFromHelp()" title="العودة للصفحة الرئيسية" style="background-color: #64748b; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold;">🏠 الرئيسية</button>
@@ -66,22 +51,15 @@
                     <h3>1. ما هو هذا التطبيق؟</h3>
                     <p>هذا التطبيق ليس منصة لتحفيظ القرآن الكريم من الصفر، بل هو أداة للضبط والتمكين. دوره الحقيقي يبدأ <strong>بعد الحفظ</strong>؛ إنه رفيقك الخفي لتثبيت المتشابهات، وضبط المحفوظ، وقهر النسيان في الآيات التي تتعثر فيها.</p>
                 </div>
-
                 <div class="help-section">
                     <h3>2. السند العلمي الحديث: هندسة الذاكرة</h3>
-                    <p>يعتمد هذا التطبيق على <strong>"نظرية التكرار المتباعد"</strong>، وهي من أقوى النظريات العلمية المعترف بها في علم النفس المعرفي. أقيمت حولها مئات الأبحاث الأكاديمية العالمية، وهي تقوم على مبدأين أساسيين: <strong>المذاكرة النشطة</strong>، و<strong>التكرار المتباعد المدروس</strong> لنقل المعلومات من الذاكرة قصيرة المدى إلى الذاكرة طويلة المدى.</p>
+                    <p>يعتمد هذا التطبيق على <strong>"نظرية التكرار المتباعد"</strong>، وهي من أقوى النظريات العلمية المعترف بها في علم النفس المعرفي لنقل المعلومات من الذاكرة قصيرة المدى إلى الذاكرة طويلة المدى.</p>
                 </div>
-
                 <div class="help-section">
                     <h3>3. المرجعية التراثية: فراسة أهل الزوايا</h3>
-                    <p>المذاكرة النشطة ليس مفهوماً حديثاً، بل هو طريقة أصيلة في تراثنا. فشيوخ الزوايا والكتاتيب لم يكونوا بحاجة إلى معادلات رقمية ليدركوا سر التثبيت؛ بل هداهم حسهم القراني إلى أن استنهاض الذاكرة أنفع بكثير من القراءة السلبية المكررة. لقد كان شيخ الكتاب يختبر الطالب بآية في وسط الحزب ويطلب منه الإكمال فوراً، وهذا هو جوهر "المذاكرة النشطة". وما هذا التطبيق إلا امتداد عصري لتلك المجالس، بخوارزميات رقمية دقيقة تضبط لك مواعيد المراجعة بدقة متناحاة.</p>
-                </div>
-
-                <div class="help-conclusion">
-                    <p>التكنولوجيا وحدها لا تكفي لتحفيظ القرآن الكريم ولكنها يمكن أن تلعب دورا فعالا في عملية الحفظ.</p>
+                    <p>المذاكرة النشطة هي طريقة أصيلة في تراثنا. فشيوخ الزوايا والكتاتيب لم يكونوا بحاجة إلى معادلات رقمية، بل هداهم حسهم القرآني إلى أن استنهاض الذاكرة أنفع بكثير من القراءة السلبية المكررة.</p>
                 </div>
             </div>
-
             <button class="btn-main" style="margin-top: 20px;" onclick="returnHomeFromHelp()">العودة للصفحة الرئيسية</button>
         </div>
 
@@ -102,8 +80,6 @@
                     </label>
                 </div>
             </div>
-
-
 
             <div class="setting-row-box">
                 <span class="setting-row-label">عدد الآيات المستهدفة للمراجعة يومياً:</span>
@@ -136,28 +112,17 @@
                         <span id="count-red" class="counter-red">0</span>
                         <span id="count-green" class="counter-green">0</span>
                     </div>
-                   
-
                     <div id="surah-name" class="surah-title">سورة: جاري التحميل...</div>
                 </div>
             </div>
 
-            <!-- إطار عرض الآيات -->
             <div class="exercise-box" id="exercise-container">
-                <!-- زر القوس الانحنائي لاسترجاع الآية السابقة -->
-                <button class="expand-arc-btn" onclick="expandContext()" title="إظهار الآية السابقة للمساعدة">
-                    &#8593;
+                <button class="expand-arc-btn" onclick="expandContext()" title="إظهار الآية السابقة للمساعدة">&#8593;</button>
+
+                <button id="play-ayah-audio-btn" onclick="playCurrentTargetAyahAudio()" class="audio-btn" style="background: #e6f4f1; color: black; border: none; padding: 6px 14px; border-radius: 20px; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;">
+                    🔊
                 </button>
-
-<!--<div class="audio-player-container" style="text-align: center; margin: 10px 0;">-->
-    <button id="play-ayah-audio-btn" onclick="playCurrentTargetAyahAudio()" class="audio-btn" style="background: #e6f4f1;; color: black; border: none; padding: 6px 14px; border-radius: 20px; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;">
-        🔊
-    </button>
-    <audio id="ayah-audio-element" style="display: none;"></audio>
-<!--</div>-->
-
-
-
+                <audio id="ayah-audio-element" style="display: none;"></audio>
 
                 <span id="prev-ayahs-container"></span>
                 <span id="prompt-ayah" class="ayah-blue">جاري التحميل...</span>
@@ -181,15 +146,36 @@
                 <button class="btn-rate btn-easy" onclick="nextQuestion('easy')">سهل</button>
             </div>
         </div>
-
-
-
-
     </div>
 
-    <!-- استدعاء ملفات الجافاسكريبت الثلاثة المنظمة -->
-    <script src="js/config.js?v=1.1"></script>
-    <script src="js/storage.js?v=1.1"></script>
-    <script src="js/app.js?v=1.1"></script>
+    <!-- تسجيل Service Worker لضمان التحديث التلقائي وحذف الكاش القديم -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => {
+                        console.log('ServiceWorker registered successfully.');
+                        // التحقق من وجود تحديثات جديدة وسحبها فوراً
+                        reg.onupdatefound = () => {
+                            const installingWorker = reg.installing;
+                            installingWorker.onstatechange = () => {
+                                if (installingWorker.state === 'installed') {
+                                    if (navigator.serviceWorker.controller) {
+                                        console.log('New version available, reloading...');
+                                        window.location.reload();
+                                    }
+                                }
+                            };
+                        };
+                    })
+                    .catch(err => console.log('ServiceWorker registration failed: ', err));
+            });
+        }
+    </script>
+
+    <!-- استدعاء ملفات الجافاسكريبت -->
+    <script src="js/config.js?v=2.0"></script>
+    <script src="js/storage.js?v=2.0"></script>
+    <script src="js/app.js?v=2.0"></script>
 </body>
 </html>
