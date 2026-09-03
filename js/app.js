@@ -70,6 +70,14 @@ function returnHome() {
     if (helpBtn) helpBtn.style.display = 'flex';
     if (settingsIcon) settingsIcon.style.display = 'flex';
     if (saveCornerBtn) saveCornerBtn.classList.add('hidden');
+
+    // إزالة ملاحظة النسخة التجريبية عند العودة للصفحة الرئيسية إذا وجدت
+    let trialNotice = document.getElementById('trial-version-notice');
+    if (trialNotice) trialNotice.remove();
+    
+    // إعادة إظهار زر التنزيل عند العودة للرئيسية
+    let installBtn = document.getElementById('install-btn');
+    if (installBtn) installBtn.style.display = 'inline-block';
 }
 
 // ============ تحميل وإدارة إعدادات السور في واجهة الإعدادات ============
@@ -152,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (window.appSettings) {
                 window.appSettings.riwaya = getSelectedRiwaya();
             }
-            loadQuranSurahsToUI(); // تحديث الجدول فوراً عند تغيير الاختيار بين ورش وحفص
+            loadQuranSurahsToUI();
         });
     });
 });
@@ -213,8 +221,11 @@ function startApp() {
         { riwaya: 'warsh', dailyQuota: 10, newItemsQuota: 3, surahsConfig: {} };
 
     let riwaya = settings.riwaya || 'warsh';
-    let storageKey = riwaya === 'hafs' ? 'quran_hafs_data' : 'quran_warsh_data';
-    let currentQuranData = JSON.parse(localStorage.getItem(storageKey)) || {};
+    
+    let progressData = window.allLoadedProgress && window.allLoadedProgress[riwaya] ? window.allLoadedProgress[riwaya] : {};
+    let currentQuranData = window.allLoadedQurans && window.allLoadedQurans[riwaya] 
+        ? extractSurahsContainer(window.allLoadedQurans[riwaya]) 
+        : JSON.parse(localStorage.getItem(riwaya === 'hafs' ? 'quran_hafs_data' : 'quran_warsh_data')) || {};
 
     let dailyQuota = settings.dailyQuota !== undefined ? settings.dailyQuota : 10;
     let newItemsQuota = settings.newItemsQuota !== undefined ? settings.newItemsQuota : 3;
@@ -224,17 +235,20 @@ function startApp() {
     Object.keys(currentQuranData).forEach(surahKey => {
         let config = savedConfig[surahKey];
         if (config && config.enabled) {
-            let surahObj = currentQuranData[surahKey];
-            let ayasObj = surahObj.ayas;
-            let ayasKeys = Object.keys(ayasObj);
+            let surahTextObj = currentQuranData[surahKey];
+            let surahProgressObj = progressData[surahKey];
+            if (!surahProgressObj) return;
+
+            let ayasKeys = Object.keys(surahTextObj.ayas);
             let limit = config.maxAyah ? Math.min(config.maxAyah, ayasKeys.length) : ayasKeys.length;
 
             for (let i = 0; i <= limit - 3; i++) {
                 learningItems.push({
                     surahKey: surahKey,
-                    surahName: surahObj.name,
+                    surahName: surahTextObj.name,
                     ayasKeys: ayasKeys,
-                    ayasObj: ayasObj,
+                    textAyasObj: surahTextObj.ayas,  
+                    ayasObj: surahProgressObj.ayas,   
                     currentIndex: i,
                     anchorKey: ayasKeys[i + 1]
                 });
@@ -261,6 +275,10 @@ function startApp() {
     countRed = 0;
     countGreen = 0;
     updateCountersUI();
+
+    // عند الانتقال لشاشة المراجعة، نتأكد من إزالة ملاحظة النسخة التجريبية تماماً من الصفحة الأولى
+    let trialNotice = document.getElementById('trial-version-notice');
+    if (trialNotice) trialNotice.remove();
 
     document.getElementById('home-screen').classList.add('hidden');
     document.getElementById('settings-screen').classList.add('hidden');
@@ -308,9 +326,10 @@ function updateReviewView() {
     let key2 = q.ayasKeys[q.currentIndex + 1]; 
     let key3 = q.ayasKeys[q.currentIndex + 2]; 
 
-    let currentAyah = q.ayasObj[key1];
-    let nextAyah1 = q.ayasObj[key2]; 
-    let nextAyah2 = q.ayasObj[key3]; 
+    let textObj = q.textAyasObj || q.ayasObj;
+    let currentAyah = textObj[key1];
+    let nextAyah1 = textObj[key2]; 
+    let nextAyah2 = textObj[key3]; 
 
     let surahNameElem = document.getElementById("surah-name");
     if(surahNameElem) surahNameElem.innerText = "سورة: " + q.surahName;
@@ -320,7 +339,7 @@ function updateReviewView() {
         let idx = q.currentIndex - i;
         if (idx >= 0) {
             let prevKey = q.ayasKeys[idx];
-            prevHtml += `<span class="ayah-prev">${q.ayasObj[prevKey].text}</span><span class="circle-num">${idx + 1}</span> `;
+            prevHtml += `<span class="ayah-prev">${textObj[prevKey].text}</span><span class="circle-num">${idx + 1}</span> `;
         }
     }
     let prevContainer = document.getElementById("prev-ayahs-container");
@@ -466,72 +485,47 @@ function validateAndFormatSurahLimit(inputElement, totalAyas) {
     }
 };
 
-// ============ اختبار المقرئ (الشيخ ياسين الجزائري - البقرة: 20) ============
+// ============ وظيفة تنزيل التطبيق واختفاء الزر لإظهار ملاحظة النسخة التجريبية (الصفحة الأولى فقط) ============
+function installApp() {
+    let installBtn = document.getElementById('install-btn');
+    if (installBtn) {
+        // إخفاء زر التنزيل تماماً في الصفحة الأولى
+        installBtn.style.display = 'none';
 
-//************************************************************************************************************* */
-// ============ تشغيل تلاوة الآية المستهدفة (النسخة الآمنة والمحدثة) ============
-
-function playCurrentTargetAyahAudio() {
-    if (!currentQuestionItem) {
-        alert("لا توجد آية مستهدفة حالياً.");
-        return;
-    }
-
-    let q = currentQuestionItem;
-    let audioBtn = document.getElementById('play-ayah-audio-btn');
-
-    let surahNumber = parseInt(q.surahKey.replace('surah_', ''), 10);
-    let ayahNumberInSurah = q.currentIndex + 2;
-
-    let formattedSurah = String(surahNumber).padStart(3, '0');
-    let formattedAyah = String(ayahNumberInSurah).padStart(3, '0');
-
-    // استبدال الرابط برابط بديل موثوق يدعم التوافقية الكاملة للمتصفحات
-    let directAudioUrl = `https://everyayah.com/data/Alafasy_128kbps/${formattedSurah}${formattedAyah}.mp3`;
-
-    if (audioBtn) {
-        audioBtn.innerText = `🔊 جاري الاتصال بالخادم الصوتي...`;
-        audioBtn.disabled = true;
-    }
-
-    let soundPlayer = new Audio();
-    soundPlayer.crossOrigin = "anonymous";
-    soundPlayer.src = directAudioUrl;
-
-    soundPlayer.oncanplaythrough = () => {
-        soundPlayer.play().then(() => {
-            if (audioBtn) audioBtn.innerText = `🔊 تلاوة: سورة ${q.surahName} - آية ${ayahNumberInSurah}`;
-        }).catch(err => {
-            console.error("خطأ التشغيل:", err);
-            fallbackToAlternativeAudio(q, audioBtn);
-        });
-    };
-
-    soundPlayer.onerror = () => {
-        console.error("فشل تحميل ملف الصوت من الخادم.");
-        fallbackToAlternativeAudio(q, audioBtn);
-    };
-
-    soundPlayer.onended = () => {
-        if (audioBtn) {
-            audioBtn.innerText = "🔊 استمع للمقرئ (الآية المستهدفة)";
-            audioBtn.disabled = false;
+        let startBtn = document.getElementById('start-btn') || installBtn.parentElement;
+        
+        let existingNotice = document.getElementById('trial-version-notice');
+        if (!existingNotice && startBtn) {
+            let noticeElem = document.createElement('div');
+            noticeElem.id = 'trial-version-notice';
+            noticeElem.style.cssText = "margin-top: 10px; font-size: 20px; color: #3578d6; text-align: center; font-weight: 700;";
+            noticeElem.innerText = "نسخة تجريبية";
+            
+            // وضعها تحت زر البدء أو جوار مكان زر التنزيل في الصفحة الأولى فقط
+            startBtn.insertAdjacentElement('afterend', noticeElem);
         }
-    };
-}
-
-// دالة بديلة في حال فشل الرابط الأول
-function fallbackToAlternativeAudio(q, audioBtn) {
-    if (audioBtn) {
-        audioBtn.innerText = "🔊 استمع للمقرئ (الآية المستهدفة)";
-        audioBtn.disabled = false;
     }
-    alert("تعذر تشغيل ملف الصوت للآية المحددة بسبب قيود شبكة المتصفح (CORS). يجدر التجربة عبر رفع الملفات على خادم ويب حقيقي (Hosting) بدلاً من المتصفح المحلي.");
+    console.log("تم النقر على زر التنزيل وبدء التنزيل، وتم إخفاء الزر وإظهار ملاحظة النسخة التجريبية في الصفحة الرئيسية.");
 }
 
-// ============ تشغيل تلاوة الآية المستهدفة (النسخة النهائية الفورية) ============
+// ============ تشغيل وتوقف تلاوة الآية المستهدفة (مخصص لرواية حفص فقط) ============
+
+let globalAyahAudioPlayer = null;
+let audioPlayState = 'stopped'; 
 
 function playCurrentTargetAyahAudio() {
+    let currentRiwaya = getSelectedRiwaya ? getSelectedRiwaya() : 'warsh';
+
+    if (currentRiwaya === 'warsh') {
+        alert("عذراً، تلاوة الصوت المباشر مفعلة حالياً حصرياً لرواية حفص عن عاصم لتفادي تفاوت أرقام الآيات في رواية ورش.");
+        let audioBtn = document.getElementById('play-ayah-audio-btn');
+        if (audioBtn) {
+            audioBtn.style.opacity = "0.5";
+            audioBtn.style.cursor = "not-allowed";
+        }
+        return;
+    }
+
     if (!currentQuestionItem) {
         alert("لا توجد آية مستهدفة حالياً.");
         return;
@@ -540,56 +534,52 @@ function playCurrentTargetAyahAudio() {
     let q = currentQuestionItem;
     let audioBtn = document.getElementById('play-ayah-audio-btn');
 
-    // استخراج رقم السورة والآية بدقة
     let surahNumber = parseInt(q.surahKey.replace(/\D/g, ''), 10);
     let ayahNumberInSurah = q.currentIndex + 2;
 
     let formattedSurah = String(surahNumber).padStart(3, '0');
     let formattedAyah = String(ayahNumberInSurah).padStart(3, '0');
-
-    // رابط الآية المباشر من خوادم EveryAyah المعتمدة
     let directAudioUrl = `https://everyayah.com/data/Alafasy_128kbps/${formattedSurah}${formattedAyah}.mp3`;
 
-    if (audioBtn) {
-        audioBtn.innerText = `🔊 جاري التلاوة...`;
-        audioBtn.disabled = true;
+    if (!globalAyahAudioPlayer || globalAyahAudioPlayer.dataset.url !== directAudioUrl) {
+        if (globalAyahAudioPlayer) {
+            globalAyahAudioPlayer.pause();
+        }
+        globalAyahAudioPlayer = new Audio(directAudioUrl);
+        globalAyahAudioPlayer.dataset.url = directAudioUrl;
+        audioPlayState = 'stopped';
+
+        globalAyahAudioPlayer.onended = () => {
+            audioPlayState = 'stopped';
+            if (audioBtn) audioBtn.innerText = "🔊";
+        };
+
+        globalAyahAudioPlayer.onerror = () => {
+            audioPlayState = 'stopped';
+            if (audioBtn) audioBtn.innerText = "🔊";
+            alert("عذراً، ملف التلاوة لهذه الآية غير متوفر حالياً على الخادم.");
+        };
     }
 
-    // إنشاء كائن الصوت وتشغيله مباشرة فور النقر
-    let soundPlayer = new Audio();
-    soundPlayer.src = directAudioUrl;
-    soundPlayer.load(); // إجبار المتصفح على تحميل الملف فوراً
-
-    let playPromise = soundPlayer.play();
-
-    if (playPromise !== undefined) {
-        playPromise.then(() => {
-            if (audioBtn) {
-              //  audioBtn.innerText = `🔊 تلاوة: سورة ${q.surahName} - آية ${ayahNumberInSurah}`;
-            }
-        }).catch(error => {
-            console.error("خطأ في تشغيل الصوت:", error);
-            if (audioBtn) {
-                audioBtn.innerText = "🔊";
-                audioBtn.disabled = false;
-            }
-            alert("تعذر تشغيل تلاوة هذه الآية، تأكد من اتصال الإنترنت.");
-        });
+    if (audioPlayState === 'stopped' || audioPlayState === 'paused') {
+        if (audioPlayState === 'stopped') {
+            globalAyahAudioPlayer.currentTime = 0; 
+        }
+        
+        let playPromise = globalAyahAudioPlayer.play();
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                audioPlayState = 'playing';
+                if (audioBtn) audioBtn.innerText = "⏸"; 
+            }).catch(error => {
+                console.error("خطأ في تشغيل الصوت:", error);
+                audioPlayState = 'stopped';
+                if (audioBtn) audioBtn.innerText = "🔊";
+            });
+        }
+    } else if (audioPlayState === 'playing') {
+        globalAyahAudioPlayer.pause();
+        audioPlayState = 'paused';
+        if (audioBtn) audioBtn.innerText = "▶"; 
     }
-
-    soundPlayer.onended = () => {
-        if (audioBtn) {
-            audioBtn.innerText = "🔊";
-            audioBtn.disabled = false;
-        }
-    };
-
-    soundPlayer.onerror = (e) => {
-        console.error("خطأ في تحميل ملف الصوت:", e);
-        if (audioBtn) {
-            audioBtn.innerText = "🔊";
-            audioBtn.disabled = false;
-        }
-        alert("عذراً، ملف التلاوة لهذه الآية غير متوفر حالياً على الخادم.");
-    };
 }

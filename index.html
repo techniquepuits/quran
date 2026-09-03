@@ -5,9 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تطبيق ابن باديس - تثبيت حفظ القرآن الكريم</title>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- أسطر تمنع المتصفح من تخزين الصفحة الرئيسية القديمة وتجبره على جلبها من السيرفر -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
     <!-- ربط ملف التنسيقات الخارجي -->
-    <link rel="stylesheet" href="style.css?v=6.0">
+    <link rel="stylesheet" href="style.css?v=1.1">
 </head>
+
+<head>
+>
+
+
+
 <body>
 
     <div id="loading-overlay">
@@ -27,14 +39,16 @@
         <div id="help-btn-icon" class="help-icon" onclick="openHelpScreen()" title="لماذا هذا التطبيق؟">؟</div>
 
         <!-- الشاشة الرئيسية -->
-        <div id="home-screen" class="home-content">
-            <div class="app-icon">📖</div>
-            <div class="app-title">ابن باديس</div>
-            <div class="app-slogan">تثبيت حفظ القرآن الكريم</div>
+        <!-- الشاشة الرئيسية -->
+<div id="home-screen" class="home-content">
+    <div class="app-icon">📖</div>
+    <div class="app-title">ابن باديس</div>
+    <div class="app-slogan">تثبيت حفظ القرآن الكريم</div>
 
-            <button class="btn-main" onclick="startApp()">ابدأ الآن</button>
-            <button id="install-btn" class="btn-secondary">تنزيل التطبيق على الهاتف / الكمبيوتر</button>
-        </div>
+    <button class="btn-main" onclick="startApp()">ابدأ الآن</button>
+    <!-- تم إضافة id ودالة الضغط هنا -->
+    <button id="install-btn" class="btn-secondary" onclick="installApp()">تنزيل التطبيق على الهاتف / الكمبيوتر</button>
+</div>
 
         <!-- شاشة "لماذا هذا التطبيق؟" (صفحة الشرح والفلسفة) -->
         <div id="help-screen" class="help-view hidden">
@@ -119,22 +133,6 @@
                         <span id="count-green" class="counter-green">0</span>
                     </div>
                    
-                    
-<div class="audio-player-container" style="text-align: center; margin: 10px 0;">
-    <button id="play-ayah-audio-btn" onclick="playCurrentTargetAyahAudio()" class="audio-btn" style="background: #16a34a; color: white; border: none; padding: 6px 14px; border-radius: 20px; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;">
-        🔊 استمع للمقرئ (الآية المستهدفة)
-    </button>
-    <audio id="ayah-audio-element" style="display: none;"></audio>
-</div>
-
-
-
-
-
-
-
-
-
 
                     <div id="surah-name" class="surah-title">سورة: جاري التحميل...</div>
                 </div>
@@ -146,6 +144,17 @@
                 <button class="expand-arc-btn" onclick="expandContext()" title="إظهار الآية السابقة للمساعدة">
                     &#8593;
                 </button>
+
+<!--<div class="audio-player-container" style="text-align: center; margin: 10px 0;">-->
+    <button id="play-ayah-audio-btn" onclick="playCurrentTargetAyahAudio()" class="audio-btn" style="background: #e6f4f1;; color: black; border: none; padding: 6px 14px; border-radius: 20px; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;">
+        🔊
+    </button>
+    <audio id="ayah-audio-element" style="display: none;"></audio>
+<!--</div>-->
+
+
+
+
                 <span id="prev-ayahs-container"></span>
                 <span id="prompt-ayah" class="ayah-blue">جاري التحميل...</span>
                 <span class="circle-num" id="prompt-num">1</span>
@@ -168,11 +177,15 @@
                 <button class="btn-rate btn-easy" onclick="nextQuestion('easy')">سهل</button>
             </div>
         </div>
+
+
+
+
     </div>
 
     <!-- استدعاء ملفات الجافاسكريبت الثلاثة المنظمة -->
-    <script src="js/config.js?v=6.1"></script>
-    <script src="js/storage.js?v=6.1"></script>
-    <script src="js/app.js?v=6.1"></script>
+    <script src="js/config.js?v=1.1"></script>
+    <script src="js/storage.js?v=1.1"></script>
+    <script src="js/app.js?v=1.1"></script>
 </body>
 </html>
