@@ -528,3 +528,68 @@ function fallbackToAlternativeAudio(q, audioBtn) {
     }
     alert("تعذر تشغيل ملف الصوت للآية المحددة بسبب قيود شبكة المتصفح (CORS). يجدر التجربة عبر رفع الملفات على خادم ويب حقيقي (Hosting) بدلاً من المتصفح المحلي.");
 }
+
+// ============ تشغيل تلاوة الآية المستهدفة (النسخة النهائية الفورية) ============
+
+function playCurrentTargetAyahAudio() {
+    if (!currentQuestionItem) {
+        alert("لا توجد آية مستهدفة حالياً.");
+        return;
+    }
+
+    let q = currentQuestionItem;
+    let audioBtn = document.getElementById('play-ayah-audio-btn');
+
+    // استخراج رقم السورة والآية بدقة
+    let surahNumber = parseInt(q.surahKey.replace(/\D/g, ''), 10);
+    let ayahNumberInSurah = q.currentIndex + 2;
+
+    let formattedSurah = String(surahNumber).padStart(3, '0');
+    let formattedAyah = String(ayahNumberInSurah).padStart(3, '0');
+
+    // رابط الآية المباشر من خوادم EveryAyah المعتمدة
+    let directAudioUrl = `https://everyayah.com/data/Alafasy_128kbps/${formattedSurah}${formattedAyah}.mp3`;
+
+    if (audioBtn) {
+        audioBtn.innerText = `🔊 جاري التلاوة...`;
+        audioBtn.disabled = true;
+    }
+
+    // إنشاء كائن الصوت وتشغيله مباشرة فور النقر
+    let soundPlayer = new Audio();
+    soundPlayer.src = directAudioUrl;
+    soundPlayer.load(); // إجبار المتصفح على تحميل الملف فوراً
+
+    let playPromise = soundPlayer.play();
+
+    if (playPromise !== undefined) {
+        playPromise.then(() => {
+            if (audioBtn) {
+              //  audioBtn.innerText = `🔊 تلاوة: سورة ${q.surahName} - آية ${ayahNumberInSurah}`;
+            }
+        }).catch(error => {
+            console.error("خطأ في تشغيل الصوت:", error);
+            if (audioBtn) {
+                audioBtn.innerText = "🔊";
+                audioBtn.disabled = false;
+            }
+            alert("تعذر تشغيل تلاوة هذه الآية، تأكد من اتصال الإنترنت.");
+        });
+    }
+
+    soundPlayer.onended = () => {
+        if (audioBtn) {
+            audioBtn.innerText = "🔊";
+            audioBtn.disabled = false;
+        }
+    };
+
+    soundPlayer.onerror = (e) => {
+        console.error("خطأ في تحميل ملف الصوت:", e);
+        if (audioBtn) {
+            audioBtn.innerText = "🔊";
+            audioBtn.disabled = false;
+        }
+        alert("عذراً، ملف التلاوة لهذه الآية غير متوفر حالياً على الخادم.");
+    };
+}

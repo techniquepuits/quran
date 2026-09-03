@@ -30,6 +30,26 @@ function openDatabase() {
     });
 }
 
+// دالة مساعدة عامة لجلب بيانات السور الصافية بغض النظر عن شكل الـ JSON
+function extractSurahsContainer(rawObj) {
+    if (!rawObj) return {};
+    if (rawObj.quran_warsh) return rawObj.quran_warsh;
+    if (rawObj.quran_hafs) return rawObj.quran_hafs;
+    return rawObj;
+}
+
+window.getQuranFromDB = async function(riwaya) {
+    let db = await openDatabase();
+    let storageKey = riwaya === 'hafs' ? 'quran_hafs_full' : 'quran_warsh_full';
+    return new Promise((resolve, reject) => {
+        let transaction = db.transaction(STORE_NAME, 'readonly');
+        let store = transaction.objectStore(STORE_NAME);
+        let request = store.get(storageKey);
+        request.onsuccess = () => resolve(extractSurahsContainer(request.result));
+        request.onerror = () => reject(request.error);
+    });
+};
+
 async function getOrInitSettings() {
     let db = await openDatabase();
     let settingsKey = 'app_settings';
@@ -42,9 +62,7 @@ async function getOrInitSettings() {
         request.onerror = () => reject(request.error);
     });
 
-    if (cachedSettings) {
-        return cachedSettings;
-    }
+    if (cachedSettings) return cachedSettings;
 
     await saveSettings(DEFAULT_SETTINGS);
     return DEFAULT_SETTINGS;
@@ -73,9 +91,7 @@ async function getOrDownloadData(storageKey, url) {
         request.onerror = () => reject(request.error);
     });
 
-    if (cachedData) {
-        return cachedData;
-    }
+    if (cachedData) return cachedData;
 
     let response = await fetch(url);
     if (!response.ok) throw new Error(`فشل التحميل من الرابط: ${url}`);
@@ -105,11 +121,9 @@ async function getOrInitProgress(riwaya, quranData) {
         request.onerror = () => reject(request.error);
     });
 
-    if (cachedProgress) {
-        return cachedProgress;
-    }
+    if (cachedProgress) return cachedProgress;
 
-    let rawSurahs = quranData.quran_warsh || quranData.quran_hafs || quranData;
+    let rawSurahs = extractSurahsContainer(quranData);
     if (!rawSurahs || typeof rawSurahs !== 'object') {
         throw new Error(`بنية بيانات مصحف ${riwaya} غير متوافقة.`);
     }
@@ -200,7 +214,8 @@ Storage.prototype.getItem = function(key) {
         let currentRiwaya = window.appSettings.riwaya || 'warsh';
         let raw = window.allLoadedQurans[currentRiwaya];
         if (raw) {
-            return JSON.stringify(raw.quran_warsh || raw.quran_hafs || raw);
+            let extracted = extractSurahsContainer(raw);
+            return JSON.stringify(extracted);
         }
     }
     if (key === 'ibn_badis_settings') {
@@ -209,36 +224,53 @@ Storage.prototype.getItem = function(key) {
     return originalLocalStorageGetItem.call(this, key);
 };
 
+// js/storage.js (التعديل لتحديث الآية الأولى المستهدفة فقط)
+
 async function updateAyahStatsInStorage(item, rating) {
     let currentRiwaya = window.appSettings.riwaya || 'warsh';
+    
+    // التأكد من تحميل بيانات التقدم الحالية
+    if (!window.allLoadedProgress[currentRiwaya]) {
+        let quranData = window.allLoadedQurans[currentRiwaya] || await getQuranFromDB(currentRiwaya);
+        window.allLoadedProgress[currentRiwaya] = await getOrInitProgress(currentRiwaya, quranData);
+    }
+
     let progressData = window.allLoadedProgress[currentRiwaya];
 
     if (progressData && progressData[item.surahKey]) {
-        const keysToUpdate = [
-            item.ayasKeys[item.currentIndex + 1],
-            item.ayasKeys[item.currentIndex + 2]
-        ];
+        // نكتفي بتحديث الآية الأولى فقط (currentIndex + 1) لأنها التي راجعها الطالب بالكامل،
+        // أما الآية الثانية (currentIndex + 2) فظهرت منها 3 كلمات فقط كمجرد تلميح ولا تمس إحصائياتها.
+        const targetKey = item.ayasKeys[item.currentIndex + 1];
 
-        keysToUpdate.forEach(key => {
-            let ayahProgress = progressData[item.surahKey].ayas[key];
+        if (targetKey) {
+            let ayahProgress = progressData[item.surahKey].ayas[targetKey];
             if (ayahProgress) {
                 if (ayahProgress.status === 'disabled') {
                     ayahProgress.status = 'new';
                 }
 
+                // 1. تحديث معامل الصعوبة (Difficulty)
+                let oldDifficulty = typeof ayahProgress.difficulty === 'number' ? ayahProgress.difficulty : 10.0;
+                if (typeof calculateNewDifficulty === 'function') {
+                    ayahProgress.difficulty = calculateNewDifficulty(oldDifficulty, rating);
+                }
+
+                // 2. تحديث معامل التمدد (Expansion)
                 if (rating === 'easy') {
-                    ayahProgress.expansion += 1; 
+                    ayahProgress.expansion = (ayahProgress.expansion || 0) + 1; 
                 } else if (rating === 'good') {
-                    ayahProgress.expansion = Math.max(0, ayahProgress.expansion - 1); 
+                    ayahProgress.expansion = Math.max(0, (ayahProgress.expansion || 0)); 
                 } else if (rating === 'hard' || rating === 'forgot') {
                     ayahProgress.expansion = 0; 
                 }
 
+                // 3. تحديث تاريخ المراجعة والحالة للآية المستهدفة وحدها
                 ayahProgress.lastReviewed = Date.now();
                 ayahProgress.status = 'learning';
             }
-        });
+        }
 
+        // حفظ التغييرات في قاعدة البيانات IndexedDB
         await updateProgressInDB(currentRiwaya, progressData);
     }
 }

@@ -1,10 +1,4 @@
 // js/01-config.js
-/*
-const jsonUrls = {
-    warsh: 'https://raw.githubusercontent.com/techniquepuits/quran/refs/heads/main/quran_warsh.json',
-    hafs: 'https://raw.githubusercontent.com/techniquepuits/quran/refs/heads/main/quran_hafs.json'
-};
-*/
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
 function getSelectedRiwaya() {
@@ -56,24 +50,21 @@ function generateDailyReviewQueue(learningItems, dailyQuota, newItemsQuota) {
         const anchor = item.ayasObj[item.anchorKey];
         if (!anchor) return;
 
-        // إذا كانت الآية معطلة أو لم تُراجع قط
-        if (anchor.status === 'disabled' || anchor.lastReviewed === null || anchor.lastReviewed === undefined) {
-            // نأخذ فقط الآيات التي تترجم حالة التفعيل (new أو تفاعل الطالب معها)
-            if (anchor.status === 'new' || anchor.status === 'learning' || anchor.status === 'review') {
-                // تراجع ضمن قائمة الجديد أو غير المكتمل
-            }
+        // إذا كانت الآية معطلة، نتخطاها تماماً
+        if (anchor.status === 'disabled') {
+            return;
         }
 
-        // إذا كانت الآية جديدة كلياً ولم تُراجع قط ولم تفعّل بعد بالشكل الصحيح
-        if (anchor.lastReviewed === null || anchor.lastReviewed === undefined) {
-            if (anchor.status === 'new' || anchor.status === 'disabled') {
-                // تُعامل كآية جديدة إذا أردت إدراجها في طابور التفعيل
-            }
-        }
-
-        // للإبقاء على منطق السحب للآيات الجديدة المحضة التي لم تراجع:
-        if (anchor.lastReviewed === null || anchor.lastReviewed === undefined) {
+        // إذا كانت الآية جديدة حقاً (وحالتها new وليست learning) ولم تُراجع قط
+        if (anchor.status === 'new' && (anchor.lastReviewed === null || anchor.lastReviewed === undefined)) {
             newItemsQueueRaw.push(item);
+            return;
+        }
+
+        // بما أن كل آياتك أصبحت حالتها learning، فلن تدخل في الشروط السابقة بل ستدخل هنا حصرياً:
+        // إذا كان تاريخ آخر مراجعة فارغاً رغم أن حالتها ليرنينج، نعتبرها مستحقة فوراً
+        if (anchor.lastReviewed === null || anchor.lastReviewed === undefined) {
+            dueEvaluatedItems.push(item);
             return;
         }
 
@@ -94,19 +85,17 @@ function generateDailyReviewQueue(learningItems, dailyQuota, newItemsQuota) {
         item.calculatedTRef = tRef;
 
         // تصفية الآيات المستحقة للمراجعة (U >= 1.0)
+        // ملاحظة: إذا كنت تريد مراجعة الكل فوراً بغض النظر عن الوقت، يمكنك إزالة شرط (urgencyScore >= 1.0)
         if (urgencyScore >= 1.0) {
             dueEvaluatedItems.push(item);
         }
     });
 
-    // سحب الحصة المخصصة للآيات الجديدة وعشوائيتها
+    // إذا كانت حصة الآيات الجديدة صفر أو لا توجد آيات بالحالة new فعلياً، فلن يتم سحب شيء عشوائي غريب
     shuffleArray(newItemsQueueRaw);
     let selectedNewItems = newItemsQueueRaw.slice(0, newItemsQuota);
 
-    // ترتيب الآيات المستحقة تنازلياً حسب معامل الاستحقاق U
     dueEvaluatedItems.sort((a, b) => b.urgencyScore - a.urgencyScore);
-
-    // سحب العدد المطلوب لجلسة اليوم (dailyQuota)
     let selectedDueItems = dueEvaluatedItems.slice(0, dailyQuota);
 
     let finalQueue = [...selectedNewItems, ...selectedDueItems];
@@ -118,4 +107,3 @@ function generateDailyReviewQueue(learningItems, dailyQuota, newItemsQuota) {
         hasExtreme: false
     };
 }
-
