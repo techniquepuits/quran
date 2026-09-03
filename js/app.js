@@ -1,5 +1,18 @@
 // js/app.js
 
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('Service Worker registered!'))
+            .catch(err => console.log('Service Worker registration failed:', err));
+    });
+}
+
+
+
+
+
+
 let reviewPool = [];
 let currentQuestionItem = null;
 let extraPreviousCount = 0;
@@ -485,29 +498,49 @@ function validateAndFormatSurahLimit(inputElement, totalAyas) {
     }
 };
 
-// ============ وظيفة تنزيل التطبيق واختفاء الزر لإظهار ملاحظة النسخة التجريبية (الصفحة الأولى فقط) ============
-function installApp() {
+
+// ============ وظيفة تنزيل التطبيق الحقيقية (PWA) ============
+// ============ وظيفة تنزيل التطبيق عبر النافذة المنبثقة الرسمية ============
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    // منع المتصفح من إظهار النافذة التلقائية الصامتة
+    e.preventDefault();
+    // حفظ الحدث لاستدعائه عند نقر المستخدم
+    deferredPrompt = e;
+    
+    // إظهار زر التنزيل في الواجهة ليراه المستخدم بوضوح
     let installBtn = document.getElementById('install-btn');
     if (installBtn) {
-        // إخفاء زر التنزيل تماماً في الصفحة الأولى
-        installBtn.style.display = 'none';
-
-        let startBtn = document.getElementById('start-btn') || installBtn.parentElement;
-        
-        let existingNotice = document.getElementById('trial-version-notice');
-        if (!existingNotice && startBtn) {
-            let noticeElem = document.createElement('div');
-            noticeElem.id = 'trial-version-notice';
-            noticeElem.style.cssText = "margin-top: 10px; font-size: 20px; color: #3578d6; text-align: center; font-weight: 700;";
-            noticeElem.innerText = "نسخة تجريبية";
-            
-            // وضعها تحت زر البدء أو جوار مكان زر التنزيل في الصفحة الأولى فقط
-            startBtn.insertAdjacentElement('afterend', noticeElem);
-        }
+        installBtn.style.display = 'block';
     }
-    console.log("تم النقر على زر التنزيل وبدء التنزيل، وتم إخفاء الزر وإظهار ملاحظة النسخة التجريبية في الصفحة الرئيسية.");
-}
+});
 
+async function installApp() {
+    let installBtn = document.getElementById('install-btn');
+
+    if (deferredPrompt) {
+        // إظهار نافذة المتصفح المنبثقة (هل تريد تثبيت هذا التطبيق؟)
+        deferredPrompt.prompt();
+        
+        // انتظار قرار المستخدم (موافقة أو إلغاء)
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`قرار المستخدم: ${outcome}`);
+        
+        if (outcome === 'accepted') {
+            console.ولق 'تم قبول التثبيت بنجاح';
+            if (installBtn) installBtn.style.display = 'none';
+        } else {
+            console.log('تم إلغاء التثبيت من طرف المستخدم');
+        }
+        
+        // لا يمكن استخدام الحدث إلا مرة واحدة، لذلك نقوم بتصفيره
+        deferredPrompt = null;
+    } else {
+        // تنبيه ذكي إذا كان التطبيق مثبتاً مسبقاً أو المتصفح لا يدعم التثبيت المباشر
+        alert("التطبيق مثبت بالفعل على جهازك، أو أن المتصفح الحالي لا يدعم التثبيت المباشر. يمكنك تثبيته يدوياً من إعدادات المتصفح.");
+    }
+}
 // ============ تشغيل وتوقف تلاوة الآية المستهدفة (مخصص لرواية حفص فقط) ============
 
 let globalAyahAudioPlayer = null;
