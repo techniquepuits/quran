@@ -527,8 +527,8 @@ async function installApp() {
         const { outcome } = await deferredPrompt.userChoice;
         console.log(`قرار المستخدم: ${outcome}`);
         
-        if (outcome === 'accepted') {
-            console.ولق 'تم قبول التثبيت بنجاح';
+       if (outcome === 'accepted') {
+            console.log('تم قبول التثبيت بنجاح');
             if (installBtn) installBtn.style.display = 'none';
         } else {
             console.log('تم إلغاء التثبيت من طرف المستخدم');
