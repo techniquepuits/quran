@@ -5,9 +5,12 @@ const DB_VERSION = 1;
 
 // الروابط الثلاثة المطلوبة بنفس تسميتها وهيكلتها
 const GITHUB_FILES = {
-    "ayatWordCount.json": "https://raw.githubusercontent.com/techniquepuits/quran/main/IbnBadisQuranDB/ayatWordCount.json",
-    "quranTxt.json": "https://raw.githubusercontent.com/techniquepuits/quran/main/IbnBadisQuranDB/quranTxt.json",
-    "userProgress.json": "https://raw.githubusercontent.com/techniquepuits/quran/main/IbnBadisQuranDB/userProgress.json"
+    "ayah_difficulties.json": "https://raw.githubusercontent.com/techniquepuits/quran/main/IbnBadisQuranDB/ayah_difficulties.json",
+    "ayah_last_reviews.json": "https://raw.githubusercontent.com/techniquepuits/quran/main/IbnBadisQuranDB/ayah_last_reviews.json",
+    "aayah_statuses.json": "https://raw.githubusercontent.com/techniquepuits/quran/main/IbnBadisQuranDB/ayah_statuses.json",
+    "ayah_texts.json": "https://raw.githubusercontent.com/techniquepuits/quran/main/IbnBadisQuranDB/ayah_texts.json",
+    "ayah_word_counts.json": "https://raw.githubusercontent.com/techniquepuits/quran/main/IbnBadisQuranDB/ayah_word_counts.json",
+      "user_app_config.json": "https://raw.githubusercontent.com/techniquepuits/quran/main/IbnBadisQuranDB/user_app_config.json"
 };
 
 // 1. فتح قاعدة البيانات
