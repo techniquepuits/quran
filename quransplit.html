@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أداة تقطيع وتوقيت الآيات الصوتية</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        input[type="file"] {
+            margin: 15px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        audio {
+            width: 100%;
+            margin: 15px 0;
+        }
+        .controls {
+            margin: 20px 0;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin: 5px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        button#exportBtn {
+            background-color: #007bff;
+        }
+        button#exportBtn:hover {
+            background-color: #0056b3;
+        }
+        #timestampsList {
+            margin-top: 20px;
+            max-height: 250px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 10px;
+            text-align: right;
+            background: #fafafa;
+        }
+        .timestamp-item {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>أداة توقيت الآيات الصوتية</h2>
+    <p>اختر ملف الصوت (MP3) للسورة، واضغط على الزر مع بداية كل آية:</p>
+    
+    <!-- رفع الملف الصوتي -->
+    <input type="file" id="audioFile" accept="audio/*">
+    
+    <!-- مشغل الصوت -->
+    <audio id="audioPlayer" controls></audio>
+
+    <!-- زر تسجيل التوقيت -->
+    <div class="controls">
+        <button id="markBtn" disabled>📌 تسجيل بداية الآية (<span id="currentAyahNum">1</span>)</button>
+        <button id="exportBtn" disabled>💾 تصدير التوقيتات (JSON)</button>
+    </div>
+
+    <!-- قائمة عرض التوقيتات المسجلة -->
+    <h3>التوقيتات المسجلة:</h3>
+    <div id="timestampsList">لم يتم تسجيل أي توقيت بعد.</div>
+</div>
+
+<script>
+    const audioFile = document.getElementById('audioFile');
+    const audioPlayer = document.getElementById('audioPlayer');
+    const markBtn = document.getElementById('markBtn');
+    const exportBtn = document.getElementById('exportBtn');
+    const currentAyahNumSpan = document.getElementById('currentAyahNum');
+    const timestampsList = document.getElementById('timestampsList');
+
+    let ayahTimestamps = [];
+    let currentAyah = 1;
+
+    // تحميل الملف الصوتي محلياً عند اختياره
+    audioFile.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const fileURL = URL.createObjectURL(file);
+            audioPlayer.src = fileURL;
+            markBtn.disabled = false;
+            currentAyah = 1;
+            ayahTimestamps = [];
+            currentAyahNumSpan.textContent = currentAyah;
+            timestampsList.innerHTML = "تم تحميل الملف. ابدأ التشغيل واضغط التسجيل عند بداية كل آية.";
+        }
+    });
+
+    // الضغط لتسجيل التوقيت
+    markBtn.addEventListener('click', () => {
+        const currentTime = audioPlayer.currentTime; // الوقت بالثواني مع الأجزاء
+        
+        // حفظ التوقيت
+        ayahTimestamps.push({
+            ayah: currentAyah,
+            time: currentTime,
+            formattedTime: formatTime(currentTime)
+        });
+
+        // تحديث القائمة المرئية
+        updateListUI();
+
+        // الانتقال للآية التالية
+        currentAyah++;
+        currentAyahNumSpan.textContent = currentAyah;
+        exportBtn.disabled = false;
+    });
+
+    // تنسيق الثواني إلى دقائق:ثواني
+    function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = (seconds % 60).toFixed(2);
+        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    // تحديث عرض القائمة في الصفحة
+    function updateListUI() {
+        timestampsList.innerHTML = '';
+        ayahTimestamps.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'timestamp-item';
+            div.innerHTML = `<strong>الآية ${item.ayah}</strong> تبدأ في التوقيت: <span style="color: #007bff; direction: ltr; display: inline-block;">${item.formattedTime}</span> (${item.time.toFixed(2)} ثانية)`;
+            timestampsList.appendChild(div);
+        });
+    }
+
+    // تصدير النتائج كملف JSON جاهز للاستخدام في التطبيق
+    exportBtn.addEventListener('click', () => {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(ayahTimestamps, null, 2));
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", "surah_timestamps.json");
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+    });
+</script>
+
+</body>
+</html>
