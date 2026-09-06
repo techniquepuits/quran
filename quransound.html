@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تجربة التسجيل الصوتي المؤقت</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin: 10px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button.recording {
+            background-color: #dc3545;
+        }
+        button.recording:hover {
+            background-color: #a71d2a;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        #status {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #555;
+        }
+        audio {
+            margin-top: 20px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>اختبار التسجيل الصوتي المؤقت</h2>
+    
+    <!-- الزر الأول: لبدء وإيقاف التسجيل -->
+    <div>
+        <button id="recordBtn">🎙️ بدء التسجيل</button>
+    </div>
+
+    <div id="status">الحالة: جاهز للتسجيل</div>
+
+    <!-- الزر الثاني: لإعادة التسميع -->
+    <div>
+        <button id="playBtn" disabled>▶️ إعادة سماع التسجيل</button>
+    </div>
+
+    <!-- عنصر الصوت للاستماع (مخزن في الذاكرة الحية عبر Blob URL) -->
+    <audio id="audioPlayer" controls style="display:none;"></audio>
+</div>
+
+<script>
+    let mediaRecorder;
+    let audioChunks = [];
+    let audioBlob = null;
+
+    const recordBtn = document.getElementById('recordBtn');
+    const playBtn = document.getElementById('playBtn');
+    const statusDiv = document.getElementById('status');
+    const audioPlayer = document.getElementById('audioPlayer');
+
+    recordBtn.addEventListener('click', async () => {
+        if (!mediaRecorder || mediaRecorder.state === "inactive") {
+            // بدء التسجيل
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+
+                mediaRecorder.ondataavailable = event => {
+                    audioChunks.push(event.data);
+                };
+
+                mediaRecorder.onstop = () => {
+                    // تخزين التسجيل مؤقتاً في الذاكرة الحية (RAM) باستخدام Blob
+                    audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    audioPlayer.src = audioUrl;
+                    audioPlayer.style.display = 'block';
+                    playBtn.disabled = false;
+                    statusDiv.textContent = "الحالة: تم حفظ التسجيل في الذاكرة الحية بنجاح";
+                };
+
+                mediaRecorder.start();
+                recordBtn.textContent = "⏹️ إيقاف التسجيل";
+                recordBtn.classList.add('recording');
+                statusDiv.textContent = "الحالة: جاري التسجيل...";
+                playBtn.disabled = true;
+                audioPlayer.style.display = 'none';
+
+            } catch (err) {
+                alert("المرجو السماح باستخدام الميكروفون!");
+                console.error(err);
+            }
+        } else if (mediaRecorder.state === "recording") {
+            // إيقاف التسجيل
+            mediaRecorder.stop();
+            // إيقاف استخدام الميكروفون
+            mediaRecorder.stream.getTracks().forEach(track => track.stop());
+            
+            recordBtn.textContent = "🎙️ بدء التسجيل";
+            recordBtn.classList.remove('recording');
+        }
+    });
+
+    playBtn.addEventListener('click', () => {
+        if (audioBlob) {
+            audioPlayer.play();
+            statusDiv.textContent = "الحالة: جاري الاستماع للتسجيل المؤقت...";
+        }
+    });
+</script>
+
+</body>
+</html>
