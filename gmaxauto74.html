@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GMax Auto</title>
+    <style>
+        /* التخصيص العام المظلم والمريح للعين - سياق البساطة والوضوح */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-bottom: 40px; 
+        }
+
+        /* ================= صفحة الترحيب بلون واحد ================= */
+        #welcome-page {
+            width: 100%;
+            max-width: 500px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #121212;
+            position: fixed;
+            top: 0;
+            z-index: 9999;
+            overflow-y: auto;
+        }
+        
+        .gmax-brand {
+            font-size: 70px;
+            font-weight: 900;
+            letter-spacing: -2px;
+            line-height: 1;
+            display: flex;
+            direction: ltr; /* ضمان اتجاه صحيح من اليسار لليمين */
+        }
+        .gmax-white { color: #ffffff; }
+        .gmax-gold { color: #b8860b; }
+
+        .auto-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #3a86c8;
+            text-transform: uppercase;
+            letter-spacing: 12px;
+            margin-left: 12px; /* تعويض المسافة لتوسيط صحيح */
+            margin-top: 10px;
+            margin-bottom: 12px;
+            direction: ltr;
+        }
+
+        .main-subtitle {
+            font-size: 15px;
+            font-weight: normal;
+            color: #666666;
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .single-global-light {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin-bottom: 45px;
+            transition: all 0.3s ease;
+        }
+        .global-green { background-color: #4CAF50; box-shadow: 0 0 12px #4CAF50; }
+        .global-orange { background-color: #FF9800; box-shadow: 0 0 12px #FF9800; }
+        .global-red { background-color: #f44336; box-shadow: 0 0 12px #f44336; }
+
+        .start-app-btn {
+            background-color: #b8860b;
+            color: #000000;
+            border: none;
+            padding: 15px 55px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            box-shadow: 0 4px 15px rgba(184, 134, 11, 0.3);
+        }
+        .start-app-btn:active { transform: scale(0.95); }
+
+        .main-container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            box-sizing: border-box;
+            display: block;
+        }
+
+        .page-main-title {
+            font-size: 11px;
+            font-weight: normal;
+            color: #888888; 
+            margin: 0 0 16px 0; 
+            padding: 0; 
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .title-right-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        /* تنسيق اسم التطبيق اللاتيني المصغر مع ضبط الاتجاه لليسار */
+        .app-name-left {
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            direction: ltr; /* فرض الاتجاه من اليسار ليمين لمنع الانعكاس */
+        }
+        .brand-g { color: #ffffff; }
+        .brand-max { color: #b8860b; }
+        .brand-auto { 
+            color: #3a86c8; 
+            font-size: 9px; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            margin-left: 2px;
+        }
+
+        .settings-icon-btn {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 15px;
+            cursor: pointer;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            transition: color 0.2s;
+        }
+        .settings-icon-btn:hover { color: #b8860b; }
+
+        .odometer-card {
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #2d2d2d;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .odometer-card:active { border-color: #b8860b; }
+        .odometer-info .label {
+            font-size: 12px;
+            color: #888888;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .odometer-info .value { font-size: 24px; font-weight: bold; color: #fff; }
+
+        .cards-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .status-card-btn {
+            background-color: #1e1e1e;
+            border: 1px solid #2d2d2d;
+            border-radius: 12px;
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            width: 100%;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            box-sizing: border-box;
+        }
+        .status-card-btn:active { border-color: #b8860b; }
+
+        .card-left-side {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-countdown-badge {
+            font-size: 12px;
+            font-weight: normal;
+            color: #666666;
+            background-color: #161616;
+            padding: 2px 8px;
+            border-radius: 6px;
+            border: 1px solid #222;
+        }
+
+        .light-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+        .green-light { background-color: #4CAF50; box-shadow: 0 0 10px #4CAF50; }
+        .orange-light { background-color: #FF9800; box-shadow: 0 0 10px #FF9800; }
+        .red-light { background-color: #f44336; box-shadow: 0 0 10px #f44336; }
+
+        .bottom-actions-grid {
+            display: flex;
+            gap: 8px;
+            margin-top: 25px;
+        }
+        .action-jar-btn {
+            flex: 1;
+            background-color: #161616;
+            border: 1px solid #252525;
+            border-radius: 10px;
+            padding: 14px 6px;
+            text-align: center;
+            color: #777777;
+            font-size: 12px;
+            font-weight: normal;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-sizing: border-box;
+        }
+        .action-jar-btn:active { background-color: #202020; color: #b8860b; border-color: #b8860b; }
+
+        .sub-view {
+            display: none;
+            width: 100%;
+        }
+        .sub-view.active-view {
+            display: block;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #2d2d2d;
+            padding-bottom: 12px;
+        }
+        .page-title { font-size: 18px; font-weight: bold; color: #b8860b; }
+        
+        .mini-switch-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background-color: #161616;
+            border: 1px solid #333;
+            padding: 4px 10px;
+            border-radius: 8px;
+        }
+        .mini-switch-label {
+            font-size: 11px;
+            color: #aaa;
+            font-weight: normal;
+        }
+
+        .back-btn {
+            background-color: #333;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 14px; color: #888888; margin-bottom: 8px; }
+        .form-control {
+            width: 100%;
+            background-color: #161616;
+            border: 1px solid #333;
+            color: #b8860b;
+            padding: 14px;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            outline: none;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 36px;
+            height: 20px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #444;
+            transition: .3s;
+            border-radius: 20px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+        input:checked + .slider { background-color: #b8860b; }
+        input:checked + .slider:before { transform: translateX(16px); }
+
+        .confirm-btn {
+            width: 100%;
+            background-color: #b8860b;
+            color: #000;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .confirm-btn:active { opacity: 0.9; }
+
+        .car-info-block {
+            background-color: #1e1e1e;
+            border: 1px solid #2d2d2d;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 25px;
+        }
+        .car-info-block h3 { margin: 0 0 12px 0; color: #b8860b; font-size: 16px; }
+
+        /* ================= تصميم التقويم المخصص (Custom Calendar) ================= */
+        .custom-calendar-box {
+            background-color: #1e1e1e;
+            border: 1px solid #b8860b;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 8px;
+            display: none;
+            box-sizing: border-box;
+        }
+        .cal-nav-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #161616;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        .cal-nav-btn {
+            background: none;
+            border: 1px solid #444;
+            color: #b8860b;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .cal-nav-btn:active { background-color: #252525; }
+        .cal-nav-label { font-size: 15px; font-weight: bold; color: #fff; }
+
+        .cal-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 6px;
+        }
+        .cal-days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            margin-bottom: 12px;
+        }
+        .cal-day-cell {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            border-radius: 6px;
+            background-color: #252525;
+            color: #fff;
+            cursor: pointer;
+            user-select: none;
+        }
+        .cal-day-cell.hover:not(.disabled):not(.empty), .cal-day-cell:hover:not(.disabled):not(.empty) {
+            background-color: #b8860b;
+            color: #000;
+        }
+        .cal-day-cell.selected {
+            background-color: #b8860b !important;
+            color: #000 !important;
+            font-weight: bold;
+        }
+        .cal-day-cell.disabled {
+            color: #444 !important;
+            background-color: #181818 !important;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        .cal-day-cell.empty {
+            background: none;
+            cursor: default;
+        }
+        .cal-confirm-btn {
+            width: 100%;
+            background-color: #b8860b;
+            color: #000;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* نافذة النسخة الاحتياطية */
+        .backup-modal-bg {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .backup-modal-box {
+            background-color: #1a1a1a;
+            border: 1px solid #b8860b;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        .backup-modal-title { font-size: 16px; font-weight: bold; color: #b8860b; margin-bottom: 10px; }
+        .backup-modal-desc { font-size: 12px; color: #aaa; margin-bottom: 20px; line-height: 1.5; }
+        .backup-option-btn {
+            width: 100%;
+            background-color: #2e7d32;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+        .backup-option-sms { background-color: #333; border: 1px solid #444; }
+        .backup-close-btn {
+            background: none; border: none; color: #888; font-size: 13px; cursor: pointer; margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="welcome-page">
+        <div class="gmax-brand">
+            <span class="gmax-white">G</span><span class="gmax-gold">MAX</span>
+        </div>
+        <div class="auto-text">Auto</div>
+        <div class="main-subtitle">مساعدك الذكي للصيانة</div>
+        <div id="global-welcome-light" class="single-global-light global-green"></div>
+        <button class="start-app-btn" onclick="launchAppFullscreen()">Start</button>
+    </div>
+
+    <div class="main-container" id="app-content-wrapper" style="display: none;">
+        
+        <!-- الواجهة الرئيسية للمواعيد والمؤشرات -->
+        <div id="dashboard-view" class="sub-view active-view">
+            <div class="page-main-title">
+                <div class="title-right-group">
+                    <button class="settings-icon-btn" onclick="openCarSettingsView()" title="إعدادات المركبة">☰</button>
+                    <span>الحالة العامة لمواعيد الصيانة والوثائق</span>
+                </div>
+                <div class="app-name-left">
+                    <span class="brand-g">G</span><span class="brand-max">MAX</span><span class="brand-auto">AUTO</span>
+                </div>
+            </div>
+
+            <div class="odometer-card" onclick="openOdometerEditor()">
+                <div class="odometer-info">
+                    <span class="label">عداد السيارة الحالي (اضغط للتعديل)</span>
+                    <span class="value" id="current-odo">000,000 كم</span>
+                </div>
+                <!-- لمبة حالة العداد اليدوي بناءً على الفترة المنقرضة -->
+                <div class="card-left-side">
+                    <span class="light-dot" id="odometer-status-dot"></span>
+                </div>
+            </div>
+            
+            <div class="cards-list" id="dashboard-cards-list"></div>
+
+            <div class="bottom-actions-grid">
+                <div class="action-jar-btn" onclick="openMoreMetricsSelector()">
+                    إضافة مؤشرات
+                </div>
+                <div class="action-jar-btn" onclick="openBackupModal()">
+                    نسخة احتياطية
+                </div>
+                <div class="action-jar-btn" onclick="exitApp()">
+                    خروج
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة اختيار المؤشرات الإضافية -->
+        <div id="more-metrics-view" class="sub-view">
+            <div class="page-header">
+                <span class="page-title">المؤشرات غير المفعلة</span>
+                <button class="back-btn" onclick="returnToDashboard()">عودة</button>
+            </div>
+            <p style="font-size:12px; color:#888; margin-top:-10px; margin-bottom:15px;">انقر على أي مؤشر أدناه لإدخال بياناته وتفعيله ليظهر تلقائياً في مكانه الصحيح ضمن القائمة.</p>
+            <div class="cards-list" id="inactive-metrics-cards-list"></div>
+        </div>
+
+        <!-- إعدادات المركبة (الاسم) -->
+        <div id="car-page-view" class="sub-view">
+            <div class="page-header">
+                <span class="page-title">إعدادات المركبة</span>
+                <button class="back-btn" onclick="closeCarSettingsView()">إغلاق ✕</button>
+            </div>
+            <div class="car-info-block">
+                <h3>هوية المركبة</h3>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label>اسم أو طراز السيارة الحالي:</label>
+                    <div style="display:flex; gap:10px;">
+                        <input type="text" class="form-control" id="car-name-input" value="Dacia Stepway 2023" style="padding:12px; text-align:right;">
+                        <button class="edit-btn" style="background-color:#b8860b; color:#000; padding:0 15px; border-radius:8px; border:none; font-weight:bold; cursor:pointer;" onclick="saveCarName()">حفظ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- محرر المؤشر المفرد -->
+        <div id="editor-page-view" class="sub-view">
+            <div class="page-header">
+                <span class="page-title" id="editor-title">تحديث البيانات</span>
+                <div class="mini-switch-wrapper" id="editor-switch-container">
+                    <span class="mini-switch-label">تفعيل</span>
+                    <label class="switch">
+                        <input type="checkbox" id="metric-status-switch">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            <div id="editor-form-container"></div>
+        </div>
+
+    </div>
+
+    <!-- نافذة منبثقة لخيارات النسخة الاحتياطية -->
+    <div id="backup-modal" class="backup-modal-bg">
+        <div class="backup-modal-box">
+            <div class="backup-modal-title">📦 التقرير والنسخة الاحتياطية</div>
+            <div class="backup-modal-desc">اختر الوسيلة المناسبة لإرسال تقرير حالة سيارتك وبيانات الصيانة الشاملة إلى هاتفك الشخصي:</div>
+            
+            <button class="backup-option-btn" onclick="sendBackupViaWhatsApp()">
+                <span>💬</span> إرسال عبر WhatsApp
+            </button>
+            <button class="backup-option-btn backup-option-sms" onclick="sendBackupViaSMS()">
+                <span>✉️</span> إرسال عبر SMS (رسائل قصيرة)
+            </button>
+            
+            <button class="backup-close-btn" onclick="closeBackupModal()">إلغاء</button>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = "gmax_auto_database_persistent";
+
+        let defaultDatabase = {
+            carName: "Dacia Stepway 2023",
+            currentOdo: 124500,
+            monthlyKmRate: 1500,
+            lastOdoUpdateDate: new Date().toISOString().split('T')[0],
+            lastManualOdoDate: new Date().toISOString().split('T')[0],
+            metrics: {
+                vidange: { title: "زيت المحرك", next: 130000, lastChanged: "120,000 كم", unit: "كم", active: true },
+                distribution: { title: "حزام التوزيع (Courroie)", next: 160000, lastChanged: "100,000 كم", unit: "كم", active: true },
+                insurance: { title: "وثيقة التأمين", next: "2026-11-01", lastChanged: "2025-11-01", unit: "تاريخ", active: true },
+                tech_control: { title: "المراقبة التقنية", next: "2026-11-15", lastChanged: "2025-11-15", unit: "تاريخ", active: true },
+                gpl_control: { title: "مراقبة نظام الغاز (GPL)", next: "2027-01-10", lastChanged: "2026-01-10", unit: "تاريخ", active: false },
+                air_filter: { title: "فلتر الهواء", next: 135000, lastChanged: "120,000 كم", unit: "كم", active: false },
+                essence_filter: { title: "فلتر البنزين", next: 140000, lastChanged: "110,000 كم", unit: "كم", active: false },
+                spark_plugs: { title: "شمعات الاحتراق (Bougies)", next: 125000, lastChanged: "90,000 كم", unit: "كم", active: false },
+                brake_pads: { title: "بلاكات الفرامل (Plaquettes)", next: 124800, lastChanged: "95,000 كم", unit: "كم", active: false },
+                gear_box_oil: { title: "زيت علبة السرعة (Boîte)", next: 180000, lastChanged: "100,000 كم", unit: "كم", active: false }
+            }
+        };
+
+        let appDatabase = JSON.parse(JSON.stringify(defaultDatabase));
+
+        let currentEditingKey = null;
+        let activeTargetField = null; 
+        let selectedCalendarDate = "";
+        let calYear = 2026;
+        let calMonth = 9;
+
+        function launchAppFullscreen() {
+            const docElm = document.documentElement;
+            if (docElm.requestFullscreen) docElm.requestFullscreen();
+            
+            document.getElementById('welcome-page').style.display = "none";
+            document.getElementById('app-content-wrapper').style.display = "block";
+            
+            initApp();
+        }
+
+        function initApp() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    const parsedData = JSON.parse(saved);
+                    
+                    appDatabase.carName = parsedData.carName || defaultDatabase.carName;
+                    appDatabase.currentOdo = parsedData.currentOdo || defaultDatabase.currentOdo;
+                    appDatabase.monthlyKmRate = parsedData.monthlyKmRate || defaultDatabase.monthlyKmRate;
+                    appDatabase.lastOdoUpdateDate = parsedData.lastOdoUpdateDate || defaultDatabase.lastOdoUpdateDate;
+                    appDatabase.lastManualOdoDate = parsedData.lastManualOdoDate || defaultDatabase.lastOdoUpdateDate;
+
+                    if (parsedData.metrics) {
+                        for (let key in defaultDatabase.metrics) {
+                            if (parsedData.metrics[key]) {
+                                appDatabase.metrics[key] = parsedData.metrics[key];
+                            }
+                        }
+                    }
+                    
+                    calculateDailyAutoOdoUpdate();
+                } else {
+                    saveDatabase();
+                }
+            } catch (e) {
+                appDatabase = JSON.parse(JSON.stringify(defaultDatabase));
+                saveDatabase();
+            }
+
+            document.getElementById('car-name-input').value = appDatabase.carName;
+            renderMainDashboard();
+            updateGlobalWelcomeLight();
+        }
+
+        function saveDatabase() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(appDatabase));
+            } catch (e) {}
+        }
+
+        function calculateDailyAutoOdoUpdate() {
+            if (!appDatabase.lastOdoUpdateDate || !appDatabase.monthlyKmRate) return;
+            
+            const today = new Date();
+            const lastDate = new Date(appDatabase.lastOdoUpdateDate);
+            const diffTime = today - lastDate;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+            if (diffDays > 0) {
+                const dailyRate = appDatabase.monthlyKmRate / 30;
+                const addedKm = Math.round(dailyRate * diffDays);
+                
+                appDatabase.currentOdo += addedKm;
+                appDatabase.lastOdoUpdateDate = today.toISOString().split('T')[0];
+                saveDatabase();
+            }
+        }
+
+        function saveCarName() {
+            const inputVal = document.getElementById('car-name-input').value;
+            if(inputVal && inputVal.trim() !== "") {
+                appDatabase.carName = inputVal.trim();
+                saveDatabase();
+                alert("تم تحديث وحفظ اسم المركبة بنجاح!");
+            }
+        }
+
+        function updateGlobalWelcomeLight() {
+            let worstStatus = "green";
+
+            for (let key in appDatabase.metrics) {
+                const item = appDatabase.metrics[key];
+                if (item.active === true) {
+                    if (item.unit === "كم") {
+                        let diff = item.next - appDatabase.currentOdo;
+                        if (diff <= 0) {
+                            worstStatus = "red";
+                            break;
+                        } else if (diff <= 1000 && worstStatus !== "red") {
+                            worstStatus = "orange";
+                        }
+                    } else if (item.unit === "تاريخ") {
+                        let today = new Date();
+                        today.setHours(0,0,0,0);
+                        let targetDate = new Date(item.next);
+                        targetDate.setHours(0,0,0,0);
+                        
+                        let diffTime = targetDate - today;
+                        let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        
+                        if (diffDays <= 0) {
+                            worstStatus = "red";
+                            break;
+                        } else if (diffDays <= 15 && worstStatus !== "red") {
+                            worstStatus = "orange";
+                        }
+                    }
+                }
+            }
+
+            const lightElm = document.getElementById('global-welcome-light');
+            if (lightElm) {
+                lightElm.className = "single-global-light";
+                if (worstStatus === "red") lightElm.classList.add("global-red");
+                else if (worstStatus === "orange") lightElm.classList.add("global-orange");
+                else lightElm.classList.add("global-green");
+            }
+        }
+
+        function updateOdometerManualDot() {
+            const dotElm = document.getElementById('odometer-status-dot');
+            if (!dotElm) return;
+
+            if (!appDatabase.lastManualOdoDate) {
+                dotElm.className = "light-dot green-light";
+                return;
+            }
+
+            const today = new Date();
+            const manualDate = new Date(appDatabase.lastManualOdoDate);
+            const diffTime = today - manualDate;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+            dotElm.className = "light-dot";
+            if (diffDays <= 60) {
+                dotElm.classList.add("green-light");
+            } else if (diffDays <= 90) {
+                dotElm.classList.add("orange-light");
+            } else {
+                dotElm.classList.add("red-light");
+            }
+        }
+
+        function renderMainDashboard() {
+            document.getElementById('current-odo').innerText = appDatabase.currentOdo.toLocaleString('ar-DZ') + " كم";
+            updateOdometerManualDot();
+
+            const listContainer = document.getElementById('dashboard-cards-list');
+            listContainer.innerHTML = "";
+
+            let hasActiveMetrics = false;
+            for (let key in appDatabase.metrics) {
+                const item = appDatabase.metrics[key];
+                if (item.active === true) {
+                    hasActiveMetrics = true;
+                    let lightClass = "green-light";
+                    let badgeText = "";
+
+                    if (item.unit === "كم") {
+                        let diff = item.next - appDatabase.currentOdo;
+                        badgeText = diff.toLocaleString('ar-DZ') + " كم";
+                        if (diff <= 0) lightClass = "red-light";
+                        else if (diff <= 1000) lightClass = "orange-light";
+                    } else if (item.unit === "تاريخ") {
+                        let today = new Date();
+                        today.setHours(0,0,0,0);
+                        let targetDate = new Date(item.next);
+                        targetDate.setHours(0,0,0,0);
+                        
+                        let diffTime = targetDate - today;
+                        let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        
+                        badgeText = diffDays + " يوم";
+                        if (diffDays <= 0) lightClass = "red-light";
+                        else if (diffDays <= 15) lightClass = "orange-light";
+                    }
+
+                    const btn = document.createElement('button');
+                    btn.className = "status-card-btn";
+                    btn.innerHTML = `
+                        <span>${item.title}</span>
+                        <div class="card-left-side">
+                            <span class="card-countdown-badge">${badgeText}</span>
+                            <span class="light-dot ${lightClass}"></span>
+                        </div>
+                    `;
+                    btn.onclick = () => openEditorPage(key, item);
+                    listContainer.appendChild(btn);
+                }
+            }
+            if(!hasActiveMetrics) {
+                listContainer.innerHTML = `<p style="font-size:13px; color:#555; text-align:center; padding:10px 0;">لا توجد مؤشرات مفعلة حالياً.</p>`;
+            }
+            updateGlobalWelcomeLight();
+        }
+
+        function openMoreMetricsSelector() {
+            const container = document.getElementById('inactive-metrics-cards-list');
+            container.innerHTML = "";
+            let hasInactive = false;
+
+            for (let key in appDatabase.metrics) {
+                const item = appDatabase.metrics[key];
+                if (item.active === false) {
+                    hasInactive = true;
+                    const btn = document.createElement('button');
+                    btn.className = "status-card-btn";
+                    btn.innerHTML = `
+                        <span>${item.title}</span>
+                        <div class="card-left-side">
+                            <span class="card-countdown-badge" style="color:#b8860b;">غير مفعل</span>
+                            <span class="light-dot" style="background-color:#444;"></span>
+                        </div>
+                    `;
+                    btn.onclick = () => openEditorPage(key, item);
+                    container.appendChild(btn);
+                }
+            }
+
+            if (!hasInactive) {
+                container.innerHTML = `<p style="font-size:13px; color:#555; text-align:center; padding:20px 0;">جميع المؤشرات مفعلة بالفعل!</p>`;
+            }
+
+            navigateToView('more-metrics-view');
+        }
+
+        function navigateToView(viewId) {
+            document.querySelectorAll('.sub-view').forEach(view => view.classList.remove('active-view'));
+            document.getElementById(viewId).classList.add('active-view');
+            window.scrollTo(0,0);
+        }
+
+        function returnToDashboard() {
+            renderMainDashboard();
+            navigateToView('dashboard-view');
+        }
+
+        function openOdometerEditor() {
+            currentEditingKey = 'odometer_main';
+            document.getElementById('editor-title').innerText = "تعديل العداد ومعدل الاستهلاك";
+            document.getElementById('editor-switch-container').style.display = "none";
+            
+            const container = document.getElementById('editor-form-container');
+            container.innerHTML = `
+                <div class="form-group">
+                    <label>الكيلومتر الحالي للسيارة:</label>
+                    <input type="number" class="form-control" id="input-val1" style="text-align:right; color:#fff;">
+                </div>
+                <div class="form-group">
+                    <label>معدل المشي الشهري (بالكيلومتر تقريباً):</label>
+                    <input type="number" class="form-control" id="input-val2" style="text-align:right; color:#fff;">
+                </div>
+                <button class="confirm-btn" onclick="saveOdometerChanges()">تأكيد التحديث والعودة</button>
+            `;
+            document.getElementById('input-val1').value = appDatabase.currentOdo;
+            document.getElementById('input-val2').value = appDatabase.monthlyKmRate || 1500;
+
+            navigateToView('editor-page-view');
+        }
+
+        function saveOdometerChanges() {
+            const val1 = parseInt(document.getElementById('input-val1').value);
+            const val2 = parseInt(document.getElementById('input-val2').value);
+            
+            if (isNaN(val1) || isNaN(val2)) {
+                alert("الرجاء إدخال أرقام صحيحة في الخانتين.");
+                return;
+            }
+
+            appDatabase.currentOdo = val1;
+            appDatabase.monthlyKmRate = val2;
+            const todayStr = new Date().toISOString().split('T')[0];
+            appDatabase.lastOdoUpdateDate = todayStr;
+            appDatabase.lastManualOdoDate = todayStr;
+
+            saveDatabase();
+            returnToDashboard();
+        }
+
+        function openEditorPage(key, item) {
+            currentEditingKey = key;
+            document.getElementById('editor-title').innerText = item.title;
+            document.getElementById('editor-switch-container').style.display = "flex";
+            document.getElementById('metric-status-switch').checked = item.active;
+
+            const container = document.getElementById('editor-form-container');
+
+            if (item.unit === "كم") {
+                container.innerHTML = `
+                    <div class="form-group">
+                        <label>الكيلومتر الحالي (السابق/آخر صيانة):</label>
+                        <input type="text" class="form-control" id="input-val1" style="text-align:right; color:#fff;">
+                    </div>
+                    <div class="form-group">
+                        <label>الكيلومتر القادم (موعد الصيانة القادمة):</label>
+                        <input type="number" class="form-control" id="input-val2" style="text-align:right; color:#fff;">
+                    </div>
+                    <button class="confirm-btn" onclick="saveSimplifiedMetricChanges()">تأكيد الحفظ والعودة</button>
+                `;
+                document.getElementById('input-val1').value = item.lastChanged;
+                document.getElementById('input-val2').value = item.next;
+            } else {
+                container.innerHTML = `
+                    <div class="form-group">
+                        <label>التاريخ الحالي (أو تاريخ الإجراء الأخير):</label>
+                        <input type="text" class="form-control" id="date-display-current" readonly onclick="openCalendarFor('current')" title="اضغط لاختيار التاريخ">
+                    </div>
+                    <div class="form-group">
+                        <label>التاريخ القادم (موعد انتهاء الصلاحية):</label>
+                        <input type="text" class="form-control" id="date-display-next" readonly onclick="openCalendarFor('next')" title="اضغط لاختيار التاريخ">
+                        
+                        <div id="custom-calendar-box" class="custom-calendar-box"></div>
+                    </div>
+                    <button class="confirm-btn" onclick="saveSimplifiedMetricChanges()" style="margin-top:20px;">تأكيد الحفظ والعودة</button>
+                `;
+                document.getElementById('date-display-current').value = item.lastChanged;
+                document.getElementById('date-display-next').value = item.next;
+            }
+            navigateToView('editor-page-view');
+        }
+
+        function openCalendarFor(fieldType) {
+            activeTargetField = fieldType; 
+            const currentVal = document.getElementById(fieldType === 'current' ? 'date-display-current' : 'date-display-next').value;
+            
+            let d = new Date(currentVal);
+            if (isNaN(d)) d = new Date();
+            calYear = d.getFullYear();
+            calMonth = d.getMonth();
+            selectedCalendarDate = currentVal;
+
+            const box = document.getElementById('custom-calendar-box');
+            const targetInput = document.getElementById(fieldType === 'current' ? 'date-display-current' : 'date-display-next');
+            targetInput.parentNode.appendChild(box);
+
+            box.style.display = "block";
+            renderCustomCalendar();
+        }
+
+        function changeCalYear(amount) {
+            calYear += amount;
+            renderCustomCalendar();
+        }
+
+        function changeCalMonth(amount) {
+            calMonth += amount;
+            if (calMonth > 11) {
+                calMonth = 0;
+                calYear++;
+            } else if (calMonth < 0) {
+                calMonth = 11;
+                calYear--;
+            }
+            renderCustomCalendar();
+        }
+
+        function renderCustomCalendar() {
+            const monthsNames = ["جانفي", "فيفري", "مارس", "أفريل", "ماي", "جوان", "جويليا", "أوت", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+            
+            const container = document.getElementById('custom-calendar-box');
+            if(!container) return;
+
+            let html = `
+                <div class="cal-nav-row">
+                    <button type="button" class="cal-nav-btn" onclick="changeCalYear(-1)">❮❮</button>
+                    <span class="cal-nav-label">سنة: ${calYear}</span>
+                    <button type="button" class="cal-nav-btn" onclick="changeCalYear(1)">❯❯</button>
+                </div>
+                <div class="cal-nav-row" style="margin-bottom:12px;">
+                    <button type="button" class="cal-nav-btn" onclick="changeCalMonth(-1)">❮</button>
+                    <span class="cal-nav-label">شهر: ${monthsNames[calMonth]}</span>
+                    <button type="button" class="cal-nav-btn" onclick="changeCalMonth(1)">❯</button>
+                </div>
+
+                <div class="cal-weekdays">
+                    <span>أحد</span><span>إثنين</span><span>ثلاثاء</span><span>أربعاء</span><span>خميس</span><span>جمعة</span><span>سبت</span>
+                </div>
+                <div class="cal-days-grid" id="cal-days-container"></div>
+                
+                <button type="button" class="cal-confirm-btn" onclick="confirmSelectedDate()">تأكيد التاريخ</button>
+            `;
+            container.innerHTML = html;
+
+            const daysContainer = document.getElementById('cal-days-container');
+            const firstDayIndex = new Date(calYear, calMonth, 1).getDay();
+            const totalDays = new Date(calYear, calMonth + 1, 0).getDate();
+
+            for (let i = 0; i < firstDayIndex; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = "cal-day-cell empty";
+                daysContainer.appendChild(emptyCell);
+            }
+
+            for (let day = 1; day <= totalDays; day++) {
+                const cell = document.createElement('div');
+                cell.className = "cal-day-cell";
+                cell.innerText = day;
+
+                let formattedMonth = String(calMonth + 1).padStart(2, '0');
+                let formattedDay = String(day).padStart(2, '0');
+                let dateString = `${calYear}-${formattedMonth}-${formattedDay}`;
+
+                if (dateString === selectedCalendarDate) {
+                    cell.classList.add('selected');
+                }
+                
+                cell.onclick = () => {
+                    selectedCalendarDate = dateString;
+                    renderCustomCalendar();
+                };
+                
+                daysContainer.appendChild(cell);
+            }
+        }
+
+        function confirmSelectedDate() {
+            if (!selectedCalendarDate) {
+                alert("الرجاء اختيار يوم من التقويم أولاً.");
+                return;
+            }
+            
+            const inputId = (activeTargetField === 'current') ? 'date-display-current' : 'date-display-next';
+            const displayInput = document.getElementById(inputId);
+            if (displayInput) {
+                displayInput.value = selectedCalendarDate;
+            }
+            
+            const box = document.getElementById('custom-calendar-box');
+            if (box) {
+                box.style.display = "none";
+            }
+        }
+
+        function saveSimplifiedMetricChanges() {
+            const isChecked = document.getElementById('metric-status-switch').checked;
+            const item = appDatabase.metrics[currentEditingKey];
+            
+            if (item.unit === "كم") {
+                const val1 = document.getElementById('input-val1').value;
+                const val2 = document.getElementById('input-val2').value;
+                if (!val1 || !val2) {
+                    alert("الرجاء ملء الخانتين معاً.");
+                    return;
+                }
+                item.lastChanged = val1;
+                item.next = parseInt(val2);
+            } else {
+                const currentInput = document.getElementById('date-display-current');
+                const nextInput = document.getElementById('date-display-next');
+                if (!currentInput || !nextInput || !currentInput.value || !nextInput.value) {
+                    alert("الرجاء تحديد تاريخ الإجراء الحالي والتاريخ القادم.");
+                    return;
+                }
+                item.lastChanged = currentInput.value;
+                item.next = nextInput.value;
+            }
+
+            item.active = isChecked;
+            saveDatabase();
+            returnToDashboard();
+        }
+
+        function openCarSettingsView() {
+            navigateToView('car-page-view');
+        }
+
+        function closeCarSettingsView() {
+            returnToDashboard();
+        }
+
+        function openBackupModal() {
+            document.getElementById('backup-modal').style.display = "flex";
+        }
+
+        function closeBackupModal() {
+            document.getElementById('backup-modal').style.display = "none";
+        }
+
+        function generateBackupReportText() {
+            let report = `🚗 *تقرير صيانة مركبة - GMax Auto*\n`;
+            report += `--------------------------------\n`;
+            report += `📌 اسم المركبة: ${appDatabase.carName}\n`;
+            report += `🛣 العداد الحالي: ${appDatabase.currentOdo.toLocaleString()} كم\n`;
+            report += `📅 تاريخ التقرير: ${new Date().toLocaleDateString('ar-DZ')}\n\n`;
+            
+            report += `⚙️ *المؤشرات المفعلة حالياً:*\n`;
+            for (let key in appDatabase.metrics) {
+                let m = appDatabase.metrics[key];
+                if (m.active) {
+                    report += `- ${m.title}: آخر صيانة (${m.lastChanged}) / القادم (${m.next})\n`;
+                }
+            }
+            report += `\n🤖 تم التصدير عبر تطبيق GMax Auto المساعد الذكي للصيانة.`;
+            return report;
+        }
+
+        function sendBackupViaWhatsApp() {
+            const text = encodeURIComponent(generateBackupReportText());
+            window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+            closeBackupModal();
+        }
+
+        function sendBackupViaSMS() {
+            const text = encodeURIComponent(generateBackupReportText());
+            window.open(`sms:?body=${text}`, '_blank');
+            closeBackupModal();
+        }
+
+        function exitApp() {
+            if(confirm("الخروج لشاشة الترحيب؟")) {
+                if (document.exitFullscreen) document.exitFullscreen();
+                document.getElementById('app-content-wrapper').style.display = "none";
+                document.getElementById('welcome-page').style.display = "flex";
+                updateGlobalWelcomeLight();
+            }
+        }
+    </script>
+</body>
+</html>
