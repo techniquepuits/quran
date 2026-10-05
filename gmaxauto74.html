@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GMax Auto</title>
+    <title>GMax Architector</title>
     <style>
         /* التخصيص العام المظلم والمريح للعين - سياق البساطة والوضوح */
         body {
@@ -17,7 +17,7 @@
             align-items: center;
             min-height: 100vh;
             overflow-x: hidden;
-            padding-bottom: 40px; 
+            padding-bottom: 90px;
         }
 
         /* ================= صفحة الترحيب بلون واحد ================= */
@@ -247,9 +247,19 @@
         .red-light { background-color: #f44336; box-shadow: 0 0 10px #f44336; }
 
         .bottom-actions-grid {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 500px;
             display: flex;
             gap: 8px;
-            margin-top: 25px;
+            padding: 12px 20px;
+            background-color: #121212;
+            border-top: 1px solid #222222;
+            box-sizing: border-box;
+            z-index: 1000;
         }
         .action-jar-btn {
             flex: 1;
@@ -302,65 +312,7 @@
 
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; font-size: 14px; color: #888888; margin-bottom: 8px; }
-        
-        .label-with-inline-cam {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-        .label-with-inline-cam label {
-            margin-bottom: 0 !important;
-        }
-        .mini-inline-cam-btn {
-            background-color: #1e1e1e;
-            border: 1px solid #333;
-            color: #b8860b;
-            padding: 3px 6px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            display: inline-flex;
-            align-items: center;
-            transition: all 0.2s;
-        }
-        .mini-inline-cam-btn:active {
-            background-color: #b8860b;
-            color: #000;
-        }
 
-        .custom-display-box {
-            width: 100%;
-            background-color: #161616;
-            border: 1px solid #333;
-            color: #ffffff;
-            padding: 14px;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            outline: none;
-            min-height: 52px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            gap: 8px;
-            direction: ltr;
-        }
-        .custom-display-box:active { border-color: #b8860b; background-color: #1a1a1a; }
-        
-        .box-num-part {
-            direction: ltr;
-            unicode-bidi: embed;
-        }
-        .box-unit-part {
-            color: #888888;
-            font-size: 14px;
-            font-weight: normal;
-        }
-
-        /* تنسيق سطر العنوان النقي الموحد بدون إطار أو بطاقة */
         .single-line-date-header {
             display: flex;
             align-items: center;
@@ -377,7 +329,6 @@
             direction: rtl;
         }
         
-        /* زر تعديل التاريخ/العنصر */
         .rescue-edit-btn {
             background-color: #222222;
             color: #aaaaaa;
@@ -457,150 +408,6 @@
             margin-bottom: 25px;
         }
         .car-info-block h3 { margin: 0 0 12px 0; color: #b8860b; font-size: 16px; }
-
-        /* ================= نافذة الكاميرا المخصصة ================= */
-        .ocr-camera-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #000;
-            z-index: 30000;
-            flex-direction: column;
-            box-sizing: border-box;
-        }
-        .ocr-cam-header {
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(0,0,0,0.6);
-            position: absolute;
-            top: 0; left: 0; width: 100%;
-            z-index: 30002;
-            box-sizing: border-box;
-        }
-        .ocr-cam-title {
-            color: #b8860b;
-            font-size: 16px;
-            font-weight: bold;
-        }
-        .ocr-close-btn {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 20px;
-            cursor: pointer;
-        }
-        
-        .ocr-viewport {
-            flex: 1;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        #ocr-video-stream {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .ocr-mask-layer {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.55);
-            z-index: 30001;
-            pointer-events: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .ocr-cutout-frame {
-            position: relative;
-            border: 2px dashed #b8860b;
-            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6);
-            background: transparent;
-            transition: width 0.1s ease, height 0.1s ease;
-            box-sizing: border-box;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .ocr-frame-hint {
-            position: absolute;
-            bottom: -28px;
-            font-size: 11px;
-            color: #b8860b;
-            white-space: nowrap;
-            background: rgba(0,0,0,0.8);
-            padding: 2px 8px;
-            border-radius: 4px;
-        }
-
-        .ocr-controls-panel {
-            background: #121212;
-            padding: 15px 20px 25px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            z-index: 30002;
-            border-top: 1px solid #2d2d2d;
-        }
-        .ocr-control-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-        }
-        .ocr-control-group {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: #1a1a1a;
-            padding: 6px 10px;
-            border-radius: 8px;
-            border: 1px solid #333;
-            flex: 1;
-            justify-content: space-between;
-        }
-        .ocr-control-label {
-            font-size: 11px;
-            color: #aaa;
-        }
-        .ocr-mini-btn {
-            background: #333;
-            color: #fff;
-            border: none;
-            width: 28px;
-            height: 28px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .ocr-mini-btn:active { background: #b8860b; color: #000; }
-
-        .ocr-capture-main-btn {
-            background-color: #b8860b;
-            color: #000;
-            border: none;
-            padding: 12px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(184, 134, 11, 0.3);
-        }
-        .ocr-capture-main-btn:active { transform: scale(0.98); }
 
         /* ================= لوحة المفاتيح الرقمية المخصصة (للأرقام فقط) ================= */
         .custom-numpad-overlay {
@@ -876,24 +683,13 @@
             </div>
             
             <div class="cards-list" id="dashboard-cards-list"></div>
-
-            <div class="bottom-actions-grid">
-                <div class="action-jar-btn" onclick="openMoreMetricsSelector()">
-                    إضافة مؤشرات
-                </div>
-                <div class="action-jar-btn" onclick="openBackupModal()">
-                    نسخة احتياطية
-                </div>
-                <div class="action-jar-btn" onclick="exitApp()">
-                    خروج
-                </div>
-            </div>
         </div>
 
         <!-- نافذة اختيار المؤشرات الإضافية -->
         <div id="more-metrics-view" class="sub-view">
-            <div class="page-header">
+            <div class="page-header" style="position: relative;">
                 <span class="page-title">المؤشرات غير المفعلة</span>
+                <button onclick="returnToDashboard()" style="background: none; border: none; color: #aaaaaa; font-size: 13px; font-weight: bold; cursor: pointer; padding: 0; transition: color 0.2s;" onmouseover="this.style.color='#ffffff'" onmouseout="this.style.color='#aaaaaa'">← الرئيسية</button>
             </div>
             <p style="font-size:12px; color:#888; margin-top:-10px; margin-bottom:15px;">انقر على أي مؤشر أدناه لإدخال بياناته وتفعيله ليظهر تلقائياً في مكانه الصحيح ضمن القائمة.</p>
             <div class="cards-list" id="inactive-metrics-cards-list"></div>
@@ -935,46 +731,18 @@
 
     </div>
 
-    <!-- نافذة الكاميرا المخصصة لالتقاط العداد -->
-    <div id="ocr-camera-overlay" class="ocr-camera-overlay">
-        <div class="ocr-cam-header">
-            <span class="ocr-cam-title">تصوير رقم العداد (OCR)</span>
-            <button class="ocr-close-btn" onclick="closeOdometerCamera()">✕</button>
+    <!-- الأزرار الثلاثة في الأسفل (ثابتة دائماً) -->
+    <div class="bottom-actions-grid" id="bottom-actions-bar" style="display: none;">
+        <div class="action-jar-btn" onclick="openMoreMetricsSelector()">
+            إضافة مؤشرات
         </div>
-        <div class="ocr-viewport" id="ocr-viewport">
-            <video id="ocr-video-stream" autoplay playsinline></video>
-            <div class="ocr-mask-layer">
-                <div class="ocr-cutout-frame" id="ocr-cutout-box">
-                    <span class="ocr-frame-hint">ضع رقم العداد داخل الإطار</span>
-                </div>
-            </div>
+        <div class="action-jar-btn" onclick="openBackupModal()">
+            نسخة احتياطية
         </div>
-        <div class="ocr-controls-panel">
-            <div class="ocr-control-row">
-                <div class="ocr-control-group">
-                    <span class="ocr-control-label">عرض الإطار</span>
-                    <button class="ocr-mini-btn" onclick="adjustFrameSize('w', -20)">-</button>
-                    <button class="ocr-mini-btn" onclick="adjustFrameSize('w', 20)">+</button>
-                </div>
-                <div class="ocr-control-group">
-                    <span class="ocr-control-label">ارتفاع الإطار</span>
-                    <button class="ocr-mini-btn" onclick="adjustFrameSize('h', -10)">-</button>
-                    <button class="ocr-mini-btn" onclick="adjustFrameSize('h', 10)">+</button>
-                </div>
-            </div>
-            <div class="ocr-control-row">
-                <div class="ocr-control-group">
-                    <span class="ocr-control-label">تقريب/ابعاد (Zoom)</span>
-                    <button class="ocr-mini-btn" onclick="adjustZoom(-0.2)">-</button>
-                    <button class="ocr-mini-btn" onclick="adjustZoom(0.2)">+</button>
-                </div>
-            </div>
-            <button class="ocr-capture-main-btn" onclick="captureOdometerImage()">
-                <span>📷</span> التقاط وحفظ الصورة
-            </button>
+        <div class="action-jar-btn" onclick="exitApp()">
+            خروج
         </div>
     </div>
-    <canvas id="ocr-hidden-canvas" style="display:none;"></canvas>
 
     <!-- لوحة المفاتيح الرقمية المخصصة (للأرقام فقط) -->
     <div id="custom-numpad-overlay" class="custom-numpad-overlay">
@@ -1042,7 +810,7 @@
     </div>
 
     <script>
-        const STORAGE_KEY = "gmax_auto_database_persistent";
+        const STORAGE_KEY = "gmax_architector_db_v4";
         const monthsStandardArabic = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
 
         function getTodayDateString() {
@@ -1073,28 +841,103 @@
             lastOdoUpdateDate: "2026-10-04",
             lastManualOdoDate: "2026-10-04",
             metrics: {
-                vidange: { title: "زيت المحرك", next: 130000, lastChanged: "120000", unit: "كم", active: true },
-                distribution: { title: "حزام التوزيع", next: 160000, lastChanged: "100000", unit: "كم", active: true },
-                coolant: { title: "سائل التبريد", next: 150000, lastChanged: "100000", unit: "كم", active: false },
-                brake_fluid: { title: "سائل المكابح", next: 140000, lastChanged: "100000", unit: "كم", active: false },
-                insurance: { title: "وثيقة التأمين", next: "2026-11-01", lastChanged: "2025-11-01", unit: "تاريخ", active: true },
-                tech_control: { title: "المراقبة التقنية", next: "2026-11-15", lastChanged: "2025-11-15", unit: "تاريخ", active: true },
-                gpl_control: { title: "مراقبة GPL", next: "2027-01-10", lastChanged: "2026-01-10", unit: "تاريخ", active: false },
-                extinguisher_control: { title: "مراقبة المطفأة", next: "2027-04-01", lastChanged: "2026-04-01", unit: "تاريخ", active: false },
-                battery: { title: "البطارية", next: "2028-10-04", lastChanged: "2025-10-04", unit: "تاريخ", active: false },
-                air_filter: { title: "فلتر الهواء", next: 135000, lastChanged: "120000", unit: "كم", active: false },
-                essence_filter: { title: "فلتر البنزين", next: 140000, lastChanged: "110000", unit: "كم", active: false },
-                cabin_filter: { title: "فلتر المكيف", next: 140000, lastChanged: "120000", unit: "كم", active: false },
-                spark_plugs: { title: "شمعات الاحتراق", next: 125000, lastChanged: "90000", unit: "كم", active: false },
-                brake_pads: { title: "بلاكات الفرامل", next: 124800, lastChanged: "95000", unit: "كم", active: false },
-                gear_box_oil: { title: "زيت علبة السرعة", next: 180000, lastChanged: "100000", unit: "كم", active: false }
+                special_docs: {
+                    title: "الوثائق الخاصة",
+                    unit: "مدمج",
+                    active: true,
+                    insurance: { next: "2026-11-01", lastChanged: "2025-11-01" },
+                    driver_license: { next: "2030-05-15", lastChanged: "2020-05-15" },
+                    travel_permit: { next: "2026-12-31", lastChanged: "2026-01-01" }
+                },
+                control_group: {
+                    title: "المراقبة القانونية",
+                    unit: "تاريخ",
+                    active: true,
+                    tech: {
+                        currentDate: "2025-11-15",
+                        nextDate: "2026-11-15",
+                        reservationsActive: true,
+                        reservationsDate: "2026-11-30"
+                    },
+                    gpl: {
+                        currentDate: "2026-01-10",
+                        nextDate: "2027-01-10"
+                    },
+                    extinguisher: {
+                        currentDate: "2026-04-01",
+                        nextDate: "2027-04-01"
+                    }
+                },
+                vidange_filters: { 
+                    title: "تغيير الزيت والفلاتر", 
+                    unit: "مدمج", 
+                    active: true,
+                    engineOilDate: "2026-10-04",
+                    engineOilCurrentOdo: "120000",
+                    engineOilNextOdo: "130000",
+                    oilFilterDate: "2026-10-04",
+                    oilFilterCurrentOdo: "120000",
+                    oilFilterNextOdo: "130000",
+                    gearboxOilDate: "2026-10-04",
+                    gearboxOilCurrentOdo: "100000",
+                    gearboxOilNextOdo: "180000",
+                    air: { date: "2026-10-04", currentOdo: "120000", nextOdo: "135000" },
+                    essence: { date: "2026-10-04", currentOdo: "110000", nextOdo: "140000" },
+                    cabin: { date: "2026-10-04", currentOdo: "120000", nextOdo: "140000" }
+                },
+                distribution: { 
+                    title: "حزام التوزيع", 
+                    unit: "مدمج", 
+                    active: true,
+                    beltDate: "2026-10-04",
+                    beltCurrentOdo: "100000",
+                    beltNextOdo: "160000",
+                    tendeurDate: "2026-10-04",
+                    tendeurCurrentOdo: "100000",
+                    tendeurNextOdo: "160000",
+                    accessoriesDate: "2026-10-04",
+                    accessoriesCurrentOdo: "100000",
+                    accessoriesNextOdo: "140000"
+                },
+                brakes_and_tires: {
+                    title: "الفرامل والعجلات",
+                    unit: "مدمج",
+                    active: true,
+                    brake_pads: {
+                        date: "2026-10-04",
+                        currentOdo: "95000",
+                        nextOdo: "124800"
+                    },
+                    brake_fluid: {
+                        date: "2026-10-04",
+                        currentOdo: "100000",
+                        nextOdo: "140000"
+                    },
+                    tires: {
+                        statusText: "قيد الانجاز"
+                    }
+                },
+                general_maintenance: {
+                    title: "الصيانة العامة",
+                    unit: "مدمج",
+                    active: true,
+                    sparkPlugsDate: "2025-10-04",
+                    sparkPlugsCurrentOdo: "90000",
+                    sparkPlugsNextOdo: "125000",
+                    batteryStartDate: "2025-10-04",
+                    batteryEndDate: "2028-10-04",
+                    coolantSub: {
+                        date: "2026-10-04",
+                        currentOdo: "100000",
+                        nextOdo: "150000"
+                    }
+                }
             }
         };
 
         let appDatabase = JSON.parse(JSON.stringify(defaultDatabase));
 
         let currentEditingKey = null;
-        let previousEditingKey = null; 
         let numpadTargetId = null;
         let numpadCurrentValue = "";
         
@@ -1102,11 +945,6 @@
         let selectedCalendarDateStr = "2026-10-04";
         let calActiveYear = 2026;
         let calActiveMonth = 9;
-
-        let mediaStream = null;
-        let currentZoom = 1;
-        let frameWidth = 280;
-        let frameHeight = 90;
 
         function loadDataOnStartup() {
             try {
@@ -1124,6 +962,44 @@
                             if (parsedData.metrics[key]) {
                                 appDatabase.metrics[key] = parsedData.metrics[key];
                             }
+                        }
+                        
+                        if (!appDatabase.metrics.brakes_and_tires && parsedData.metrics.general_maintenance) {
+                            appDatabase.metrics.brakes_and_tires = {
+                                title: "الفرامل والعجلات",
+                                unit: "مدمج",
+                                active: parsedData.metrics.general_maintenance.active !== undefined ? parsedData.metrics.general_maintenance.active : true,
+                                brake_pads: parsedData.metrics.general_maintenance.brake_pads || { date: "2026-10-04", currentOdo: "95000", nextOdo: "124800" },
+                                brake_fluid: parsedData.metrics.general_maintenance.brake_fluid || { date: "2026-10-04", currentOdo: "100000", nextOdo: "140000" },
+                                tires: parsedData.metrics.general_maintenance.tires || { statusText: "قيد الانجاز" }
+                            };
+                            delete appDatabase.metrics.general_maintenance.brake_pads;
+                            delete appDatabase.metrics.general_maintenance.brake_fluid;
+                            delete appDatabase.metrics.general_maintenance.tires;
+                        }
+
+                        if (appDatabase.metrics.vidange_filters) {
+                            appDatabase.metrics.vidange_filters.title = "تغيير الزيت والفلاتر";
+                            appDatabase.metrics.vidange_filters.unit = "مدمج";
+                        }
+                        if (appDatabase.metrics.distribution) {
+                            appDatabase.metrics.distribution.title = "حزام التوزيع";
+                            appDatabase.metrics.distribution.unit = "مدمج";
+                        }
+                        if (appDatabase.metrics.control && !appDatabase.metrics.control_group) {
+                            appDatabase.metrics.control_group = parsedData.metrics.control;
+                        }
+                        if (appDatabase.metrics.control) delete appDatabase.metrics.control;
+
+                        if (appDatabase.metrics.control_group) {
+                            appDatabase.metrics.control_group.title = "المراقبة القانونية";
+                        }
+                        if (appDatabase.metrics.special_docs) {
+                            appDatabase.metrics.special_docs.title = "الوثائق الخاصة";
+                        }
+                        if (appDatabase.metrics.general_maintenance) {
+                            appDatabase.metrics.general_maintenance.title = "الصيانة العامة";
+                            appDatabase.metrics.general_maintenance.unit = "مدمج";
                         }
                     }
                     calculateDailyAutoOdoUpdate();
@@ -1144,7 +1020,18 @@
             if (docElm.requestFullscreen) docElm.requestFullscreen();
             document.getElementById('welcome-page').style.display = "none";
             document.getElementById('app-content-wrapper').style.display = "block";
+            document.getElementById('bottom-actions-bar').style.display = "flex";
             initApp();
+        }
+
+        /* دالة الخروج للعودة إلى الصفحة الأولى (صفحة الترحيب) */
+        function exitApp() {
+            // إخفاء محتوى التطبيق والأزرار السفلية
+            document.getElementById('app-content-wrapper').style.display = "none";
+            document.getElementById('bottom-actions-bar').style.display = "none";
+            // إظهار صفحة الترحيب الأولى من جديد
+            document.getElementById('welcome-page').style.display = "flex";
+            window.scrollTo(0, 0);
         }
 
         function initApp() {
@@ -1185,15 +1072,69 @@
 
         function updateGlobalWelcomeLight() {
             let worstStatus = "green";
+            let today = new Date(2026, 9, 4); today.setHours(0,0,0,0);
+
             for (let key in appDatabase.metrics) {
                 const item = appDatabase.metrics[key];
                 if (item.active === true) {
-                    if (item.unit === "كم") {
+                    if (key === 'special_docs') {
+                        ['insurance', 'driver_license', 'travel_permit'].forEach(docKey => {
+                            let docObj = item[docKey];
+                            if (docObj && docObj.next) {
+                                let targetDate = new Date(docObj.next); targetDate.setHours(0,0,0,0);
+                                let diffDays = Math.ceil((targetDate - today) / (1000 * 60 * 60 * 24));
+                                if (diffDays <= 0) worstStatus = "red";
+                                else if (diffDays <= 15 && worstStatus !== "red") worstStatus = "orange";
+                            }
+                        });
+                    } else if (key === 'vidange_filters') {
+                        let diffEngine = item.engineOilNextOdo - appDatabase.currentOdo;
+                        let diffFilter = item.oilFilterNextOdo - appDatabase.currentOdo;
+                        let diffGearbox = item.gearboxOilNextOdo - appDatabase.currentOdo;
+                        let diffAir = item.air.nextOdo - appDatabase.currentOdo;
+                        let diffEssence = item.essence.nextOdo - appDatabase.currentOdo;
+                        let diffCabin = item.cabin.nextOdo - appDatabase.currentOdo;
+                        let minVidangeFilters = Math.min(diffEngine, diffFilter, diffGearbox, diffAir, diffEssence, diffCabin);
+                        if (minVidangeFilters <= 0) worstStatus = "red";
+                        else if (minVidangeFilters <= 1000 && worstStatus !== "red") worstStatus = "orange";
+                    } else if (key === 'distribution') {
+                        let diffBelt = item.beltNextOdo - appDatabase.currentOdo;
+                        let diffTendeur = item.tendeurNextOdo - appDatabase.currentOdo;
+                        let diffAcc = item.accessoriesNextOdo - appDatabase.currentOdo;
+                        let minBeltGroup = Math.min(diffBelt, diffTendeur, diffAcc);
+                        if (minBeltGroup <= 0) worstStatus = "red";
+                        else if (minBeltGroup <= 1000 && worstStatus !== "red") worstStatus = "orange";
+                    } else if (key === 'control_group') {
+                        ['tech', 'gpl', 'extinguisher'].forEach(cKey => {
+                            let cObj = item[cKey];
+                            let targetDate = new Date(cObj.nextDate); targetDate.setHours(0,0,0,0);
+                            let diffDays = Math.ceil((targetDate - today) / (1000 * 60 * 60 * 24));
+                            if (diffDays <= 0) worstStatus = "red";
+                            else if (diffDays <= 15 && worstStatus !== "red") worstStatus = "orange";
+                        });
+                    } else if (key === 'brakes_and_tires') {
+                        let diffPads = item.brake_pads ? (item.brake_pads.nextOdo - appDatabase.currentOdo) : Infinity;
+                        let diffFluid = item.brake_fluid ? (item.brake_fluid.nextOdo - appDatabase.currentOdo) : Infinity;
+                        let minBrakesKm = Math.min(diffPads, diffFluid);
+                        if (minBrakesKm <= 0) worstStatus = "red";
+                        else if (minBrakesKm <= 1000 && worstStatus !== "red") worstStatus = "orange";
+                    } else if (key === 'general_maintenance') {
+                        let diffSpark = item.sparkPlugsNextOdo - appDatabase.currentOdo;
+                        let diffCoolant = item.coolantSub ? (item.coolantSub.nextOdo - appDatabase.currentOdo) : Infinity;
+                        let minGeneralKm = Math.min(diffSpark, diffCoolant);
+
+                        if (minGeneralKm <= 0) worstStatus = "red";
+                        else if (minGeneralKm <= 1000 && worstStatus !== "red") worstStatus = "orange";
+
+                        let targetBattery = new Date(item.batteryEndDate); targetBattery.setHours(0,0,0,0);
+                        let diffBattDays = Math.ceil((targetBattery - today) / (1000 * 60 * 60 * 24));
+                        if (diffBattDays <= 0) worstStatus = "red";
+                        else if (diffBattDays <= 15 && worstStatus !== "red") worstStatus = "orange";
+                    } else if (item.unit === "كم") {
                         let diff = item.next - appDatabase.currentOdo;
                         if (diff <= 0) { worstStatus = "red"; break; }
                         else if (diff <= 1000 && worstStatus !== "red") { worstStatus = "orange"; }
                     } else if (item.unit === "تاريخ") {
-                        let today = new Date(2026, 9, 4); today.setHours(0,0,0,0);
                         let targetDate = new Date(item.next); targetDate.setHours(0,0,0,0);
                         let diffDays = Math.ceil((targetDate - today) / (1000 * 60 * 60 * 24));
                         if (diffDays <= 0) { worstStatus = "red"; break; }
@@ -1227,24 +1168,102 @@
 
             const listContainer = document.getElementById('dashboard-cards-list');
             listContainer.innerHTML = "";
+            let today = new Date(2026, 9, 4); today.setHours(0,0,0,0);
+
+            const orderedKeys = ['special_docs', 'control_group', 'vidange_filters', 'distribution', 'brakes_and_tires', 'general_maintenance'];
+            
+            for (let k in appDatabase.metrics) {
+                if (!orderedKeys.includes(k)) orderedKeys.push(k);
+            }
 
             let hasActiveMetrics = false;
-            for (let key in appDatabase.metrics) {
+            for (let i = 0; i < orderedKeys.length; i++) {
+                let key = orderedKeys[i];
+                if (!appDatabase.metrics[key]) continue;
                 const item = appDatabase.metrics[key];
+
                 if (item.active === true) {
                     hasActiveMetrics = true;
                     let lightClass = "green-light";
                     let numText = "";
                     let unitText = "";
 
-                    if (item.unit === "كم") {
+                    if (key === 'special_docs') {
+                        let minDays = Infinity;
+                        ['insurance', 'driver_license', 'travel_permit'].forEach(docKey => {
+                            let docObj = item[docKey];
+                            if (docObj && docObj.next) {
+                                let targetDate = new Date(docObj.next); targetDate.setHours(0,0,0,0);
+                                let diffDays = Math.ceil((targetDate - today) / (1000 * 60 * 60 * 24));
+                                if (diffDays < minDays) minDays = diffDays;
+                            }
+                        });
+                        numText = minDays;
+                        unitText = "يوم";
+                        if (minDays <= 0) lightClass = "red-light";
+                        else if (minDays <= 15) lightClass = "orange-light";
+                    } else if (key === 'vidange_filters') {
+                        let diffEngine = item.engineOilNextOdo - appDatabase.currentOdo;
+                        let diffFilter = item.oilFilterNextOdo - appDatabase.currentOdo;
+                        let diffGearbox = item.gearboxOilNextOdo - appDatabase.currentOdo;
+                        let diffAir = item.air.nextOdo - appDatabase.currentOdo;
+                        let diffEssence = item.essence.nextOdo - appDatabase.currentOdo;
+                        let diffCabin = item.cabin.nextOdo - appDatabase.currentOdo;
+                        let minDiff = Math.min(diffEngine, diffFilter, diffGearbox, diffAir, diffEssence, diffCabin);
+                        numText = formatNumberWithSpace(minDiff);
+                        unitText = "كم";
+                        if (minDiff <= 0) lightClass = "red-light";
+                        else if (minDiff <= 1000) lightClass = "orange-light";
+                    } else if (key === 'distribution') {
+                        let diffBelt = item.beltNextOdo - appDatabase.currentOdo;
+                        let diffTendeur = item.tendeurNextOdo - appDatabase.currentOdo;
+                        let diffAcc = item.accessoriesNextOdo - appDatabase.currentOdo;
+                        let minDiff = Math.min(diffBelt, diffTendeur, diffAcc);
+                        numText = formatNumberWithSpace(minDiff);
+                        unitText = "كم";
+                        if (minDiff <= 0) lightClass = "red-light";
+                        else if (minDiff <= 1000) lightClass = "orange-light";
+                    } else if (key === 'control_group') {
+                        let minDays = Infinity;
+                        ['tech', 'gpl', 'extinguisher'].forEach(cKey => {
+                            let targetDate = new Date(item[cKey].nextDate); targetDate.setHours(0,0,0,0);
+                            let diffDays = Math.ceil((targetDate - today) / (1000 * 60 * 60 * 24));
+                            if (diffDays < minDays) minDays = diffDays;
+                        });
+                        numText = minDays;
+                        unitText = "يوم";
+                        if (minDays <= 0) lightClass = "red-light";
+                        else if (minDays <= 15) lightClass = "orange-light";
+                    } else if (key === 'brakes_and_tires') {
+                        let diffPads = item.brake_pads ? (item.brake_pads.nextOdo - appDatabase.currentOdo) : Infinity;
+                        let diffFluid = item.brake_fluid ? (item.brake_fluid.nextOdo - appDatabase.currentOdo) : Infinity;
+                        let minBrakesKm = Math.min(diffPads, diffFluid);
+                        numText = formatNumberWithSpace(minBrakesKm);
+                        unitText = "كم";
+                        if (minBrakesKm <= 0) lightClass = "red-light";
+                        else if (minBrakesKm <= 1000) lightClass = "orange-light";
+                    } else if (key === 'general_maintenance') {
+                        let diffSpark = item.sparkPlugsNextOdo - appDatabase.currentOdo;
+                        let diffCoolant = item.coolantSub ? (item.coolantSub.nextOdo - appDatabase.currentOdo) : Infinity;
+                        let minGeneralKm = Math.min(diffSpark, diffCoolant);
+
+                        let targetBattery = new Date(item.batteryEndDate); targetBattery.setHours(0,0,0,0);
+                        let diffBattDays = Math.ceil((targetBattery - today) / (1000 * 60 * 60 * 24));
+                        
+                        if (minGeneralKm <= 0 || diffBattDays <= 0) {
+                            lightClass = "red-light";
+                        } else if (minGeneralKm <= 1000 || diffBattDays <= 15) {
+                            lightClass = "orange-light";
+                        }
+                        numText = formatNumberWithSpace(minGeneralKm);
+                        unitText = "كم";
+                    } else if (item.unit === "كم") {
                         let diff = item.next - appDatabase.currentOdo;
                         numText = formatNumberWithSpace(diff);
                         unitText = "كم";
                         if (diff <= 0) lightClass = "red-light";
                         else if (diff <= 1000) lightClass = "orange-light";
                     } else if (item.unit === "تاريخ") {
-                        let today = new Date(2026, 9, 4); today.setHours(0,0,0,0);
                         let targetDate = new Date(item.next); targetDate.setHours(0,0,0,0);
                         let diffDays = Math.ceil((targetDate - today) / (1000 * 60 * 60 * 24));
                         numText = diffDays;
@@ -1315,47 +1334,45 @@
         }
 
         function openOdometerEditor() {
-            if (currentEditingKey && currentEditingKey !== 'odometer_main') {
-                previousEditingKey = currentEditingKey;
-            } else {
-                previousEditingKey = null;
-            }
-
             currentEditingKey = 'odometer_main';
-            document.getElementById('editor-title').innerText = "عداد السيارة ومعدل السير الشهري";
+            document.getElementById('editor-title').innerText = "تحديث البيانات";
             document.getElementById('editor-switch-container').style.display = "none";
             
             const container = document.getElementById('editor-form-container');
+            let currentOdoFormatted = formatNumberWithSpace(appDatabase.currentOdo);
+            let monthlyRateFormatted = formatNumberWithSpace(appDatabase.monthlyKmRate || 1500);
+
             container.innerHTML = `
-                <div class="form-group">
-                    <div class="label-with-inline-cam">
-                        <label>عداد السيارة الحالي:</label>
-                        <button class="mini-inline-cam-btn" onclick="openOdometerCamera()" title="تصوير العداد">📷</button>
-                    </div>
-                    <div class="custom-display-box" id="display-val1" onclick="openCustomNumpad('display-val1', 'كم')">
-                        <span class="num-ltr box-num-part" id="num-span-val1">${formatNumberWithSpace(appDatabase.currentOdo)}</span>
-                        <span class="box-unit-part">كم</span>
+                <div class="form-group" style="margin-bottom:18px;">
+                    <div class="single-line-date-header">
+                        <span class="single-line-title-text" id="display-val1" data-raw-val="${appDatabase.currentOdo}">العداد الحالي للسيارة: <span class="num-ltr">${currentOdoFormatted}</span> كم</span>
+                        <button class="rescue-edit-btn" onclick="openCustomNumpad('display-val1', 'كم')">تعديل</button>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>معدل السير الشهري:</label>
-                    <div class="custom-display-box" id="display-val2" onclick="openCustomNumpad('display-val2', 'كم')">
-                        <span class="num-ltr box-num-part" id="num-span-val2">${formatNumberWithSpace(appDatabase.monthlyKmRate || 1500)}</span>
-                        <span class="box-unit-part">كم</span>
+
+                <div class="form-group" style="margin-bottom:20px;">
+                    <div class="single-line-date-header">
+                        <span class="single-line-title-text" id="display-val2" data-raw-val="${appDatabase.monthlyKmRate || 1500}">معدل السير الشهري: <span class="num-ltr">${monthlyRateFormatted}</span> كم</span>
+                        <button class="rescue-edit-btn" onclick="openCustomNumpad('display-val2', 'كم')">تعديل</button>
                     </div>
                     <div class="metric-tiny-note">
                         <span class="warning-icon">⚠</span>
                         <span>هذا المعدل تقديري بناءً على نشاطك السابق، ويمكنك تعديله يدوياً.</span>
                     </div>
                 </div>
+
                 <button class="confirm-btn" onclick="saveOdometerChanges()">تأكيد التحديث والعودة</button>
             `;
             navigateToView('editor-page-view');
         }
 
         function saveOdometerChanges() {
-            const rawVal1 = document.getElementById('display-val1').querySelector('.box-num-part').innerText.replace(/[^0-9]/g, '');
-            const rawVal2 = document.getElementById('display-val2').querySelector('.box-num-part').innerText.replace(/[^0-9]/g, '');
+            const val1Elm = document.getElementById('display-val1');
+            const val2Elm = document.getElementById('display-val2');
+
+            const rawVal1 = val1Elm ? val1Elm.getAttribute('data-raw-val') : appDatabase.currentOdo.toString();
+            const rawVal2 = val2Elm ? val2Elm.getAttribute('data-raw-val') : (appDatabase.monthlyKmRate || 1500).toString();
+
             const val1 = parseInt(rawVal1);
             const val2 = parseInt(rawVal2);
             
@@ -1371,217 +1388,664 @@
             appDatabase.lastManualOdoDate = todayStr;
 
             saveDatabase();
-            
-            if (previousEditingKey && appDatabase.metrics[previousEditingKey]) {
-                let keyToReturn = previousEditingKey;
-                previousEditingKey = null;
-                openEditorPage(keyToReturn, appDatabase.metrics[keyToReturn]);
-            } else {
-                returnToDashboard();
+            returnToDashboard();
+        }
+
+        function toggleReservationsSubSection(checkboxElem) {
+            const container = document.getElementById('reservations-sub-container');
+            if (container) {
+                container.style.display = checkboxElem.checked ? "block" : "none";
             }
-        }
-
-        function openOdometerCamera() {
-            const overlay = document.getElementById('ocr-camera-overlay');
-            overlay.style.display = "flex";
-            updateCutoutBoxDimensions();
-
-            navigator.mediaDevices.getUserMedia({
-                video: { facingMode: { ideal: "environment" } },
-                audio: false
-            })
-            .then(stream => {
-                mediaStream = stream;
-                document.getElementById('ocr-video-stream').srcObject = stream;
-            })
-            .catch(err => {
-                alert("تعذر الوصول إلى كاميرا الهاتف.");
-                closeOdometerCamera();
-            });
-        }
-
-        function closeOdometerCamera() {
-            if (mediaStream) {
-                mediaStream.getTracks().forEach(track => track.stop());
-                mediaStream = null;
-            }
-            document.getElementById('ocr-camera-overlay').style.display = "none";
-        }
-
-        function updateCutoutBoxDimensions() {
-            const box = document.getElementById('ocr-cutout-box');
-            if (box) {
-                box.style.width = frameWidth + "px";
-                box.style.height = frameHeight + "px";
-            }
-        }
-
-        function adjustFrameSize(type, delta) {
-            if (type === 'w') frameWidth = Math.max(120, Math.min(400, frameWidth + delta));
-            else if (type === 'h') frameHeight = Math.max(50, Math.min(250, frameHeight + delta));
-            updateCutoutBoxDimensions();
-        }
-
-        function adjustZoom(delta) {
-            currentZoom = Math.max(1, Math.min(3, currentZoom + delta));
-            const videoElm = document.getElementById('ocr-video-stream');
-            if (videoElm) videoElm.style.transform = `scale(${currentZoom})`;
-        }
-
-        function captureOdometerImage() {
-            closeOdometerCamera();
-            alert("تم التقاط صورة العداد بدقة داخل الإطار المخصص بنجاح!");
         }
 
         function openEditorPage(key, item) {
             currentEditingKey = key;
-            previousEditingKey = null; 
             document.getElementById('editor-title').innerText = item.title;
             document.getElementById('editor-switch-container').style.display = "flex";
             document.getElementById('metric-status-switch').checked = item.active;
 
             const container = document.getElementById('editor-form-container');
 
-            if (item.unit === "كم") {
-                let rawLastVal = item.lastChanged ? item.lastChanged.replace(/[^0-9]/g, '') : "0";
-                let appEstimatedOdo = formatNumberWithSpace(appDatabase.currentOdo);
+            if (key === 'special_docs') {
+                let insStart = (item.insurance && item.insurance.lastChanged) ? item.insurance.lastChanged : getTodayDateString();
+                let insEnd = (item.insurance && item.insurance.next) ? item.insurance.next : "2026-11-01";
 
-                let lastChangeDateStr = (item.lastChangeDate && item.lastChangeDate.match(/^\d{4}-\d{2}-\d{2}$/)) ? item.lastChangeDate : getTodayDateString();
-                let lastChangeReadable = convertDateToReadableArabic(lastChangeDateStr);
+                let licStart = (item.driver_license && item.driver_license.lastChanged) ? item.driver_license.lastChanged : "2020-05-15";
+                let licEnd = (item.driver_license && item.driver_license.next) ? item.driver_license.next : "2030-05-15";
 
-                let startKmVal = rawLastVal ? formatNumberWithSpace(rawLastVal) : "0";
-                let endKmVal = item.next ? formatNumberWithSpace(item.next) : "0";
+                let travStart = (item.travel_permit && item.travel_permit.lastChanged) ? item.travel_permit.lastChanged : "2026-01-01";
+                let travEnd = (item.travel_permit && item.travel_permit.next) ? item.travel_permit.next : "2026-12-31";
 
                 container.innerHTML = `
+                    <div style="font-size:15px; font-weight:bold; color:#b8860b; margin-bottom:12px;">التأمين</div>
                     <div class="form-group" style="margin-bottom:18px;">
                         <div class="single-line-date-header">
-                            <span class="single-line-title-text" id="metric-date-display" data-raw-val="${lastChangeDateStr}">تاريخ التغيير: ${lastChangeReadable}</span>
-                            <button class="rescue-edit-btn" onclick="openCalendarModal('metric-date-display', document.getElementById('metric-date-display').getAttribute('data-raw-val'))">تعديل</button>
+                            <span class="single-line-title-text" id="doc-ins-start" data-raw-val="${insStart}">تاريخ البداية: ${convertDateToReadableArabic(insStart)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('doc-ins-start', document.getElementById('doc-ins-start').getAttribute('data-raw-val'))">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:25px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="doc-ins-end" data-raw-val="${insEnd}">تاريخ انتهاء الصلاحية: ${convertDateToReadableArabic(insEnd)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('doc-ins-end', document.getElementById('doc-ins-end').getAttribute('data-raw-val'))">تعديل</button>
                         </div>
                     </div>
 
+                    <hr style="border:0; border-top:1px solid #2d2d2d; margin:20px 0;">
+
+                    <div style="font-size:15px; font-weight:bold; color:#b8860b; margin-bottom:12px;">رخصة السياقة</div>
                     <div class="form-group" style="margin-bottom:18px;">
                         <div class="single-line-date-header">
-                            <span class="single-line-title-text">العداد الحالي للسيارة: <span class="num-ltr">${appEstimatedOdo}</span> كم</span>
-                            <button class="rescue-edit-btn" onclick="openOdometerEditorFromMetric()">تعديل</button>
+                            <span class="single-line-title-text" id="doc-lic-start" data-raw-val="${licStart}">تاريخ البداية: ${convertDateToReadableArabic(licStart)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('doc-lic-start', document.getElementById('doc-lic-start').getAttribute('data-raw-val'))">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:25px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="doc-lic-end" data-raw-val="${licEnd}">تاريخ انتهاء الصلاحية: ${convertDateToReadableArabic(licEnd)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('doc-lic-end', document.getElementById('doc-lic-end').getAttribute('data-raw-val'))">تعديل</button>
                         </div>
                     </div>
 
-                    <div class="form-group" style="margin-bottom:12px;">
-                        <div class="single-line-title-text" style="font-size:15px; color:#b8860b; font-weight:bold;">مدة الصلاحية</div>
-                    </div>
+                    <hr style="border:0; border-top:1px solid #2d2d2d; margin:20px 0;">
 
-                    <div class="form-group" style="margin-bottom:12px; padding-right:10px;">
+                    <div style="font-size:15px; font-weight:bold; color:#b8860b; margin-bottom:12px;">رخصة التنقل</div>
+                    <div class="form-group" style="margin-bottom:18px;">
                         <div class="single-line-date-header">
-                            <span class="single-line-title-text" id="metric-start-km-text" data-raw-val="${rawLastVal}">من الكيلومتر: <span class="num-ltr">${startKmVal}</span> كم</span>
-                            <button class="rescue-edit-btn" onclick="openCustomNumpad('metric-start-km-text', 'كم')">تعديل</button>
+                            <span class="single-line-title-text" id="doc-trav-start" data-raw-val="${travStart}">تاريخ البداية: ${convertDateToReadableArabic(travStart)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('doc-trav-start', document.getElementById('doc-trav-start').getAttribute('data-raw-val'))">تعديل</button>
                         </div>
                     </div>
-
-                    <div class="form-group" style="margin-bottom:20px; padding-right:10px;">
+                    <div class="form-group" style="margin-bottom:20px;">
                         <div class="single-line-date-header">
-                            <span class="single-line-title-text" id="metric-end-km-text" data-raw-val="${item.next}">إلى الكيلومتر: <span class="num-ltr">${endKmVal}</span> كم</span>
-                            <button class="rescue-edit-btn" onclick="openCustomNumpad('metric-end-km-text', 'كم')">تعديل</button>
+                            <span class="single-line-title-text" id="doc-trav-end" data-raw-val="${travEnd}">تاريخ انتهاء الصلاحية: ${convertDateToReadableArabic(travEnd)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('doc-trav-end', document.getElementById('doc-trav-end').getAttribute('data-raw-val'))">تعديل</button>
                         </div>
                     </div>
 
                     <button class="confirm-btn" onclick="saveSimplifiedMetricChanges()">تأكيد الحفظ والعودة</button>
                 `;
-            } else {
-                // المؤشرات التي تعتمد على التاريخ تحتوي على عنوانين فقط: تاريخ بداية الصلاحية وتاريخ انتهاء الصلاحية
-                let defaultCurrentDateRaw = (item.lastChanged && item.lastChanged.match(/^\d{4}-\d{2}-\d{2}$/)) ? item.lastChanged : getTodayDateString();
-                let defaultNextDateRaw = (item.next && item.next.match(/^\d{4}-\d{2}-\d{2}$/)) ? item.next : getTodayDateString();
+            } else if (key === 'vidange_filters') {
+                let engDate = (item.engineOilDate && item.engineOilDate.match(/^\d{4}-\d{2}-\d{2}$/)) ? item.engineOilDate : getTodayDateString();
+                let engCurr = item.engineOilCurrentOdo !== undefined ? item.engineOilCurrentOdo : "120000";
+                let engNext = item.engineOilNextOdo !== undefined ? item.engineOilNextOdo : "130000";
 
-                let displayCurrentReadable = convertDateToReadableArabic(defaultCurrentDateRaw);
-                let displayNextReadable = convertDateToReadableArabic(defaultNextDateRaw);
+                let filDate = (item.oilFilterDate && item.oilFilterDate.match(/^\d{4}-\d{2}-\d{2}$/)) ? item.oilFilterDate : getTodayDateString();
+                let filCurr = item.oilFilterCurrentOdo !== undefined ? item.oilFilterCurrentOdo : "120000";
+                let filNext = item.oilFilterNextOdo !== undefined ? item.oilFilterNextOdo : "130000";
+
+                let gearDate = (item.gearboxOilDate && item.gearboxOilDate.match(/^\d{4}-\d{2}-\d{2}$/)) ? item.gearboxOilDate : getTodayDateString();
+                let gearCurr = item.gearboxOilCurrentOdo !== undefined ? item.gearboxOilCurrentOdo : "100000";
+                let gearNext = item.gearboxOilNextOdo !== undefined ? item.gearboxOilNextOdo : "180000";
+
+                let airDate = (item.air && item.air.date && item.air.date.match(/^\d{4}-\d{2}-\d{2}$/)) ? item.air.date : getTodayDateString();
+                let airCurr = (item.air && item.air.currentOdo !== undefined) ? item.air.currentOdo : "120000";
+                let airNext = (item.air && item.air.nextOdo !== undefined) ? item.air.nextOdo : "135000";
+
+                let essDate = (item.essence && item.essence.date && item.essence.date.match(/^\d{4}-\d{2}-\d{2}$/)) ? item.essence.date : getTodayDateString();
+                let essCurr = (item.essence && item.essence.currentOdo !== undefined) ? item.essence.currentOdo : "110000";
+                let essNext = (item.essence && item.essence.nextOdo !== undefined) ? item.essence.nextOdo : "140000";
+
+                let cabDate = (item.cabin && item.cabin.date && item.cabin.date.match(/^\d{4}-\d{2}-\d{2}$/)) ? item.cabin.date : getTodayDateString();
+                let cabCurr = (item.cabin && item.cabin.currentOdo !== undefined) ? item.cabin.currentOdo : "120000";
+                let cabNext = (item.cabin && item.cabin.nextOdo !== undefined) ? item.cabin.nextOdo : "140000";
 
                 container.innerHTML = `
+                    <div style="font-size:15px; font-weight:bold; color:#b8860b; margin-bottom:12px;">زيت المحرك</div>
                     <div class="form-group" style="margin-bottom:18px;">
                         <div class="single-line-date-header">
-                            <span class="single-line-title-text" id="date-display-current" data-raw-val="${defaultCurrentDateRaw}">تاريخ بداية الصلاحية: ${displayCurrentReadable}</span>
-                            <button class="rescue-edit-btn" onclick="openCalendarModal('date-display-current', document.getElementById('date-display-current').getAttribute('data-raw-val'))">تعديل</button>
+                            <span class="single-line-title-text" id="vid-eng-date" data-raw-val="${engDate}">تاريخ التغيير: ${convertDateToReadableArabic(engDate)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('vid-eng-date', document.getElementById('vid-eng-date').getAttribute('data-raw-val'))">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="vid-eng-curr" data-raw-val="${engCurr}">العداد عند التغيير الحالي: <span class="num-ltr">${formatNumberWithSpace(engCurr)}</span> كم</span>
+                            <button class="rescue-edit-btn" onclick="openCustomNumpad('vid-eng-curr', 'كم')">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:25px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="vid-eng-next" data-raw-val="${engNext}">العداد عند التغيير القادم: <span class="num-ltr">${formatNumberWithSpace(engNext)}</span> كم</span>
+                            <button class="rescue-edit-btn" onclick="openCustomNumpad('vid-eng-next', 'كم')">تعديل</button>
                         </div>
                     </div>
 
+                    <hr style="border:0; border-top:1px solid #2d2d2d; margin:20px 0;">
+
+                    <div style="font-size:15px; font-weight:bold; color:#b8860b; margin-bottom:12px;">فلتر الزيت المحرك</div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="vid-fil-date" data-raw-val="${filDate}">تاريخ التغيير: ${convertDateToReadableArabic(filDate)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('vid-fil-date', document.getElementById('vid-fil-date').getAttribute('data-raw-val'))">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="vid-fil-curr" data-raw-val="${filCurr}">العداد عند التغيير الحالي: <span class="num-ltr">${formatNumberWithSpace(filCurr)}</span> كم</span>
+                            <button class="rescue-edit-btn" onclick="openCustomNumpad('vid-fil-curr', 'كم')">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:25px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="vid-fil-next" data-raw-val="${filNext}">العداد عند التغيير القادم: <span class="num-ltr">${formatNumberWithSpace(filNext)}</span> كم</span>
+                            <button class="rescue-edit-btn" onclick="openCustomNumpad('vid-fil-next', 'كم')">تعديل</button>
+                        </div>
+                    </div>
+
+                    <hr style="border:0; border-top:1px solid #2d2d2d; margin:20px 0;">
+
+                    <div style="font-size:15px; font-weight:bold; color:#b8860b; margin-bottom:12px;">زيت علبه السرعه</div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="vid-gear-date" data-raw-val="${gearDate}">تاريخ التغيير: ${convertDateToReadableArabic(gearDate)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('vid-gear-date', document.getElementById('vid-gear-date').getAttribute('data-raw-val'))">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="vid-gear-curr" data-raw-val="${gearCurr}">العداد عند التغيير الحالي: <span class="num-ltr">${formatNumberWithSpace(gearCurr)}</span> كم</span>
+                            <button class="rescue-edit-btn" onclick="openCustomNumpad('vid-gear-curr', 'كم')">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:25px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="vid-gear-next" data-raw-val="${gearNext}">العداد عند التغيير القادم: <span class="num-ltr">${formatNumberWithSpace(gearNext)}</span> كم</span>
+                            <button class="rescue-edit-btn" onclick="openCustomNumpad('vid-gear-next', 'كم')">تعديل</button>
+                        </div>
+                    </div>
+
+                    <hr style="border:0; border-top:1px solid #2d2d2d; margin:20px 0;">
+
+                    <div style="font-size:15px; font-weight:bold; color:#b8860b; margin-bottom:12px;">فلتر الهواء</div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="air-date-display" data-raw-val="${airDate}">تاريخ التغيير: ${convertDateToReadableArabic(airDate)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('air-date-display', document.getElementById('air-date-display').getAttribute('data-raw-val'))">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="air-curr-display" data-raw-val="${airCurr}">العداد عند التغيير الحالي: <span class="num-ltr">${formatNumberWithSpace(airCurr)}</span> كم</span>
+                            <button class="rescue-edit-btn" onclick="openCustomNumpad('air-curr-display', 'كم')">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:25px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="air-next-display" data-raw-val="${airNext}">العداد عند التغيير القادم: <span class="num-ltr">${formatNumberWithSpace(airNext)}</span> كم</span>
+                            <button class="rescue-edit-btn" onclick="openCustomNumpad('air-next-display', 'كم')">تعديل</button>
+                        </div>
+                    </div>
+
+                    <hr style="border:0; border-top:1px solid #2d2d2d; margin:20px 0;">
+
+                    <div style="font-size:15px; font-weight:bold; color:#b8860b; margin-bottom:12px;">فلتر الوقود</div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="essence-date-display" data-raw-val="${essDate}">تاريخ التغيير: ${convertDateToReadableArabic(essDate)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('essence-date-display', document.getElementById('essence-date-display').getAttribute('data-raw-val'))">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="essence-curr-display" data-raw-val="${essCurr}">العداد عند التغيير الحالي: <span class="num-ltr">${formatNumberWithSpace(essCurr)}</span> كم</span>
+                            <button class="rescue-edit-btn" onclick="openCustomNumpad('essence-curr-display', 'كم')">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:25px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="essence-next-display" data-raw-val="${essNext}">العداد عند التغيير القادم: <span class="num-ltr">${formatNumberWithSpace(essNext)}</span> كم</span>
+                            <button class="rescue-edit-btn" onclick="openCustomNumpad('essence-next-display', 'كم')">تعديل</button>
+                        </div>
+                    </div>
+
+                    <hr style="border:0; border-top:1px solid #2d2d2d; margin:20px 0;">
+
+                    <div style="font-size:15px; font-weight:bold; color:#b8860b; margin-bottom:12px;">فلتر المكيف</div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="cabin-date-display" data-raw-val="${cabDate}">تاريخ التغيير: ${convertDateToReadableArabic(cabDate)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('cabin-date-display', document.getElementById('cabin-date-display').getAttribute('data-raw-val'))">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="cabin-curr-display" data-raw-val="${cabCurr}">العداد عند التغيير الحالي: <span class="num-ltr">${formatNumberWithSpace(cabCurr)}</span> كم</span>
+                            <button class="rescue-edit-btn" onclick="openCustomNumpad('cabin-curr-display', 'كم')">تعديل</button>
+                        </div>
+                    </div>
                     <div class="form-group" style="margin-bottom:20px;">
                         <div class="single-line-date-header">
-                            <span class="single-line-title-text" id="date-display-next" data-raw-val="${defaultNextDateRaw}">تاريخ انتهاء الصلاحية: ${displayNextReadable}</span>
-                            <button class="rescue-edit-btn" onclick="openCalendarModal('date-display-next', document.getElementById('date-display-next').getAttribute('data-raw-val'))">تعديل</button>
+                            <span class="single-line-title-text" id="cabin-next-display" data-raw-val="${cabNext}">العداد عند التغيير القادم: <span class="num-ltr">${formatNumberWithSpace(cabNext)}</span> كم</span>
+                            <button class="rescue-edit-btn" onclick="openCustomNumpad('cabin-next-display', 'كم')">تعديل</button>
                         </div>
                     </div>
 
-                    <button class="confirm-btn" onclick="saveSimplifiedMetricChanges()" style="margin-top:10px;">تأكيد الحفظ والعودة</button>
+                    <button class="confirm-btn" onclick="saveSimplifiedMetricChanges()">تأكيد الحفظ والعودة</button>
+                `;
+            } else if (key === 'distribution') {
+                let beltDate = (item.beltDate && item.beltDate.match(/^\d{4}-\d{2}-\d{2}$/)) ? item.beltDate : getTodayDateString();
+                let beltCurr = item.beltCurrentOdo !== undefined ? item.beltCurrentOdo : "100000";
+                let beltNext = item.beltNextOdo !== undefined ? item.beltNextOdo : "160000";
+
+                let tendDate = (item.tendeurDate && item.tendeurDate.match(/^\d{4}-\d{2}-\d{2}$/)) ? item.tendeurDate : getTodayDateString();
+                let tendCurr = item.tendeurCurrentOdo !== undefined ? item.tendeurCurrentOdo : "100000";
+                let tendNext = item.tendeurNextOdo !== undefined ? item.tendeurNextOdo : "160000";
+
+                let accDate = (item.accessoriesDate && item.accessoriesDate.match(/^\d{4}-\d{2}-\d{2}$/)) ? item.accessoriesDate : getTodayDateString();
+                let accCurr = item.accessoriesCurrentOdo !== undefined ? item.accessoriesCurrentOdo : "100000";
+                let accNext = item.accessoriesNextOdo !== undefined ? item.accessoriesNextOdo : "140000";
+
+                container.innerHTML = `
+                    <div style="font-size:15px; font-weight:bold; color:#b8860b; margin-bottom:12px;">حزام التوزيع</div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="dist-belt-date" data-raw-val="${beltDate}">تاريخ التغيير: ${convertDateToReadableArabic(beltDate)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('dist-belt-date', document.getElementById('dist-belt-date').getAttribute('data-raw-val'))">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="dist-belt-curr" data-raw-val="${beltCurr}">العداد عند التغيير الحالي: <span class="num-ltr">${formatNumberWithSpace(beltCurr)}</span> كم</span>
+                            <button class="rescue-edit-btn" onclick="openCustomNumpad('dist-belt-curr', 'كم')">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:25px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="dist-belt-next" data-raw-val="${beltNext}">العداد عند التغيير القادم: <span class="num-ltr">${formatNumberWithSpace(beltNext)}</span> كم</span>
+                            <button class="rescue-edit-btn" onclick="openCustomNumpad('dist-belt-next', 'كم')">تعديل</button>
+                        </div>
+                    </div>
+
+                    <hr style="border:0; border-top:1px solid #2d2d2d; margin:20px 0;">
+
+                    <div style="font-size:15px; font-weight:bold; color:#b8860b; margin-bottom:12px;">الشداد</div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="dist-tend-date" data-raw-val="${tendDate}">تاريخ التغيير: ${convertDateToReadableArabic(tendDate)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('dist-tend-date', document.getElementById('dist-tend-date').getAttribute('data-raw-val'))">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="dist-tend-curr" data-raw-val="${tendCurr}">العداد عند التغيير الحالي: <span class="num-ltr">${formatNumberWithSpace(tendCurr)}</span> كم</span>
+                            <button class="rescue-edit-btn" onclick="openCustomNumpad('dist-tend-curr', 'كم')">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:25px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="dist-tend-next" data-raw-val="${tendNext}">العداد عند التغيير القادم: <span class="num-ltr">${formatNumberWithSpace(tendNext)}</span> كم</span>
+                            <button class="rescue-edit-btn" onclick="openCustomNumpad('dist-tend-next', 'كم')">تعديل</button>
+                        </div>
+                    </div>
+
+                    <hr style="border:0; border-top:1px solid #2d2d2d; margin:20px 0;">
+
+                    <div style="font-size:15px; font-weight:bold; color:#b8860b; margin-bottom:12px;">حزام الملحقات</div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="dist-acc-date" data-raw-val="${accDate}">تاريخ التغيير: ${convertDateToReadableArabic(accDate)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('dist-acc-date', document.getElementById('dist-acc-date').getAttribute('data-raw-val'))">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="dist-acc-curr" data-raw-val="${accCurr}">العداد عند التغيير الحالي: <span class="num-ltr">${formatNumberWithSpace(accCurr)}</span> كم</span>
+                            <button class="rescue-edit-btn" onclick="openCustomNumpad('dist-acc-curr', 'كم')">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:20px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="dist-acc-next" data-raw-val="${accNext}">العداد عند التغيير القادم: <span class="num-ltr">${formatNumberWithSpace(accNext)}</span> كم</span>
+                            <button class="rescue-edit-btn" onclick="openCustomNumpad('dist-acc-next', 'كم')">تعديل</button>
+                        </div>
+                    </div>
+
+                    <button class="confirm-btn" onclick="saveSimplifiedMetricChanges()">تأكيد الحفظ والعودة</button>
+                `;
+            } else if (key === 'brakes_and_tires') {
+                let bpDate = (item.brake_pads && item.brake_pads.date && item.brake_pads.date.match(/^\d{4}-\d{2}-\d{2}$/)) ? item.brake_pads.date : getTodayDateString();
+                let bpCurrOdo = (item.brake_pads && item.brake_pads.currentOdo !== undefined && item.brake_pads.currentOdo !== null) ? item.brake_pads.currentOdo.toString().replace(/[^0-9]/g, '') : "95000";
+                let bpNextOdo = (item.brake_pads && item.brake_pads.nextOdo !== undefined && item.brake_pads.nextOdo !== null) ? item.brake_pads.nextOdo.toString().replace(/[^0-9]/g, '') : "124800";
+
+                let bfDate = (item.brake_fluid && item.brake_fluid.date && item.brake_fluid.date.match(/^\d{4}-\d{2}-\d{2}$/)) ? item.brake_fluid.date : getTodayDateString();
+                let bfCurrOdo = (item.brake_fluid && item.brake_fluid.currentOdo !== undefined && item.brake_fluid.currentOdo !== null) ? item.brake_fluid.currentOdo.toString().replace(/[^0-9]/g, '') : "100000";
+                let bfNextOdo = (item.brake_fluid && item.brake_fluid.nextOdo !== undefined && item.brake_fluid.nextOdo !== null) ? item.brake_fluid.nextOdo.toString().replace(/[^0-9]/g, '') : "140000";
+
+                container.innerHTML = `
+                    <div style="font-size:15px; font-weight:bold; color:#b8860b; margin-bottom:12px;">بلاكات الفرامل</div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="bp-date-display" data-raw-val="${bpDate}">تاريخ التغيير: ${convertDateToReadableArabic(bpDate)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('bp-date-display', document.getElementById('bp-date-display').getAttribute('data-raw-val'))">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="bp-car-odo-display" data-raw-val="${bpCurrOdo}">العداد عند التغيير الحالي: <span class="num-ltr">${formatNumberWithSpace(bpCurrOdo)}</span> كم</span>
+                            <button class="rescue-edit-btn" onclick="openCustomNumpad('bp-car-odo-display', 'كم')">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:25px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="bp-validity-display" data-raw-val="${bpNextOdo}">العداد عند التغيير القادم: <span class="num-ltr">${formatNumberWithSpace(bpNextOdo)}</span> كم</span>
+                            <button class="rescue-edit-btn" onclick="openCustomNumpad('bp-validity-display', 'كم')">تعديل</button>
+                        </div>
+                    </div>
+
+                    <hr style="border:0; border-top:1px solid #2d2d2d; margin:20px 0;">
+
+                    <div style="font-size:15px; font-weight:bold; color:#b8860b; margin-bottom:12px;">زيت الفرامل</div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="bf-date-display" data-raw-val="${bfDate}">تاريخ التغيير: ${convertDateToReadableArabic(bfDate)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('bf-date-display', document.getElementById('bf-date-display').getAttribute('data-raw-val'))">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="bf-car-odo-display" data-raw-val="${bfCurrOdo}">العداد عند التغيير الحالي: <span class="num-ltr">${formatNumberWithSpace(bfCurrOdo)}</span> كم</span>
+                            <button class="rescue-edit-btn" onclick="openCustomNumpad('bf-car-odo-display', 'كم')">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:25px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="bf-validity-display" data-raw-val="${bfNextOdo}">العداد عند التغيير القادم: <span class="num-ltr">${formatNumberWithSpace(bfNextOdo)}</span> كم</span>
+                            <button class="rescue-edit-btn" onclick="openCustomNumpad('bf-validity-display', 'كم')">تعديل</button>
+                        </div>
+                    </div>
+
+                    <hr style="border:0; border-top:1px solid #2d2d2d; margin:20px 0;">
+
+                    <div style="font-size:15px; font-weight:bold; color:#b8860b; margin-bottom:8px;">العجلات</div>
+                    <div style="font-size:14px; color:#aaaaaa; margin-bottom:20px;">قيد الانجاز</div>
+
+                    <button class="confirm-btn" onclick="saveSimplifiedMetricChanges()">تأكيد الحفظ والعودة</button>
+                `;
+            } else if (key === 'general_maintenance') {
+                let spDate = (item.sparkPlugsDate && item.sparkPlugsDate.match(/^\d{4}-\d{2}-\d{2}$/)) ? item.sparkPlugsDate : getTodayDateString();
+                let spCurr = item.sparkPlugsCurrentOdo !== undefined ? item.sparkPlugsCurrentOdo : "90000";
+                let spNext = item.sparkPlugsNextOdo !== undefined ? item.sparkPlugsNextOdo : "125000";
+
+                let batStart = (item.batteryStartDate && item.batteryStartDate.match(/^\d{4}-\d{2}-\d{2}$/)) ? item.batteryStartDate : getTodayDateString();
+                let batEnd = (item.batteryEndDate && item.batteryEndDate.match(/^\d{4}-\d{2}-\d{2}$/)) ? item.batteryEndDate : "2028-10-04";
+
+                let coDate = (item.coolantSub && item.coolantSub.date && item.coolantSub.date.match(/^\d{4}-\d{2}-\d{2}$/)) ? item.coolantSub.date : getTodayDateString();
+                let coCurr = (item.coolantSub && item.coolantSub.currentOdo !== undefined) ? item.coolantSub.currentOdo : "100000";
+                let coNext = (item.coolantSub && item.coolantSub.nextOdo !== undefined) ? item.coolantSub.nextOdo : "150000";
+
+                container.innerHTML = `
+                    <div style="font-size:15px; font-weight:bold; color:#b8860b; margin-bottom:12px;">البواجي (شمعات الاحتراق)</div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="gm-sp-date" data-raw-val="${spDate}">تاريخ التغيير: ${convertDateToReadableArabic(spDate)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('gm-sp-date', document.getElementById('gm-sp-date').getAttribute('data-raw-val'))">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="gm-sp-curr" data-raw-val="${spCurr}">العداد عند التغيير الحالي: <span class="num-ltr">${formatNumberWithSpace(spCurr)}</span> كم</span>
+                            <button class="rescue-edit-btn" onclick="openCustomNumpad('gm-sp-curr', 'كم')">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:25px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="gm-sp-next" data-raw-val="${spNext}">العداد عند التغيير القادم: <span class="num-ltr">${formatNumberWithSpace(spNext)}</span> كم</span>
+                            <button class="rescue-edit-btn" onclick="openCustomNumpad('gm-sp-next', 'كم')">تعديل</button>
+                        </div>
+                    </div>
+
+                    <hr style="border:0; border-top:1px solid #2d2d2d; margin:20px 0;">
+
+                    <div style="font-size:15px; font-weight:bold; color:#b8860b; margin-bottom:12px;">سائل التبريد</div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="gm-co-date" data-raw-val="${coDate}">تاريخ التغيير: ${convertDateToReadableArabic(coDate)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('gm-co-date', document.getElementById('gm-co-date').getAttribute('data-raw-val'))">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="gm-co-curr" data-raw-val="${coCurr}">العداد عند التغيير الحالي: <span class="num-ltr">${formatNumberWithSpace(coCurr)}</span> كم</span>
+                            <button class="rescue-edit-btn" onclick="openCustomNumpad('gm-co-curr', 'كم')">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:25px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="gm-co-next" data-raw-val="${coNext}">العداد عند التغيير القادم: <span class="num-ltr">${formatNumberWithSpace(coNext)}</span> كم</span>
+                            <button class="rescue-edit-btn" onclick="openCustomNumpad('gm-co-next', 'كم')">تعديل</button>
+                        </div>
+                    </div>
+
+                    <hr style="border:0; border-top:1px solid #2d2d2d; margin:20px 0;">
+
+                    <div style="font-size:15px; font-weight:bold; color:#b8860b; margin-bottom:12px;">البطارية</div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="gm-bat-start" data-raw-val="${batStart}">تاريخ التركيب: ${convertDateToReadableArabic(batStart)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('gm-bat-start', document.getElementById('gm-bat-start').getAttribute('data-raw-val'))">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:20px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="gm-bat-end" data-raw-val="${batEnd}">تاريخ انتهاء الصلاحية: ${convertDateToReadableArabic(batEnd)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('gm-bat-end', document.getElementById('gm-bat-end').getAttribute('data-raw-val'))">تعديل</button>
+                        </div>
+                    </div>
+
+                    <button class="confirm-btn" onclick="saveSimplifiedMetricChanges()">تأكيد الحفظ والعودة</button>
+                `;
+            } else if (key === 'control_group') {
+                container.innerHTML = `
+                    <div style="font-size:15px; font-weight:bold; color:#b8860b; margin-bottom:12px;">المراقبة التقنية</div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="tech-current-display" data-raw-val="${item.tech.currentDate}">تاريخ بداية الصلاحية: ${convertDateToReadableArabic(item.tech.currentDate)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('tech-current-display', document.getElementById('tech-current-display').getAttribute('data-raw-val'))">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="tech-next-display" data-raw-val="${item.tech.nextDate}">تاريخ انتهاء الصلاحية: ${convertDateToReadableArabic(item.tech.nextDate)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('tech-next-display', document.getElementById('tech-next-display').getAttribute('data-raw-val'))">تعديل</button>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <span style="font-size:13px; color:#aaa;">تحفظات المراقبة التقنية</span>
+                        <div class="mini-switch-wrapper">
+                            <span class="mini-switch-label">تفعيل</span>
+                            <label class="switch">
+                                <input type="checkbox" id="reservations-status-switch" ${item.tech.reservationsActive ? 'checked' : ''} onchange="toggleReservationsSubSection(this)">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div id="reservations-sub-container" style="display: ${item.tech.reservationsActive ? 'block' : 'none'}; margin-bottom: 18px;">
+                        <div class="form-group" style="margin-bottom:0;">
+                            <div class="single-line-date-header">
+                                <span class="single-line-title-text" id="reservations-date-display" data-raw-val="${item.tech.reservationsDate}">آخر أجل لرفع التحفظ: ${convertDateToReadableArabic(item.tech.reservationsDate)}</span>
+                                <button class="rescue-edit-btn" onclick="openCalendarModal('reservations-date-display', document.getElementById('reservations-date-display').getAttribute('data-raw-val'))">تعديل</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr style="border:0; border-top:1px solid #2d2d2d; margin:20px 0;">
+
+                    <div style="font-size:15px; font-weight:bold; color:#b8860b; margin-bottom:12px;">مراقبة GPL</div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="gpl-current-display" data-raw-val="${item.gpl.currentDate}">تاريخ بداية الصلاحية: ${convertDateToReadableArabic(item.gpl.currentDate)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('gpl-current-display', document.getElementById('gpl-current-display').getAttribute('data-raw-val'))">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:25px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="gpl-next-display" data-raw-val="${item.gpl.nextDate}">تاريخ انتهاء الصلاحية: ${convertDateToReadableArabic(item.gpl.nextDate)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('gpl-next-display', document.getElementById('gpl-next-display').getAttribute('data-raw-val'))">تعديل</button>
+                        </div>
+                    </div>
+
+                    <hr style="border:0; border-top:1px solid #2d2d2d; margin:20px 0;">
+
+                    <div style="font-size:15px; font-weight:bold; color:#b8860b; margin-bottom:12px;">طفاية الحريق</div>
+                    <div class="form-group" style="margin-bottom:18px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="ext-current-display" data-raw-val="${item.extinguisher.currentDate}">تاريخ بداية الصلاحية: ${convertDateToReadableArabic(item.extinguisher.currentDate)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('ext-current-display', document.getElementById('ext-current-display').getAttribute('data-raw-val'))">تعديل</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:20px;">
+                        <div class="single-line-date-header">
+                            <span class="single-line-title-text" id="ext-next-display" data-raw-val="${item.extinguisher.nextDate}">تاريخ انتهاء الصلاحية: ${convertDateToReadableArabic(item.extinguisher.nextDate)}</span>
+                            <button class="rescue-edit-btn" onclick="openCalendarModal('ext-next-display', document.getElementById('ext-next-display').getAttribute('data-raw-val'))">تعديل</button>
+                        </div>
+                    </div>
+
+                    <button class="confirm-btn" onclick="saveSimplifiedMetricChanges()">تأكيد الحفظ والعودة</button>
                 `;
             }
             navigateToView('editor-page-view');
         }
 
-        function openOdometerEditorFromMetric() {
-            openOdometerEditor();
+        function saveSimplifiedMetricChanges() {
+            if (!currentEditingKey || !appDatabase.metrics[currentEditingKey]) return;
+            const item = appDatabase.metrics[currentEditingKey];
+            const switchElm = document.getElementById('metric-status-switch');
+            if (switchElm) item.active = switchElm.checked;
+
+            if (currentEditingKey === 'special_docs') {
+                item.insurance.lastChanged = document.getElementById('doc-ins-start').getAttribute('data-raw-val');
+                item.insurance.next = document.getElementById('doc-ins-end').getAttribute('data-raw-val');
+                item.driver_license.lastChanged = document.getElementById('doc-lic-start').getAttribute('data-raw-val');
+                item.driver_license.next = document.getElementById('doc-lic-end').getAttribute('data-raw-val');
+                item.travel_permit.lastChanged = document.getElementById('doc-trav-start').getAttribute('data-raw-val');
+                item.travel_permit.next = document.getElementById('doc-trav-end').getAttribute('data-raw-val');
+            } else if (currentEditingKey === 'vidange_filters') {
+                item.engineOilDate = document.getElementById('vid-eng-date').getAttribute('data-raw-val');
+                item.engineOilCurrentOdo = parseInt(document.getElementById('vid-eng-curr').getAttribute('data-raw-val')) || 0;
+                item.engineOilNextOdo = parseInt(document.getElementById('vid-eng-next').getAttribute('data-raw-val')) || 0;
+
+                item.oilFilterDate = document.getElementById('vid-fil-date').getAttribute('data-raw-val');
+                item.oilFilterCurrentOdo = parseInt(document.getElementById('vid-fil-curr').getAttribute('data-raw-val')) || 0;
+                item.oilFilterNextOdo = parseInt(document.getElementById('vid-fil-next').getAttribute('data-raw-val')) || 0;
+
+                item.gearboxOilDate = document.getElementById('vid-gear-date').getAttribute('data-raw-val');
+                item.gearboxOilCurrentOdo = parseInt(document.getElementById('vid-gear-curr').getAttribute('data-raw-val')) || 0;
+                item.gearboxOilNextOdo = parseInt(document.getElementById('vid-gear-next').getAttribute('data-raw-val')) || 0;
+
+                item.air.date = document.getElementById('air-date-display').getAttribute('data-raw-val');
+                item.air.currentOdo = parseInt(document.getElementById('air-curr-display').getAttribute('data-raw-val')) || 0;
+                item.air.nextOdo = parseInt(document.getElementById('air-next-display').getAttribute('data-raw-val')) || 0;
+
+                item.essence.date = document.getElementById('essence-date-display').getAttribute('data-raw-val');
+                item.essence.currentOdo = parseInt(document.getElementById('essence-curr-display').getAttribute('data-raw-val')) || 0;
+                item.essence.nextOdo = parseInt(document.getElementById('essence-next-display').getAttribute('data-raw-val')) || 0;
+
+                item.cabin.date = document.getElementById('cabin-date-display').getAttribute('data-raw-val');
+                item.cabin.currentOdo = parseInt(document.getElementById('cabin-curr-display').getAttribute('data-raw-val')) || 0;
+                item.cabin.nextOdo = parseInt(document.getElementById('cabin-next-display').getAttribute('data-raw-val')) || 0;
+            } else if (currentEditingKey === 'distribution') {
+                item.beltDate = document.getElementById('dist-belt-date').getAttribute('data-raw-val');
+                item.beltCurrentOdo = parseInt(document.getElementById('dist-belt-curr').getAttribute('data-raw-val')) || 0;
+                item.beltNextOdo = parseInt(document.getElementById('dist-belt-next').getAttribute('data-raw-val')) || 0;
+
+                item.tendeurDate = document.getElementById('dist-tend-date').getAttribute('data-raw-val');
+                item.tendeurCurrentOdo = parseInt(document.getElementById('dist-tend-curr').getAttribute('data-raw-val')) || 0;
+                item.tendeurNextOdo = parseInt(document.getElementById('dist-tend-next').getAttribute('data-raw-val')) || 0;
+
+                item.accessoriesDate = document.getElementById('dist-acc-date').getAttribute('data-raw-val');
+                item.accessoriesCurrentOdo = parseInt(document.getElementById('dist-acc-curr').getAttribute('data-raw-val')) || 0;
+                item.accessoriesNextOdo = parseInt(document.getElementById('dist-acc-next').getAttribute('data-raw-val')) || 0;
+            } else if (currentEditingKey === 'brakes_and_tires') {
+                if(!item.brake_pads) item.brake_pads = {};
+                item.brake_pads.date = document.getElementById('bp-date-display').getAttribute('data-raw-val');
+                item.brake_pads.currentOdo = parseInt(document.getElementById('bp-car-odo-display').getAttribute('data-raw-val')) || 0;
+                item.brake_pads.nextOdo = parseInt(document.getElementById('bp-validity-display').getAttribute('data-raw-val')) || 0;
+
+                if(!item.brake_fluid) item.brake_fluid = {};
+                item.brake_fluid.date = document.getElementById('bf-date-display').getAttribute('data-raw-val');
+                item.brake_fluid.currentOdo = parseInt(document.getElementById('bf-car-odo-display').getAttribute('data-raw-val')) || 0;
+                item.brake_fluid.nextOdo = parseInt(document.getElementById('bf-validity-display').getAttribute('data-raw-val')) || 0;
+            } else if (currentEditingKey === 'general_maintenance') {
+                item.sparkPlugsDate = document.getElementById('gm-sp-date').getAttribute('data-raw-val');
+                item.sparkPlugsCurrentOdo = parseInt(document.getElementById('gm-sp-curr').getAttribute('data-raw-val')) || 0;
+                item.sparkPlugsNextOdo = parseInt(document.getElementById('gm-sp-next').getAttribute('data-raw-val')) || 0;
+
+                item.batteryStartDate = document.getElementById('gm-bat-start').getAttribute('data-raw-val');
+                item.batteryEndDate = document.getElementById('gm-bat-end').getAttribute('data-raw-val');
+
+                if (!item.coolantSub) item.coolantSub = {};
+                item.coolantSub.date = document.getElementById('gm-co-date').getAttribute('data-raw-val');
+                item.coolantSub.currentOdo = parseInt(document.getElementById('gm-co-curr').getAttribute('data-raw-val')) || 0;
+                item.coolantSub.nextOdo = parseInt(document.getElementById('gm-co-next').getAttribute('data-raw-val')) || 0;
+            } else if (currentEditingKey === 'control_group') {
+                item.tech.currentDate = document.getElementById('tech-current-display').getAttribute('data-raw-val');
+                item.tech.nextDate = document.getElementById('tech-next-display').getAttribute('data-raw-val');
+                
+                const resSwitch = document.getElementById('reservations-status-switch');
+                item.tech.reservationsActive = resSwitch ? resSwitch.checked : false;
+                item.tech.reservationsDate = document.getElementById('reservations-date-display').getAttribute('data-raw-val');
+
+                item.gpl.currentDate = document.getElementById('gpl-current-display').getAttribute('data-raw-val');
+                item.gpl.nextDate = document.getElementById('gpl-next-display').getAttribute('data-raw-val');
+
+                item.extinguisher.currentDate = document.getElementById('ext-current-display').getAttribute('data-raw-val');
+                item.extinguisher.nextDate = document.getElementById('ext-next-display').getAttribute('data-raw-val');
+            }
+
+            saveDatabase();
+            returnToDashboard();
         }
 
         function openCustomNumpad(targetId, unitLabel) {
             numpadTargetId = targetId;
+            const targetElem = document.getElementById(targetId);
+            let currentRaw = targetElem ? targetElem.getAttribute('data-raw-val') : "0";
+            numpadCurrentValue = currentRaw ? currentRaw.toString() : "0";
+
+            document.getElementById('numpad-num-text').innerText = formatNumberWithSpace(numpadCurrentValue);
             document.getElementById('numpad-unit-label').innerText = unitLabel;
-
-            const targetElm = document.getElementById(targetId);
-            let currentText = "";
-            if (targetElm) {
-                let rawAttr = targetElm.getAttribute('data-raw-val');
-                if (rawAttr) {
-                    currentText = rawAttr;
-                } else {
-                    let numPart = targetElm.querySelector('.box-num-part');
-                    currentText = numPart ? numPart.innerText.trim() : targetElm.innerText.trim();
-                }
-            }
-
-            const rawNum = currentText.replace(/[^0-9]/g, '');
-            numpadCurrentValue = (rawNum === "0" || rawNum === "") ? "" : rawNum;
-            updateNumpadPreview();
-            
             document.getElementById('custom-numpad-overlay').style.display = "flex";
         }
 
         function appendNumpadDigit(digit) {
-            if (numpadCurrentValue.length >= 10) return;
-            numpadCurrentValue += digit;
-            updateNumpadPreview();
+            if (numpadCurrentValue === "0" || numpadCurrentValue === "") {
+                numpadCurrentValue = digit;
+            } else {
+                numpadCurrentValue += digit;
+            }
+            document.getElementById('numpad-num-text').innerText = formatNumberWithSpace(numpadCurrentValue);
         }
 
         function clearNumpadLast() {
-            if (numpadCurrentValue.length > 0) {
+            if (numpadCurrentValue.length > 1) {
                 numpadCurrentValue = numpadCurrentValue.slice(0, -1);
+            } else {
+                numpadCurrentValue = "0";
             }
-            updateNumpadPreview();
+            document.getElementById('numpad-num-text').innerText = formatNumberWithSpace(numpadCurrentValue);
         }
 
         function clearNumpadAll() {
-            numpadCurrentValue = "";
-            updateNumpadPreview();
-        }
-
-        function updateNumpadPreview() {
-            const numTextElm = document.getElementById('numpad-num-text');
-            numTextElm.innerText = numpadCurrentValue === "" ? "0" : formatNumberWithSpace(numpadCurrentValue);
+            numpadCurrentValue = "0";
+            document.getElementById('numpad-num-text').innerText = "0";
         }
 
         function closeCustomNumpad(isConfirmed) {
             if (isConfirmed && numpadTargetId) {
-                const targetElm = document.getElementById(numpadTargetId);
-                if (targetElm) {
-                    let formattedVal = numpadCurrentValue === "" ? "0" : formatNumberWithSpace(numpadCurrentValue);
-                    targetElm.setAttribute('data-raw-val', numpadCurrentValue === "" ? "0" : numpadCurrentValue);
+                const targetElem = document.getElementById(numpadTargetId);
+                if (targetElem) {
+                    targetElem.setAttribute('data-raw-val', numpadCurrentValue);
+                    let formattedNum = formatNumberWithSpace(numpadCurrentValue);
+                    let unitPart = document.getElementById('numpad-unit-label').innerText;
                     
-                    if (numpadTargetId === 'metric-start-km-text') {
-                        targetElm.innerHTML = `من الكيلومتر: <span class="num-ltr">${formattedVal}</span> كم`;
-                    } else if (numpadTargetId === 'metric-end-km-text') {
-                        targetElm.innerHTML = `إلى الكيلومتر: <span class="num-ltr">${formattedVal}</span> كم`;
+                    if (numpadTargetId === 'display-val1') {
+                        targetElem.innerHTML = `العداد الحالي للسيارة: <span class="num-ltr">${formattedNum}</span> ${unitPart}`;
+                    } else if (numpadTargetId === 'display-val2') {
+                        targetElem.innerHTML = `معدل السير الشهري: <span class="num-ltr">${formattedNum}</span> ${unitPart}`;
                     } else {
-                        const numPart = targetElm.querySelector('.box-num-part');
-                        if (numPart) {
-                            numPart.innerText = formattedVal;
-                        }
+                        let textBase = targetElem.innerText.split(':')[0];
+                        targetElem.innerHTML = `${textBase}: <span class="num-ltr">${formattedNum}</span> ${unitPart}`;
                     }
                 }
             }
@@ -1593,11 +2057,11 @@
             calendarTargetId = targetId;
             if (currentDateStr && currentDateStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
                 selectedCalendarDateStr = currentDateStr;
-                let parts = currentDateStr.split('-');
-                calActiveYear = parseInt(parts[0], 10);
-                calActiveMonth = parseInt(parts[1], 10) - 1;
+                let p = currentDateStr.split('-');
+                calActiveYear = parseInt(p[0], 10);
+                calActiveMonth = parseInt(p[1], 10) - 1;
             } else {
-                selectedCalendarDateStr = getTodayDateString();
+                selectedCalendarDateStr = "2026-10-04";
                 calActiveYear = 2026;
                 calActiveMonth = 9;
             }
@@ -1605,48 +2069,47 @@
             document.getElementById('custom-calendar-overlay').style.display = "flex";
         }
 
-        function changeCalMonth(dir) {
-            calActiveMonth += dir;
+        function changeCalMonth(direction) {
+            calActiveMonth += direction;
             if (calActiveMonth > 11) {
                 calActiveMonth = 0;
-                calActiveYear++;
+                calActiveYear += 1;
             } else if (calActiveMonth < 0) {
                 calActiveMonth = 11;
-                calActiveYear--;
+                calActiveYear -= 1;
             }
             renderCalendarGrid();
         }
 
         function renderCalendarGrid() {
             document.getElementById('cal-month-year-label').innerText = `${monthsStandardArabic[calActiveMonth]} ${calActiveYear}`;
-
             const gridContainer = document.getElementById('cal-days-grid-container');
             gridContainer.innerHTML = "";
 
-            const firstDayIndex = new Date(calActiveYear, calActiveMonth, 1).getDay();
-            const totalDays = new Date(calActiveYear, calActiveMonth + 1, 0).getDate();
+            let firstDayIndex = new Date(calActiveYear, calActiveMonth, 1).getDay();
+            let totalDays = new Date(calActiveYear, calActiveMonth + 1, 0).getDate();
 
             for (let i = 0; i < firstDayIndex; i++) {
-                const emptyCell = document.createElement('div');
+                let emptyCell = document.createElement('div');
                 emptyCell.className = "cal-day-cell empty";
                 gridContainer.appendChild(emptyCell);
             }
 
             for (let day = 1; day <= totalDays; day++) {
-                const dayCell = document.createElement('div');
+                let dayCell = document.createElement('div');
                 dayCell.className = "cal-day-cell";
                 dayCell.innerText = day;
 
-                let mStr = (calActiveMonth + 1).toString().padStart(2, '0');
-                let dStr = day.toString().padStart(2, '0');
-                let fullDateFormatted = `${calActiveYear}-${mStr}-${dStr}`;
+                let mStr = (calActiveMonth + 1 < 10 ? "0" : "") + (calActiveMonth + 1);
+                let dStr = (day < 10 ? "0" : "") + day;
+                let thisDateStr = `${calActiveYear}-${mStr}-${dStr}`;
 
-                if (fullDateFormatted === selectedCalendarDateStr) {
-                    dayCell.classList.add('selected');
+                if (thisDateStr === selectedCalendarDateStr) {
+                    dayCell.classList.add("selected");
                 }
 
                 dayCell.onclick = () => {
-                    selectedCalendarDateStr = fullDateFormatted;
+                    selectedCalendarDateStr = thisDateStr;
                     renderCalendarGrid();
                 };
 
@@ -1656,60 +2119,16 @@
 
         function closeCalendarModal(isConfirmed) {
             if (isConfirmed && calendarTargetId) {
-                const targetElm = document.getElementById(calendarTargetId);
-                if (targetElm) {
-                    targetElm.setAttribute('data-raw-val', selectedCalendarDateStr);
-                    let readable = convertDateToReadableArabic(selectedCalendarDateStr);
-                    if (targetElm.id === 'date-display-current' || targetElm.id === 'metric-date-display') {
-                        let titlePrefix = (targetElm.id === 'date-display-current') ? "تاريخ بداية الصلاحية: " : "تاريخ التغيير: ";
-                        targetElm.innerText = titlePrefix + readable;
-                    } else if (targetElm.id === 'date-display-next') {
-                        targetElm.innerText = `تاريخ انتهاء الصلاحية: ${readable}`;
-                    }
+                const targetElem = document.getElementById(calendarTargetId);
+                if (targetElem) {
+                    targetElem.setAttribute('data-raw-val', selectedCalendarDateStr);
+                    let readableDate = convertDateToReadableArabic(selectedCalendarDateStr);
+                    let textBase = targetElem.innerText.split(':')[0];
+                    targetElem.innerHTML = `${textBase}: ${readableDate}`;
                 }
             }
             document.getElementById('custom-calendar-overlay').style.display = "none";
             calendarTargetId = null;
-        }
-
-        function saveSimplifiedMetricChanges() {
-            const isChecked = document.getElementById('metric-status-switch').checked;
-            const item = appDatabase.metrics[currentEditingKey];
-            
-            if (item.unit === "كم") {
-                const startKmElm = document.getElementById('metric-start-km-text');
-                const endKmElm = document.getElementById('metric-end-km-text');
-                const dateDisplayElm = document.getElementById('metric-date-display');
-
-                const rawStart = startKmElm ? startKmElm.getAttribute('data-raw-val') : "0";
-                const rawEnd = endKmElm ? endKmElm.getAttribute('data-raw-val') : "0";
-                const rawDate = dateDisplayElm ? dateDisplayElm.getAttribute('data-raw-val') : getTodayDateString();
-
-                if (!rawStart || !rawEnd) {
-                    alert("الرجاء التحقق من قيم الكيلومترات.");
-                    return;
-                }
-                item.lastChanged = rawStart;
-                item.next = parseInt(rawEnd);
-                item.lastChangeDate = rawDate;
-            } else {
-                const currentElm = document.getElementById('date-display-current');
-                const nextElm = document.getElementById('date-display-next');
-                
-                const currentRaw = currentElm ? currentElm.getAttribute('data-raw-val') : getTodayDateString();
-                const nextRaw = nextElm ? nextElm.getAttribute('data-raw-val') : getTodayDateString();
-                
-                if (!currentRaw || !nextRaw) {
-                    alert("الرجاء إدخال التواريخ المطلوبة.");
-                    return;
-                }
-                item.lastChanged = currentRaw;
-                item.next = nextRaw;
-            }
-
-            item.active = isChecked;
-            saveDatabase();
-            returnToDashboard();
         }
 
         function openCarSettingsView() {
@@ -1725,44 +2144,31 @@
         }
 
         function generateBackupReportText() {
-            let report = `🚗 *تقرير صيانة مركبة - GMax Auto*\n`;
-            report += `--------------------------------\n`;
-            report += `📌 اسم المركبة: ${appDatabase.carName}\n`;
-            report += `🛣 العداد الحالي: ${formatNumberWithSpace(appDatabase.currentOdo)} كم\n`;
-            report += `📅 تاريخ التقرير: 4 أكتوبر 2026\n\n`;
+            let report = `📋 *تقرير صيانة المركبة (${appDatabase.carName})*\n`;
+            report += `🚗 عداد السيارة الحالي: ${formatNumberWithSpace(appDatabase.currentOdo)} كم\n`;
+            report += `📅 تاريخ التقرير: ${convertDateToReadableArabic(getTodayDateString())}\n\n`;
             
-            report += `⚙ *المؤشرات المفعلة حالياً:*\n`;
             for (let key in appDatabase.metrics) {
                 let m = appDatabase.metrics[key];
                 if (m.active) {
-                    let lastReadable = (m.unit === "تاريخ") ? convertDateToReadableArabic(m.lastChanged) : formatNumberWithSpace(m.lastChanged) + " كم";
-                    let nextReadable = (m.unit === "تاريخ") ? convertDateToReadableArabic(m.next) : formatNumberWithSpace(m.next) + " كم";
-                    let labelStart = (m.unit === "تاريخ") ? "بداية الصلاحية" : "آخر تغيير";
-                    let labelEnd = (m.unit === "تاريخ") ? "انتهاء الصلاحية" : "الحد القادم";
-                    report += `- ${m.title}: ${labelStart} (${lastReadable}) / ${labelEnd} (${nextReadable})\n`;
+                    report += `🔹 *${m.title}* (مفعل)\n`;
                 }
             }
-            report += `\n🤖 تم التصدير عبر تطبيق GMax Auto المساعد الذكي للصيانة.`;
             return report;
         }
 
         function sendBackupViaWhatsApp() {
-            const text = encodeURIComponent(generateBackupReportText());
-            window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+            let text = generateBackupReportText();
+            let url = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank');
             closeBackupModal();
         }
 
         function sendBackupViaSMS() {
-            const text = encodeURIComponent(generateBackupReportText());
-            window.open(`sms:?body=${text}`, '_blank');
+            let text = generateBackupReportText();
+            let url = `sms:?body=${encodeURIComponent(text)}`;
+            window.open(url, '_blank');
             closeBackupModal();
-        }
-
-        function exitApp() {
-            if (document.exitFullscreen) document.exitFullscreen();
-            document.getElementById('app-content-wrapper').style.display = "none";
-            document.getElementById('welcome-page').style.display = "flex";
-            updateGlobalWelcomeLight();
         }
     </script>
 </body>
