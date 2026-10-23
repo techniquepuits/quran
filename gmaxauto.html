@@ -1,0 +1,2686 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GMAX AUTO - مساعدك الذكي للصيانة</title>
+    
+    <!-- استدعاء مكتبات Firebase الحديثة -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDRKHdIzq2juXY5HaRXa6C-V9jAIhJIlSs",
+            authDomain: "gmaxauto.firebaseapp.com",
+            projectId: "gmaxauto",
+            storageBucket: "gmaxauto.firebasestorage.app",
+            messagingSenderId: "635663618304",
+            appId: "1:635663618304:web:9cdde1b73006cbf6d723e5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const provider = new GoogleAuthProvider();
+
+        window.firebaseAuth = auth;
+        window.firebaseDb = db;
+        window.googleProvider = provider;
+        window.signInWithPopup = signInWithPopup;
+        window.signOut = signOut;
+        window.doc = doc;
+        window.getDoc = getDoc;
+        window.setDoc = setDoc;
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user && window.isCloudStorage) {
+                console.log("المستخدم مسجل دخول سحابياً:", user.email);
+                await window.loadCloudData(user.uid);
+            }
+        });
+    </script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        .container, .main-container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .main-container {
+            padding: 20px;
+            min-height: calc(100vh - 70px);
+        }
+
+        .content-wrap {
+            flex: 1;
+            width: 100%;
+        }
+
+        #welcome-page {
+            width: 100%;
+            max-width: 500px;
+            height: calc(100vh - 65px);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding-top: 6vh;
+            align-items: center;
+            padding-left: 20px;
+            padding-right: 20px;
+            box-sizing: border-box;
+            background-color: #121212;
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999;
+            overflow-y: auto;
+            padding-bottom: 30px;
+        }
+        
+        .gmax-brand {
+            font-size: 70px;
+            font-weight: 900;
+            letter-spacing: -2px;
+            line-height: 1;
+            display: flex;
+            direction: ltr;
+        }
+        .gmax-white { color: #ffffff; }
+        .gmax-gold { color: #b8860b; }
+
+        .auto-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #3a86c8;
+            text-transform: uppercase;
+            letter-spacing: 12px;
+            margin: 0 0 12px 12px;
+            direction: ltr;
+        }
+
+        .logo-lockup { display: flex; flex-direction: column; align-items: center; margin-bottom: 26px; }
+        .logo-lockup .gmax-brand { font-family: 'Avenir Next', Futura, 'Century Gothic', 'Trebuchet MS', 'Segoe UI', sans-serif; font-size: 66px; font-weight: 800; letter-spacing: -1px; }
+        .auto-row { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; margin-top: 6px; direction: ltr; }
+        .auto-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, #b8860b); }
+        .auto-line:last-child { background: linear-gradient(to left, transparent, #b8860b); }
+        .logo-lockup .auto-text { font-family: 'Avenir Next', Futura, 'Century Gothic', 'Trebuchet MS', sans-serif; font-size: 19px; font-weight: 600; letter-spacing: 6px; margin: 0 0 0 6px; }
+        .main-subtitle {
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            margin-top: 8px;
+            font-weight: 300;
+            letter-spacing: 0.3px;
+        }
+
+        .single-global-light {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-bottom: 25px;
+            background-color: #4caf50;
+            box-shadow: 0 0 16px #4caf50;
+        }
+
+        .welcome-odometer-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 25px;
+            width: 100%;
+        }
+        .odo-why-btn { position: relative; width: 20px; height: 20px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.45); font-size: 12px; line-height: 18px; text-align: center; margin-top: 6px; cursor: pointer; user-select: none; }
+        .odo-why-btn::after { content: ''; position: absolute; inset: -12px; }
+        .odo-why-btn:active { border-color: #b8860b; color: #b8860b; }
+
+        .welcome-odometer-text {
+            background-color: #1a1a1a;
+            border: 1px solid #333333;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 18px;
+            font-weight: bold;
+            padding: 8px 10px;
+            border-radius: 10px;
+            text-align: center;
+            width: 130px;
+            direction: ltr;
+            user-select: none;
+            cursor: pointer;
+        }
+
+        .start-app-btn {
+            background-color: #b8860b;
+            color: #000000;
+            border: none;
+            padding: 15px 45px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(184, 134, 11, 0.3);
+            margin-bottom: 12px;
+            width: 80%;
+        }
+        .start-app-btn:active { transform: scale(0.95); }
+
+        .google-login-btn {
+            background-color: #ffffff;
+            color: #333333;
+            border: none;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+            width: 80%;
+            margin-top: 5px;
+        }
+        .google-login-btn:active { transform: scale(0.95); }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #2d2d2d;
+            padding-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .title-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .page-title { 
+            font-size: 16px; 
+            font-weight: bold; 
+            color: #b8860b; 
+        }
+        .seg-tabs { width: 100%; margin-bottom: 22px; box-sizing: border-box; padding: 4px; border-radius: 14px; background: #1a1a1a; display: flex; flex-direction: column; gap: 4px; }
+        .seg-row { display: flex; gap: 4px; }
+        .seg-tab { position: relative; flex: 1; min-width: 0; padding: 9px 2px; background: none; border: none; border-radius: 10px; color: #8a8a8a; font-family: inherit; font-size: 13px; font-weight: bold; cursor: pointer; white-space: nowrap; transition: background .15s, color .15s; -webkit-tap-highlight-color: transparent; }
+        .seg-wide { display: block; width: 100%; }
+        .seg-tab.active { color: #d4a017; background: #2c2c2c; box-shadow: 0 1px 3px rgba(0,0,0,0.45); }
+        .seg-tab:not(.active):active { background: #232323; }
+        .seg-tab .seg-dot { position: absolute; top: 6px; left: 8px; width: 7px; height: 7px; margin: 0; box-shadow: none; opacity: 0.9; }
+        .nav-tabs { display: flex; gap: 6px; width: 100%; margin-bottom: 50px; padding-bottom: 3px; border-bottom: 1px solid #2d2d2d; box-sizing: border-box; }
+        .nav-tab { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; padding: 6px 0 0; border-radius: 12px; border: 1px solid transparent; }
+        .nav-tab.active .home-card-icon-box { border-color: #b8860b; background-color: rgba(184,134,11,0.12); }
+        .nav-tab.active .nav-tab-label { color: #b8860b; }
+        .nav-tab .home-card-icon-box { width: 38px; height: 38px; font-size: 17px; }
+        .guide-line { text-align: center; color: #888; font-size: 13px; line-height: 1.9; padding: 40px 24px 10px; }
+        .alert-section-title { font-size: 14px; font-weight: bold; margin: 6px 0 8px; }
+        .alert-section-title.red { color: #f44336; }
+        .alert-section-title.yellow { color: #ff9800; }
+        .alert-section { margin-bottom: 22px; }
+        .alert-line { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 11px 2px; border-bottom: 1px solid #2d2d2d; font-size: 13px; color: rgba(255,255,255,0.88); line-height: 1.7; }
+        .alert-line .status-light { flex: none; margin: 0; }
+        .alert-line { cursor: pointer; }
+        .alert-line:active { background: #1c1c1c; }
+        .nav-tab-label { font-size: 11px; font-weight: bold; color: #aaa; white-space: nowrap; }
+        .tab-icon-box { position: relative; }
+        .indicators-table td.col-indicator { white-space: normal; line-height: 1.4; }
+        .alerts-empty { text-align: center; padding: 50px 20px; }
+        .alerts-empty-check { font-size: 28px; color: rgba(129,199,132,0.55); line-height: 1; margin-bottom: 12px; }
+        .alerts-empty-text { font-size: 14px; font-weight: bold; color: rgba(255,255,255,0.85); line-height: 1.8; }
+        .alerts-basis { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 14px; line-height: 1.8; }
+        .alerts-basis.warn { color: rgba(255,152,0,0.7); }
+        .alerts-empty-sub { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 8px; line-height: 1.7; }
+
+        .header-mini-brand { display: flex; flex-direction: column; align-items: flex-start; cursor: pointer; user-select: none; }
+        .mini-brand-row { font-size: 15px; font-weight: 900; letter-spacing: -0.5px; line-height: 1; display: flex; direction: ltr; }
+        .mini-brand-sub { font-size: 9.5px; color: #888888; margin-top: 2px; letter-spacing: 0; white-space: nowrap; }
+
+        .unified-close-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.8);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .unified-close-btn:active {
+            background-color: rgba(255, 255, 255, 0.25);
+            color: #fff;
+        }
+
+        .num-ltr {
+            direction: ltr;
+            unicode-bidi: embed;
+            display: inline-block;
+        }
+
+        .indicators-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 5px;
+            background-color: #181818;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #2d2d2d;
+            table-layout: fixed;
+        }
+        
+        .indicators-table th, 
+        .indicators-table td {
+            padding: 12px 8px;
+            font-size: 12px;
+            border-bottom: 1px solid #282828;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+
+        .table-col-titles { display: flex; font-size: 11px; color: rgba(255,255,255,0.6); padding: 0 1px 5px; margin-top: 0; }
+        .table-col-titles span:nth-child(1) { width: 45%; text-align: right; padding-right: 10px; box-sizing: border-box; }
+        .table-col-titles span:nth-child(2) { width: 40%; text-align: center; }
+        .table-col-titles span:nth-child(3) { width: 15%; text-align: center; }
+        .global-tabs-hint { font-size: 12px; color: rgba(255,255,255,0.45); text-align: center; margin: 0 0 16px; }
+        .group-help-wrap { display: flex; justify-content: flex-start; margin: 16px 0 20px; }
+        .indicators-table th {
+            background-color: #1e1e1e;
+            color: #b8860b;
+            font-weight: bold;
+        }
+
+        .indicators-table tr {
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .indicators-table tr:hover {
+            background-color: rgba(184, 134, 11, 0.08);
+        }
+        .indicators-table tr:last-child td { border-bottom: none; }
+
+        .col-indicator { width: 45%; text-align: right; color: #b8860b; font-weight: bold; padding-right: 10px; }
+        .col-remaining { width: 40%; text-align: center; color: #ffffff; font-weight: bold; }
+        .col-toggle { width: 15%; text-align: center; }
+
+        .status-light {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            margin: 0 auto;
+            box-shadow: 0 0 8px rgba(0,0,0,0.5);
+        }
+        .status-green { background-color: #4caf50; box-shadow: 0 0 8px #4caf50; }
+        .status-yellow { background-color: #ff9800; box-shadow: 0 0 8px #ff9800; }
+        .status-red { background-color: #f44336; box-shadow: 0 0 8px #f44336; }
+        .status-none { background-color: rgba(255, 255, 255, 0.22); box-shadow: none; }
+        @keyframes odoPulse { 0%,100% { text-shadow: 0 0 0 rgba(184,134,11,0); } 50% { text-shadow: 0 0 14px rgba(184,134,11,0.9); } }
+        .odo-attention { animation: odoPulse 1.3s infinite; }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 30px;
+            width: 100%;
+        }
+        .home-card-icon-box {
+            width: 36px; height: 36px;
+            background-color: #262626;
+            border: 1px solid #383838;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; flex-shrink: 0;
+        }
+
+        .home-card {
+            background-color: #1e1e1e;
+            border: 1px solid #2d2d2d;
+            border-radius: 12px;
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            width: 100%;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        .home-card:active { border-color: #b8860b; }
+        .home-card-title { font-size: 16px; font-weight: bold; color: #fff; }
+        .home-card .status-light { margin: 0; flex: none; }
+
+        .bottom-nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 500px;
+            height: 65px;
+            background-color: #181818;
+            border-top: 1px solid #2d2d2d;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 10000;
+            box-sizing: border-box;
+            padding: 0 5px;
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            height: 100%;
+            cursor: pointer;
+            color: rgba(255,255,255,0.55);
+            transition: color 0.2s;
+            user-select: none;
+            background: none;
+            border: none;
+            position: relative;
+        }
+
+        .bottom-nav-item.active {
+            color: #b8860b;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 6px;
+            box-shadow: 0 0 4px rgba(255, 255, 255, 0.1);
+        }
+
+        .bottom-nav-item:active {
+            color: #b8860b;
+        }
+
+        .bottom-nav-icon {
+            display: flex; align-items: center; justify-content: center;
+            height: 24px; margin-bottom: 3px;
+        }
+        .ico { display: block; flex-shrink: 0; }
+        .up-sheet-x, .up-sheet-ok { display: inline-flex; align-items: center; justify-content: center; padding: 0; }
+        .home-card > span:last-child { display: flex; align-items: center; color: #b8860b; }
+        .home-card-icon-box { color: rgba(255,255,255,0.75); }
+        .nav-tab.active .home-card-icon-box { color: #b8860b; }
+        .alerts-empty-check { display: flex; justify-content: center; }
+
+        .bottom-nav-label {
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .wizard-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 35000;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+        .wizard-container {
+            background-color: #1e1e1e;
+            color: #ffffff;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 390px;
+            height: 600px;
+            max-height: 95vh;
+            padding: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-sizing: border-box;
+            border: 2px solid #b8860b;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: stretch;
+        }
+
+        .wizard-header-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #b8860b;
+            text-align: right;
+            margin-bottom: 4px;
+            flex-shrink: 0;
+        }
+        
+        .wizard-display-box {
+            background-color: #121212;
+            border: 2px solid #444;
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 18px;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            direction: rtl;
+            flex-shrink: 0;
+        }
+        
+        .wizard-number-part { direction: ltr; unicode-bidi: embed; color: rgba(255, 255, 255, 0.6); }
+        .wizard-unit-part { color: rgba(255, 255, 255, 0.6); font-size: 14px; font-weight: normal; }
+
+        .checklist-container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 10px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        .checklist-item {
+            background-color: #262626;
+            border: 1px solid #444;
+            padding: 10px 12px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            user-select: none;
+            color: #ffffff;
+        }
+        .checklist-checkbox {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #666;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+        }
+        .checklist-item.checked .checklist-checkbox {
+            background-color: #b8860b;
+            border-color: #b8860b;
+            color: #000;
+        }
+
+        .numpad-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 4px;
+            margin-bottom: 8px;
+            flex-shrink: 0;
+        }
+        .numpad-btn {
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 6px;
+            padding: 6px 0;
+            font-size: 13px;
+            font-weight: bold;
+            color: #ffffff;
+            cursor: pointer;
+            user-select: none;
+            text-align: center;
+        }
+        .numpad-btn:active { background-color: #444; }
+        .numpad-btn-del { background-color: #3a1a1a; color: #ff8888; border-color: #552222; font-size: 11px; }
+        
+        .numpad-actions-row {
+            display: flex;
+            gap: 10px;
+            margin-top: auto;
+            flex-shrink: 0;
+            padding-top: 5px;
+        }
+        .numpad-action-btn { flex: 1; padding: 12px; border-radius: 8px; border: none; font-size: 14px; font-weight: bold; cursor: pointer; }
+        .numpad-cancel-btn { background-color: #333; color: #ccc; }
+        .numpad-confirm-btn { background-color: #b8860b; color: #000; }
+
+        .wizard-calendar-box {
+            background-color: #121212;
+            border: 1px solid #444;
+            border-radius: 10px;
+            padding: 8px;
+            margin-bottom: 8px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .cal-nav-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #181818;
+            padding: 3px 6px;
+            border-radius: 6px;
+            margin-bottom: 3px;
+        }
+        .cal-nav-btn { background: none; border: 1px solid #444; color: #b8860b; font-weight: bold; padding: 2px 6px; border-radius: 4px; cursor: pointer; }
+        .cal-nav-label { font-size: 12px; font-weight: bold; color: #fff; direction: rtl; }
+        
+        .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; margin-bottom: 4px; }
+        .cal-weekday-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 22px;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .cal-days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; overflow-y: auto; }
+        .cal-day-cell {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            border-radius: 4px;
+            background-color: #252525;
+            color: #fff;
+            cursor: pointer;
+            user-select: none;
+        }
+        .cal-day-cell.selected { background-color: #b8860b !important; color: #000 !important; font-weight: bold; }
+
+        .date-display-box {
+            background-color: #262626;
+            border: 1px solid #444;
+            color: rgba(255, 255, 255, 0.6);
+            padding: 8px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            flex-grow: 1;
+        }
+        
+        .date-display-box.editable { color: #fff; cursor: pointer; }
+        .date-display-box { border-color: rgba(255,255,255,0.25) !important; }
+        .date-display-box.touched { border-color: #b8860b !important; }
+        .date-display-box.editable:active { background-color: rgba(184,134,11,0.15); }
+        .tap-hint { font-size: 11px; color: rgba(255,255,255,0.5); text-align: left; direction: rtl; margin: -2px 0 6px 0; }
+        .field-row-inline {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+            flex-shrink: 0;
+        }
+
+        .field-label-text {
+            font-size: 12px;
+            color: #b8860b;
+            font-weight: bold;
+            width: 85px;
+            flex-shrink: 0;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #2d2d2d;
+            font-size: 13px;
+        }
+        .detail-row:last-child { border-bottom: none; }
+        .detail-label { color: rgba(255, 255, 255, 0.6); }
+        .detail-val { font-weight: bold; color: #fff; }
+        
+        .detail-actions-row { display: flex; gap: 10px; margin-top: 12px; }
+        .detail-act-btn { flex: 1; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; box-sizing: border-box; }
+        .detail-act-update { background-color: #332710; border: 1px solid #b8860b; color: #ffda75; box-shadow: 0 2px 8px rgba(184, 134, 11, 0.3); }
+        .detail-act-update:active { background-color: #b8860b; color: #000; }
+
+        .up-summary { font-size: 12px; color: rgba(255,255,255,0.6); text-align: center; margin-top: 6px; }
+        .trip-line { text-align: center; font-size: 13px; color: rgba(255,255,255,0.55); margin: 34px 0 0; }
+        .up-fld-lbl { font-size: 11px; font-weight: bold; color: #245a98; margin: 6px 2px 3px; }
+        .up-sheet .date-display-box.pick { cursor: pointer; }
+        .up-sheet .date-display-box.on { border: 2px solid #2f6fb5 !important; background: #fff; }
+        #up-sheet-body .spec-display { direction: ltr; min-height: 22px; padding: 10px; font-size: 16px; font-weight: bold; border-radius: 8px; border: 1px solid #b8bec7; background: #fff; color: #1d3d66; text-align: center; margin: 8px 0; word-break: break-all; }
+        .spec-kb { direction: ltr; display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; }
+        .skb-btn { padding: 8px 0; font-size: 12px; font-weight: bold; border-radius: 5px; background: #f4f4f1; border: 1px solid #b8bec7; color: #222; cursor: pointer; user-select: none; min-width: 0; }
+        .skb-btn:active { background: #d3dbe6; }
+        .skb-space { grid-column: span 4; font-size: 11px; }
+        .skb-del { grid-column: span 3; background: #f6dcd6; border-color: #e3b5ab; color: #b3261e; font-size: 11px; }
+        .up-warn-text { font-size: 14px; line-height: 2; text-align: center; color: #1d3d66; margin-top: 14px; }
+        .up-sheet .up-summary { color: #3d5a80; margin: 5px 0 6px; }
+        .detail-top-info { font-size: 12px; color: rgba(255,255,255,0.6); }
+        #detail-page-container.up-locked .page-header, #detail-page-container.up-locked #detail-page-content-area, #detail-page-container.up-locked #detail-page-action-container { pointer-events: none; }
+        .detail-act-update { position: relative; }
+        .up-seg { display: flex; gap: 0; }
+        .up-seg-btn { flex: 1; padding: 13px 6px; font-size: 14px; font-weight: bold; background: #1f1f1f; border: 1px solid #444; color: #ccc; cursor: pointer; }
+        .up-seg-btn:first-child { border-radius: 0 10px 10px 0; }
+        .up-seg-btn:last-child { border-radius: 10px 0 0 10px; border-right: none; }
+        .up-seg-btn:active { background: #2a2a2a; }
+        .detail-act-update { background: #1f1f1f; border: 1px solid #444; color: #fff; box-shadow: none; }
+        .detail-act-update:active { background: #2a2a2a; color: #fff; }
+        .detail-back-btn { display: block; width: 100%; margin-top: 12px; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; box-sizing: border-box; background: #1f1f1f; border: 1px solid #444; color: #fff; font-family: inherit; }
+        .detail-back-btn:active { background: #2a2a2a; }
+        .cfg-btn { display: inline-flex; align-items: center; gap: 5px; height: 40px; margin: 0; padding: 0 2px 0 8px; background: none; border: none; color: #b8860b; font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+        .cfg-btn svg { stroke-width: 2.6; }
+        .cfg-btn:active { opacity: 0.6; }
+        #up-sheet-overlay { position: fixed; inset: 0; z-index: 36500; pointer-events: none; }
+        .up-sheet { position: absolute; left: 50%; transform: translateX(-50%); width: calc(100% - 24px); max-width: 476px; box-sizing: border-box; background: #1e1e1e; border: 1px solid rgba(255,255,255,0.3); border-radius: 14px; padding: 12px 14px 14px; box-shadow: 0 6px 22px rgba(0,0,0,0.6); pointer-events: auto; display: flex; flex-direction: column; }
+        .up-sheet-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-shrink: 0; }
+        .up-sheet-title { font-size: 14px; font-weight: bold; color: #b8860b; }
+        #up-sheet-field { flex-shrink: 0; }
+        #up-error { min-height: 0; margin: 0; }
+        #up-error:empty { display: none; }
+        #up-sheet-field .date-display-box { text-align: center; font-size: 15px; padding: 10px 12px; }
+        #up-sheet-body { flex: 1; min-height: 0; overflow-y: auto; margin-top: 0; }
+        #up-sheet-body .wizard-calendar-box { margin-top: 2px; flex-grow: 0; }
+        .up-sheet-actions { display: flex; gap: 8px; margin-top: 10px; flex-shrink: 0; }
+        .up-act { flex: 1; height: 52px; font-size: 11px !important; line-height: 1.3; direction: rtl !important; padding: 0 4px !important; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; }
+        .up-act.on { background: #fff !important; border: 2px solid #2f6fb5 !important; }
+        .up-sheet-ok { flex: 1; background: #b8860b; color: #000; border: none; border-radius: 10px; height: 52px; font-size: 14px; font-weight: bold; cursor: pointer; }
+        .up-sheet-x { flex: 1; background: #333; color: #ccc; border: none; border-radius: 10px; height: 52px; font-size: 13px; font-weight: bold; cursor: pointer; }
+        .up-label { font-size: 11px; color: #b8860b; margin: 0 0 4px 0; font-weight: bold; }
+        #up-sheet-body .numpad-btn { padding: 12px 0; font-size: 16px; }
+        #up-sheet-body .numpad-grid { gap: 6px; }
+        #up-sheet-body .suggestion-chip-btn { padding: 10px 2px; font-size: 11px; }
+        .suggestions-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+            margin-bottom: 8px;
+            flex-shrink: 0;
+        }
+        .suggestion-chip-btn {
+            background-color: #1f2937;
+            border: 1px solid #b8860b;
+            color: #ffda75;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 6px 2px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+            direction: ltr;
+        }
+        .suggestion-chip-btn.active-suggestion {
+            border-color: #ffffff !important;
+            background-color: #3a2f10;
+        }
+        .suggestion-chip-btn:active {
+            background-color: #b8860b;
+            color: #000;
+        }
+        
+        .error-inline-msg {
+            color: #f44336;
+            font-size: 11px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 6px;
+            min-height: 16px;
+        }
+    
+        #fuel-overlay { position: fixed; inset: 0; z-index: 36600; display: none; align-items: flex-end; justify-content: center; background: none; }
+        .fuel-sheet { width: calc(100% - 24px); max-width: 476px; box-sizing: border-box; margin-bottom: 12px; background: #e3e3df; border: 1.5px solid #2f6fb5; border-radius: 14px; padding: 12px 14px 14px; box-shadow: 0 8px 28px rgba(0,0,0,0.7); color: #1d3d66; animation: decideIn 0.16s ease-out; }
+        .fuel-title { font-size: 14px; font-weight: bold; color: #245a98; margin-bottom: 8px; }
+        .fuel-amount-box { direction: ltr; text-align: center; background: #f4f4f1; border: 2px solid #2f6fb5; border-radius: 10px; padding: 10px; font-size: 26px; font-weight: bold; color: #1d3d66; min-height: 34px; }
+        .fuel-amount-box.empty { color: #9aa6b6; font-size: 16px; line-height: 34px; padding: 10px; }
+        .fuel-chips { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin: 8px 0; direction: ltr; }
+        .fuel-chip { background: #f4f4f1; border: 1px solid #2f6fb5; color: #1f4f8a; border-radius: 8px; padding: 10px 0; font-size: 13px; font-weight: bold; font-family: inherit; cursor: pointer; }
+        .fuel-chip:active { background: #2f6fb5; color: #fff; }
+        .fuel-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; direction: ltr; }
+        .fuel-key { background: #f4f4f1; border: 1px solid #b8bec7; color: #222; border-radius: 8px; padding: 12px 0; font-size: 17px; font-family: inherit; cursor: pointer; }
+        .fuel-key:active { background: #d3dbe6; }
+        .fuel-key.del { background: #f6dcd6; border-color: #e3b5ab; color: #b3261e; }
+        .fuel-date-row { display: flex; align-items: center; justify-content: space-between; margin: 10px 0 0; font-size: 13px; color: #3d5a80; }
+        .fuel-date-row input { font-family: inherit; font-size: 14px; color: #1d3d66; background: #f4f4f1; border: 1px solid #aeb6c2; border-radius: 8px; padding: 6px 8px; }
+        .fuel-err { color: #b3261e; font-size: 12px; min-height: 16px; margin-top: 6px; }
+        .fuel-actions { display: flex; gap: 8px; margin-top: 8px; }
+        .fuel-ok { flex: 2; background: #2f6fb5; color: #fff; border: none; border-radius: 10px; height: 52px; font-size: 14px; font-weight: bold; font-family: inherit; cursor: pointer; }
+        .fuel-x { flex: 1; background: #c9ccd1; color: #333; border: none; border-radius: 10px; height: 52px; font-size: 13px; font-weight: bold; font-family: inherit; cursor: pointer; }
+        .fuel-add-btn { width: 100%; background: #2f6fb5; color: #fff; border: none; border-radius: 12px; height: 54px; font-size: 16px; font-weight: bold; font-family: inherit; cursor: pointer; margin: 6px 0 12px; }
+        .fuel-total { text-align: center; padding: 10px 6px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.25); border-radius: 12px; }
+        .fuel-total-label { font-size: 12px; color: rgba(255,255,255,0.6); }
+        .fuel-total-val { font-size: 24px; font-weight: bold; color: #ffda75; margin-top: 2px; }
+        .fuel-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 6px; border-bottom: 1px solid rgba(255,255,255,0.12); font-size: 15px; }
+        .fuel-row .fuel-d { color: rgba(255,255,255,0.75); direction: ltr; }
+        .fuel-row .fuel-a { color: #fff; font-weight: bold; }
+        .fuel-del { background: none; border: none; color: #e57373; font-size: 18px; padding: 4px 10px; cursor: pointer; font-family: inherit; }
+        .fuel-empty { text-align: center; color: #888; font-size: 13px; padding: 24px 10px; }
+        .fuel-copy { width: 100%; margin-top: 14px; background: #1a1a1a; border: 1px solid #b8860b; color: #ffda75; border-radius: 8px; padding: 12px; font-weight: bold; font-size: 13px; font-family: inherit; cursor: pointer; }
+        .fuel-status { text-align: center; font-size: 12px; min-height: 16px; margin-top: 6px; color: #76ff03; }
+        #up-sheet-overlay { background: none; }
+        #welcome-odo-overlay { background-color: transparent; }
+        @keyframes decideIn { from { opacity: 0; margin-top: 8px; } to { opacity: 1; margin-top: 0; } }
+        .up-sheet, #welcome-odo-overlay .wizard-container { animation: decideIn 0.16s ease-out; }
+
+        .up-sheet { background: #e3e3df; border: 1.5px solid #2f6fb5; color: #1d3d66; box-shadow: 0 8px 28px rgba(0,0,0,0.7); }
+        .up-sheet .up-sheet-title, .up-sheet .up-label, .up-sheet .wizard-header-title { color: #245a98; }
+        .up-sheet .numpad-btn { background: #f4f4f1; border: 1px solid #b8bec7; color: #222; }
+        .up-sheet .numpad-btn:active { background: #d3dbe6; }
+        .up-sheet .numpad-btn-del { background: #f6dcd6; border-color: #e3b5ab; color: #b3261e !important; }
+        .up-sheet .suggestion-chip-btn { background: #f4f4f1; border: 1px solid #2f6fb5; color: #1f4f8a; }
+        .up-sheet .suggestion-chip-btn.active-suggestion { background: #2f6fb5; color: #fff; }
+        .up-sheet .up-sheet-ok, .up-sheet .numpad-confirm-btn { background: #2f6fb5; color: #fff; }
+        .up-sheet .up-sheet-x, .up-sheet .numpad-cancel-btn { background: #c9ccd1; color: #333; }
+        .up-sheet .odo-why-btn { color: #3d5a80; border-color: #8091a8; }
+        .up-sheet .wizard-display-box { background: #f4f4f1; border: 2px solid #b8bec7; }
+        .up-sheet .wizard-number-part, .up-sheet .wizard-unit-part { color: #1d3d66; }
+        .up-sheet .date-display-box { background: #f4f4f1; color: #3d5a80; border-color: #aeb6c2 !important; }
+        .up-sheet .date-display-box.editable { color: #1d3d66; }
+        .up-sheet .date-display-box.touched { border-color: #2f6fb5 !important; }
+        .up-sheet .field-label-text { color: #3d5a80; }
+        .up-sheet .tap-hint { color: #5d7391; }
+        .up-sheet .error-inline-msg { color: #b3261e; }
+        .up-sheet .wizard-calendar-box { background: #ececE8; border-color: #b8bec7; }
+        .up-sheet .cal-nav-row { background: #d5d8dc; }
+        .up-sheet .cal-nav-btn { color: #245a98; border-color: #a9b4c4; }
+        .up-sheet .cal-nav-label { color: #1d3d66; }
+        .up-sheet .cal-weekday-badge { color: rgba(29,61,102,0.65); }
+        .up-sheet .cal-day-cell { background: #f4f4f1; color: #1d3d66; }
+        .up-sheet .cal-day-cell.selected { background: #2f6fb5 !important; color: #fff !important; }
+        .up-sheet [style*="rgba(255,255,255"] { color: #2b4a73 !important; }
+        .up-sheet [style*="#ff9800"] { color: #b45f00 !important; }
+
+        #welcome-odo-overlay .wizard-container { background: #e3e3df; border: 1.5px solid #2f6fb5; color: #1d3d66; box-shadow: 0 8px 28px rgba(0,0,0,0.7); }
+        #welcome-odo-overlay .wizard-container .up-sheet-title, #welcome-odo-overlay .wizard-container .up-label, #welcome-odo-overlay .wizard-container .wizard-header-title { color: #245a98; }
+        #welcome-odo-overlay .wizard-container .numpad-btn { background: #f4f4f1; border: 1px solid #b8bec7; color: #222; }
+        #welcome-odo-overlay .wizard-container .numpad-btn:active { background: #d3dbe6; }
+        #welcome-odo-overlay .wizard-container .numpad-btn-del { background: #f6dcd6; border-color: #e3b5ab; color: #b3261e !important; }
+        #welcome-odo-overlay .wizard-container .suggestion-chip-btn { background: #f4f4f1; border: 1px solid #2f6fb5; color: #1f4f8a; }
+        #welcome-odo-overlay .wizard-container .suggestion-chip-btn.active-suggestion { background: #2f6fb5; color: #fff; }
+        #welcome-odo-overlay .wizard-container .up-sheet-ok, #welcome-odo-overlay .wizard-container .numpad-confirm-btn { background: #2f6fb5; color: #fff; }
+        #welcome-odo-overlay .wizard-container .up-sheet-x, #welcome-odo-overlay .wizard-container .numpad-cancel-btn { background: #c9ccd1; color: #333; }
+        #welcome-odo-overlay .wizard-container .odo-why-btn { color: #3d5a80; border-color: #8091a8; }
+        #welcome-odo-overlay .wizard-container .wizard-display-box { background: #f4f4f1; border: 2px solid #b8bec7; }
+        #welcome-odo-overlay .wizard-container .wizard-number-part, #welcome-odo-overlay .wizard-container .wizard-unit-part { color: #1d3d66; }
+        #welcome-odo-overlay .wizard-container .date-display-box { background: #f4f4f1; color: #3d5a80; border-color: #aeb6c2 !important; }
+        #welcome-odo-overlay .wizard-container .date-display-box.editable { color: #1d3d66; }
+        #welcome-odo-overlay .wizard-container .date-display-box.touched { border-color: #2f6fb5 !important; }
+        #welcome-odo-overlay .wizard-container .field-label-text { color: #3d5a80; }
+        #welcome-odo-overlay .wizard-container .tap-hint { color: #5d7391; }
+        #welcome-odo-overlay .wizard-container .error-inline-msg { color: #b3261e; }
+        #welcome-odo-overlay .wizard-container .wizard-calendar-box { background: #ececE8; border-color: #b8bec7; }
+        #welcome-odo-overlay .wizard-container .cal-nav-row { background: #d5d8dc; }
+        #welcome-odo-overlay .wizard-container .cal-nav-btn { color: #245a98; border-color: #a9b4c4; }
+        #welcome-odo-overlay .wizard-container .cal-nav-label { color: #1d3d66; }
+        #welcome-odo-overlay .wizard-container .cal-weekday-badge { color: rgba(29,61,102,0.65); }
+        #welcome-odo-overlay .wizard-container .cal-day-cell { background: #f4f4f1; color: #1d3d66; }
+        #welcome-odo-overlay .wizard-container .cal-day-cell.selected { background: #2f6fb5 !important; color: #fff !important; }
+        #welcome-odo-overlay .wizard-container [style*="rgba(255,255,255"] { color: #2b4a73 !important; }
+        #welcome-odo-overlay .wizard-container [style*="#ff9800"] { color: #b45f00 !important; }
+
+        .up-sheet, #welcome-odo-overlay .wizard-container {
+            border: 1px solid #b8bec7;
+            border-right: 7px solid #2f6fb5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- شاشة الترحيب مع خيار البدء محلياً أو بتسجيل الدخول بجوجل -->
+        <div id="welcome-page">
+            <div class="logo-lockup">
+                <div class="gmax-brand">
+                    <span class="gmax-white">G</span><span class="gmax-gold">MAX</span>
+                </div>
+                <div class="auto-row"><span class="auto-line"></span><span class="auto-text">AUTO</span><span class="auto-line"></span></div>
+                <div class="main-subtitle">مساعدك الذكي للصيانة</div>
+            </div>
+            <div class="single-global-light"></div>
+            
+            <div class="welcome-odometer-section">
+                <div class="welcome-odometer-text" id="welcome-odo-display" onclick="openWelcomeOdoModal()">120 000</div>
+            </div>
+
+            <!-- أزرار البدء واختيار طريقة التخزين -->
+            <button class="start-app-btn" id="startBtn" onclick="startAppLocal()">بدء الاستخدام محلياً</button>
+            <button class="google-login-btn" onclick="startAppWithGoogle()">
+                <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.19v3.15C3.21 21.32 7.27 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.61H1.19C.43 8.15 0 9.89 0 12s.43 3.85 1.19 5.39l4.08-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.27 0 3.21 2.68 1.19 6.61l4.08 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
+                ربط بحساب جوجل (سحابي)
+            </button>
+
+            <div class="odo-why-btn" style="position: fixed; top: 16px; left: 16px; margin: 0; z-index: 5;" onclick="showWelcomeHelp()">؟</div>
+        </div>
+
+        <!-- التطبيق الرئيسي -->
+        <div id="main-app-container" style="display: none; width: 100%; min-height: 100vh;">
+            <div class="main-container">
+                <div class="content-wrap">
+                    <div class="page-header">
+                        <div class="title-area">
+                            <button class="cfg-btn" id="cfg-btn" onclick="openGlobalActivatorPage()" aria-label="تفعيل المؤشرات"><span data-ico="menu" data-s="22"></span><span class="page-title" id="editor-title">المؤشرات</span></button>
+                        </div>
+                        <div class="header-mini-brand" onclick="goHome()">
+                            <div class="mini-brand-row"><span style="color:#ffffff;">G</span><span style="color:#b8860b;">MAX</span><span style="color:#3a86c8;">AUTO</span></div>
+                            <div class="mini-brand-sub">مساعدك الذكي للصيانة</div>
+                        </div>
+                    </div>
+
+                    <div id="categories-filter-bar-container"></div>
+                    <div id="editor-form-container"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة الإعدادات العامة -->
+        <div id="settings-page-container" style="display: none; width: 100%; min-height: 100vh; box-sizing: border-box;">
+            <div class="main-container">
+                <div class="content-wrap">
+                    <div class="page-header">
+                        <div class="title-area">
+                            <span class="page-title">الإعدادات العامة</span>
+                        </div>
+                        <div class="header-mini-brand" onclick="goHome()"><div class="mini-brand-row"><span style="color:#ffffff;">G</span><span style="color:#b8860b;">MAX</span><span style="color:#3a86c8;">AUTO</span></div><div class="mini-brand-sub">مساعدك الذكي للصيانة</div></div>
+                    </div>
+                    <div class="cards-container">
+                        <div class="home-card" id="cloud-status-card" style="display: none;" onclick="toggleCloudSync()">
+                            <span class="home-card-title" id="cloud-status-title">الحساب السحابي: متصل</span>
+                            <span data-ico="backup" data-s="26"></span>
+                        </div>
+                        <div class="home-card" onclick="openBackupPage()">
+                            <span class="home-card-title">النسخة الاحتياطية</span>
+                            <span data-ico="backup" data-s="26"></span>
+                        </div>
+                        <div class="home-card" onclick="openNotesPage()">
+                            <span class="home-card-title">ملاحظات</span>
+                            <span data-ico="note" data-s="26"></span>
+                        </div>
+                        <div class="home-card" onclick="openFactoryResetModal()" style="border-color: rgba(244, 67, 54, 0.4);">
+                            <span class="home-card-title" style="color: #f44336;">إعادة ضبط المصنع (تفريغ الذاكرة)</span>
+                            <span style="color: #f44336;" data-ico="trash" data-s="26"></span>
+                        </div>
+                    </div>
+                    <div class="group-help-wrap"><div class="odo-why-btn" style="margin:0;" onclick="showSettingsPageHelp()">؟</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة الملاحظات -->
+        <div id="notes-page-container" style="display: none; width: 100%; min-height: 100vh; box-sizing: border-box;">
+            <div class="main-container">
+                <div class="content-wrap" style="display: flex; flex-direction: column;">
+                    <div class="page-header">
+                        <div class="title-area">
+                            <span class="page-title">ملاحظات</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:14px;"><button class="unified-close-btn" onclick="closeNotesPage()">غلق</button><div class="header-mini-brand" onclick="goHome()"><div class="mini-brand-row"><span style="color:#ffffff;">G</span><span style="color:#b8860b;">MAX</span><span style="color:#3a86c8;">AUTO</span></div><div class="mini-brand-sub">مساعدك الذكي للصيانة</div></div></div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; flex-grow: 1; margin-bottom: 20px;">
+                        <textarea id="notes-textarea" dir="auto" spellcheck="false" autocomplete="off" placeholder="اكتب ملاحظاتك هنا..." oninput="onNotesInput()" style="width: 100%; min-height: 55vh; background-color: #181818; color: #ffffff; border: 1px solid #333; border-radius: 10px; padding: 12px; font-size: 16px; line-height: 1.7; box-sizing: border-box; resize: vertical; font-family: inherit;"></textarea>
+                        <div id="notes-status" style="font-size: 12px; min-height: 16px; color: rgba(255,255,255,0.55);"></div>
+                        <div style="display: flex; gap: 8px;">
+                            <button onclick="saveNotes()" style="flex: 2; background-color: #b8860b; color: #000; border: none; padding: 14px; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 14px; font-family: inherit;">حفظ</button>
+                            <button onclick="copyNotes()" style="flex: 1; background-color: #1a1a1a; border: 1px solid #b8860b; color: #ffda75; padding: 14px; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 14px; font-family: inherit;">نسخ</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة تفعيل المؤشرات -->
+        <div id="global-activator-page-container" style="display: none; width: 100%; min-height: 100vh; box-sizing: border-box;">
+            <div class="main-container">
+                <div class="content-wrap" style="display: flex; flex-direction: column;">
+                    <div class="page-header">
+                        <div class="title-area">
+                            <span class="page-title">تفعيل المؤشرات</span>
+                        </div>
+                        <div class="header-mini-brand" onclick="goHome()"><div class="mini-brand-row"><span style="color:#ffffff;">G</span><span style="color:#b8860b;">MAX</span><span style="color:#3a86c8;">AUTO</span></div><div class="mini-brand-sub">مساعدك الذكي للصيانة</div></div>
+                    </div>
+                    <div id="global-tabs-container"></div>
+                    <div class="checklist-container" id="global-settings-list-container" style="gap: 12px; flex-grow: 1; overflow-y: auto; margin-bottom: 8px;"></div>
+                    <button class="detail-back-btn" style="margin: 6px 0 24px;" onclick="saveGlobalSettingsChanges()">حفظ والعودة إلى المؤشرات</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة النسخة الاحتياطية -->
+        <div id="backup-page-container" style="display: none; width: 100%; min-height: 100vh; box-sizing: border-box;">
+            <div class="main-container">
+                <div class="content-wrap" style="display: flex; flex-direction: column;">
+                    <div class="page-header">
+                        <div class="title-area">
+                            <span class="page-title">النسخة الاحتياطية</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:14px;"><button class="unified-close-btn" onclick="closeBackupPageModal()">غلق</button><div class="header-mini-brand" onclick="goHome()"><div class="mini-brand-row"><span style="color:#ffffff;">G</span><span style="color:#b8860b;">MAX</span><span style="color:#3a86c8;">AUTO</span></div><div class="mini-brand-sub">مساعدك الذكي للصيانة</div></div></div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; flex-grow: 1; margin-bottom: 20px;">
+                        <div style="font-size: 12px; color: #b8860b; font-weight: bold;">معلومات التخزين:</div>
+                        <textarea id="backup-textarea-content" readonly style="width: 100%; flex-grow: 1; min-height: 350px; background-color: #181818; color: #76ff03; border: 1px solid #333; border-radius: 8px; padding: 10px; font-size: 11px; box-sizing: border-box; resize: none; font-family: monospace;" dir="ltr"></textarea>
+                        
+                        <div style="display: flex; gap: 8px; margin-top: 10px;">
+                            <button onclick="downloadBackupJson()" style="flex: 1; background-color: #b8860b; color: #000; border: none; padding: 12px; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 12px;">تنزيل ملف JSON</button>
+                            <button onclick="triggerUploadJson()" style="flex: 1; background-color: #1a1a1a; border: 1px solid #b8860b; color: #ffda75; padding: 12px; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 12px;">تحميل ملف JSON</button>
+                            <input type="file" id="json-file-input" style="display: none;" accept=".json" onchange="handleFileSelected(event)">
+                        </div>
+                        <div id="undo-import-row" style="display: none;">
+                            <button onclick="undoLastImport()" style="width: 100%; background: none; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.7); padding: 10px; border-radius: 8px; cursor: pointer; font-size: 12px;"><span data-ico="undo" data-s="15" style="display:inline-flex;vertical-align:middle;margin-left:6px;"></span>التراجع عن آخر استرجاع</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- تفاصيل المؤشر الفرعي -->
+        <div id="detail-page-container" style="display: none; width: 100%; min-height: 100vh; box-sizing: border-box;">
+            <div class="main-container">
+                <div class="content-wrap" style="display: flex; flex-direction: column;">
+                    <div class="page-header">
+                        <div class="title-area">
+                            <span class="page-title" id="detail-page-title"></span>
+                        </div>
+                        <div class="header-mini-brand" onclick="goHome()"><div class="mini-brand-row"><span style="color:#ffffff;">G</span><span style="color:#b8860b;">MAX</span><span style="color:#3a86c8;">AUTO</span></div><div class="mini-brand-sub">مساعدك الذكي للصيانة</div></div><span id="detail-top-info" style="display:none;"></span>
+                    </div>
+                    <div style="background-color: #181818; border: 1px solid #2d2d2d; border-radius: 12px; padding: 15px; margin-bottom: 15px;" id="detail-page-content-area"></div>
+
+                    <div id="detail-page-action-container"></div>
+                    <div class="group-help-wrap" style="margin: 14px 0 0;"><div class="odo-why-btn" style="margin:0;" onclick="showDetailPageHelp()">؟</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- شريط التنقل السفلي -->
+    <div class="bottom-nav-bar" id="bottom-nav-bar">
+        <button class="bottom-nav-item" id="nav-indicators-btn" onclick="navigateMainDashboard()">
+            <span class="bottom-nav-icon" data-ico="gauge" data-s="24"></span>
+            <span class="bottom-nav-label">المؤشرات</span>
+        </button>
+        <button class="bottom-nav-item" id="nav-expenses-btn" onclick="navigateExpensesPage()">
+            <span class="bottom-nav-icon" data-ico="wallet" data-s="24"></span>
+            <span class="bottom-nav-label">المصاريف</span>
+        </button>
+        <button class="bottom-nav-item" id="nav-settings-btn" onclick="navigateSettingsPage()">
+            <span class="bottom-nav-icon" style="color: #5a9bd5;" data-ico="menu" data-s="24"></span>
+            <span class="bottom-nav-label">المزيد</span>
+        </button>
+    </div>
+
+    <!-- نافذة تعبئة وقود -->
+    <div id="fuel-overlay">
+        <div class="fuel-sheet">
+            <div class="fuel-title">تعبئة وقود: المبلغ المدفوع (دج)</div>
+            <div id="fuel-amount" class="fuel-amount-box empty">اكتب المبلغ</div>
+            <div class="fuel-chips">
+                <button class="fuel-chip" onclick="fuelSetAmount(1000)">1000</button>
+                <button class="fuel-chip" onclick="fuelSetAmount(1500)">1500</button>
+                <button class="fuel-chip" onclick="fuelSetAmount(2000)">2000</button>
+                <button class="fuel-chip" onclick="fuelSetAmount(2500)">2500</button>
+                <button class="fuel-chip" onclick="fuelSetAmount(3000)">3000</button>
+            </div>
+            <div class="fuel-pad">
+                <button class="fuel-key" onclick="fuelKey('1')">1</button><button class="fuel-key" onclick="fuelKey('2')">2</button><button class="fuel-key" onclick="fuelKey('3')">3</button>
+                <button class="fuel-key" onclick="fuelKey('4')">4</button><button class="fuel-key" onclick="fuelKey('5')">5</button><button class="fuel-key" onclick="fuelKey('6')">6</button>
+                <button class="fuel-key" onclick="fuelKey('7')">7</button><button class="fuel-key" onclick="fuelKey('8')">8</button><button class="fuel-key" onclick="fuelKey('9')">9</button>
+                <button class="fuel-key" onclick="fuelKey('00')">00</button><button class="fuel-key" onclick="fuelKey('0')">0</button><button class="fuel-key del" onclick="fuelKey('del')">⌫</button>
+            </div>
+            <div class="fuel-date-row"><span>التاريخ</span><input type="date" id="fuel-date"></div>
+            <div id="fuel-err" class="fuel-err"></div>
+            <div class="fuel-actions">
+                <button class="fuel-x" onclick="fuelClose()">إلغاء</button>
+                <button class="fuel-ok" onclick="fuelSave()">حفظ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- لوحة التعديل المنبثقة -->
+    <div id="up-sheet-overlay" style="display:none;">
+        <div class="up-sheet">
+            <div class="up-sheet-head">
+                <span id="up-sheet-title" class="up-sheet-title"></span>
+                <div class="odo-why-btn" style="margin:0;" onclick="showSheetHelp()">؟</div>
+            </div>
+            <div id="up-sheet-field"></div>
+            <div id="up-error" class="error-inline-msg"></div>
+            <div id="up-sheet-body"></div>
+            <div class="up-sheet-actions" id="up-warn-actions" style="display:none;">
+                <button class="up-sheet-x" onclick="upWarnBack()">رجوع</button>
+                <button class="up-sheet-ok" onclick="upWarnYes()">نعم، أنا متأكد</button>
+            </div>
+            <div class="up-sheet-actions" id="up-gate-actions" style="display:none;"></div>
+            <div class="up-sheet-actions" id="up-main-actions">
+                <button class="suggestion-chip-btn up-act" id="up-act-presets" onclick="upBackToPresets()"></button>
+                <button class="suggestion-chip-btn up-act" id="up-act-input" onclick="upEnterInput()"></button>
+                <button class="up-sheet-x" onclick="upSheetCancel()">إلغاء</button>
+                <button class="up-sheet-ok" id="up-sheet-ok" onclick="upSheetOk()">تأكيد</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- رسائل الإعداد الأولي -->
+    <div id="onboarding-overlay" class="wizard-overlay" style="z-index: 38000;">
+        <div class="wizard-container" style="height: auto !important; max-height: 95vh !important;">
+            <div class="wizard-header-title" id="ob-title"></div>
+            <div id="ob-text" style="font-size: 14px; line-height: 1.9; text-align: center; margin: 16px 0; color: rgba(255,255,255,0.85);"></div>
+            <div class="numpad-actions-row">
+                <button class="numpad-action-btn numpad-confirm-btn" id="ob-btn"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة العداد -->
+    <div id="welcome-odo-overlay" class="wizard-overlay" style="z-index: 37000;">
+        <div class="wizard-container" style="height: auto !important; max-height: 95vh !important;">
+            <div class="wizard-header-title" id="odo-dlg-title"></div>
+            <div id="odo-dlg-content"></div>
+            <div class="numpad-actions-row" id="odo-dlg-actions"></div>
+        </div>
+    </div>
+
+    <!-- تأكيد استيراد ملف JSON -->
+    <div id="backup-confirm-overlay" class="wizard-overlay">
+        <div class="wizard-container" style="height: auto !important; max-height: 90vh !important;">
+            <div class="wizard-header-title">تأكيد استيراد البيانات</div>
+            <div style="padding: 6px 2px; margin: 8px 0; font-size: 13px; line-height: 1.6;">
+                <p style="color: #ff9800; margin: 0 0 8px 0; font-weight: bold;">تحذير: سيتم استبدال جميع البيانات الحالية بالبيانات الموجودة في الملف.</p>
+                <div class="detail-row"><span class="detail-label">اسم الملف:</span><span class="detail-val" id="confirm-filename">-</span></div>
+                <div class="detail-row"><span class="detail-label">عداد السيارة:</span><span class="detail-val"><span class="num-ltr" id="confirm-odo">-</span> كم</span></div>
+            </div>
+            <div id="backup-error-msg" class="error-inline-msg"></div>
+            <div class="numpad-actions-row" style="margin-top: 15px;">
+                <button class="numpad-action-btn numpad-cancel-btn" onclick="closeBackupConfirmModal()">إلغاء</button>
+                <button class="numpad-action-btn numpad-confirm-btn" onclick="executeBackupImport()">تأكيد الاستبدال</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة توضيح تاريخ اليوم -->
+    <div id="date-info-overlay" class="wizard-overlay" style="z-index: 39000;">
+        <div class="wizard-container" style="height: auto !important; max-height: 90vh !important;">
+            <div class="wizard-header-title" id="info-title">تاريخ اليوم</div>
+            <div id="info-body" style="padding: 6px 2px; margin: 8px 0; font-size: 13px; line-height: 1.8; color: #ddd;"></div>
+            <div class="numpad-actions-row" style="margin-top: 15px;">
+                <button class="numpad-action-btn numpad-confirm-btn" onclick="document.getElementById('date-info-overlay').style.display='none'">حسنًا</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة إعادة ضبط المصنع -->
+    <div id="factory-reset-overlay" class="wizard-overlay">
+        <div class="wizard-container" style="height: auto !important; max-height: 90vh !important;">
+            <div class="wizard-header-title" style="color: #f44336;">تأكيد إعادة ضبط المصنع</div>
+            <div style="padding: 6px 2px; margin: 8px 0; font-size: 13px; line-height: 1.6;">
+                <p style="color: #f44336; margin: 0 0 8px 0; font-weight: bold;">تحذير خطير: سيتم مسح البيانات نهائياً!</p>
+                <p style="color: #ccc; margin: 0; font-size: 12px;">هل أنت متأكد من رغبتك في المتابعة؟</p>
+            </div>
+            <div class="numpad-actions-row" style="margin-top: 15px;">
+                <button class="numpad-action-btn numpad-cancel-btn" onclick="closeFactoryResetModal()">إلغاء</button>
+                <button class="numpad-action-btn" onclick="executeFactoryReset()" style="background-color: #f44336; color: #fff;">تفريغ وحذف الكل</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const monthsAlgeria = ["جانفي", "فيفري", "مارس", "أفريل", "ماي", "جوان", "جويلية", "أوت", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+        const arabicFullWeekdays = ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+        
+        let currentModule = 'none';
+        let lastVisitedGroup = null;
+        let lastIndicatorsView = 'alerts';
+        let detailOrigin = 'group';
+        let appStarted = false;
+        let pendingImportData = null;
+
+        // متغيرات نظام التخزين الهجين الجديد
+        window.isCloudStorage = false;
+
+        const MODULE_ORDER = ['docs', 'oil', 'belts', 'general'];
+
+        const ICONS = {
+            gauge: '<path d="M3.5 17a9 9 0 1117 0"/><path d="M12 14l4-5"/><circle cx="12" cy="14" r="1.2"/>',
+            wallet: '<path d="M4 7a2 2 0 012-2h12v4"/><path d="M4 7v11a2 2 0 002 2h14V9H6a2 2 0 01-2-2z"/><circle cx="16.5" cy="14.5" r="1"/>',
+            menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
+            docs: '<path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/>',
+            oil: '<path d="M12 3s6 6.5 6 11a6 6 0 01-12 0c0-4.5 6-11 6-11z"/><path d="M9.5 14.5a2.7 2.7 0 002.5 2.5"/>',
+            belts: '<circle cx="7.5" cy="12" r="4.5"/><circle cx="18" cy="12" r="2.5"/><path d="M7.5 7.5L18 9.5M7.5 16.5L18 14.5" stroke-dasharray="2.2 1.6"/><circle cx="7.5" cy="12" r="1" fill="currentColor"/>',
+            general: '<path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>',
+            fuel: '<path d="M4 21V5a2 2 0 012-2h7a2 2 0 012 2v16"/><path d="M3 21h13"/><path d="M7 8h5"/><path d="M15 9h2a2 2 0 012 2v5a1.5 1.5 0 003 0V9l-3-3"/>',
+            misc: '<rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/>',
+            tune: '<path d="M4 6h8M16 6h4M4 12h3M11 12h9M4 18h9M17 18h3"/><circle cx="14" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="15" cy="18" r="2"/>',
+            backup: '<path d="M12 4v11"/><path d="M7.5 10.5L12 15l4.5-4.5"/><path d="M5 19h14"/>',
+            trash: '<path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v5M14 11v5"/>',
+            keyboard: '<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10h.01M11 10h.01M15 10h.01M7 14h10"/>',
+            calendar: '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/>',
+            check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+            undo: '<path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/>',
+            note: '<path d="M4 20h4L19 9a2.1 2.1 0 00-3-3L5 17z"/><path d="M14 7l3 3"/>'
+        };
+        function ico(name, size) {
+            size = size || 20;
+            return `<svg class="ico" viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name] || ''}</svg>`;
+        }
+        function hydrateIcons() {
+            document.querySelectorAll('[data-ico]').forEach(el => { el.innerHTML = ico(el.dataset.ico, parseInt(el.dataset.s) || 20); });
+        }
+
+        const LINKS = {
+            vidange: { mod: 'oil',   key: 'engineOilNextOdo', counter: 'vidange',   next: 'الفيدونج القادم', x2: 'الفيدونج ×2', x3: 'الفيدونج ×3',  due: 'حان الفيدونج',   countLabel: 'عدد تغييرات الزيت المسجّلة' },
+            pads:    { mod: 'general', key: 'brakePadsFront', counter: 'padsCycle',  next: 'الأمامية القادمة', x2: 'الأمامية ×2', x3: 'الأمامية ×3', due: 'حان تغيير البلاكات', countLabel: 'عدد تغييرات البلاكات الأمامية المسجّلة' },
+            discs:   { mod: 'general', key: 'discsFront',     counter: 'discsCycle', next: 'الأمامية القادمة', x2: 'الأمامية ×2', x3: 'الأمامية ×3', due: 'حان تغيير الأقراص', countLabel: 'عدد تغييرات الأقراص الأمامية المسجّلة' },
+            belt:    { mod: 'belts', key: 'timingBelt',       counter: 'beltCycle', next: 'الحزام القادم',   x2: 'الحزام ×2', x3: 'الحزام ×3',    due: 'حان تغيير الحزام', countLabel: 'عدد تغييرات حزام التوزيع المسجّلة' }
+        };
+
+        const metadata = {
+            docs: [
+                { key: 'insurance', label: 'التأمين', type: 'time', presets: [3, 6, 12] },
+                { key: 'techControl', label: 'المراقبة التقنية', type: 'time', presets: [12, 24, 36] },
+                { key: 'gplControl', label: 'مراقبة GPL', type: 'time', presets: [12, 24, 36] },
+                { key: 'extinguisherControl', label: 'مراقبة الطفاية', type: 'time', presets: [6, 12, 24] },
+                { key: 'drivingLicense', label: 'رخصة السياقة', type: 'time', presets: [36, 60, 120] },
+                { key: 'grayCard', label: 'البطاقة الرمادية', type: 'time', presets: [12, 24, 60] },
+                { key: 'vignette', label: 'القسيمة', type: 'time', presets: [12, 24, 36] },
+                { key: 'transitLicense', label: 'رخصة التنقل', type: 'time', presets: [6, 12, 24] }
+            ],
+            oil: [
+                { key: 'engineOilNextOdo', label: 'زيت المحرك', type: 'km', defaultMax: '10000', presets: [5000, 7500, 10000, 12000, 15000], spec: { label: 'نوع الزيت', presets: ['5W-30', '5W-40', '10W-40', '15W-40', '0W-30'], warn: 'درجة الزيت يحدّدها مصنّع محركك.' } },
+                { key: 'oilFilter', label: 'فلتر الزيت', type: 'km', defaultMax: '10000', presets: [5000, 7500, 10000, 12000, 15000], link: 'vidange' },
+                { key: 'airFilter', label: 'فلتر الهواء', type: 'km', defaultMax: '20000', presets: [10000, 15000, 20000, 25000, 30000], link: 'vidange' },
+                { key: 'fuelFilter', label: 'فلتر الوقود', type: 'km', defaultMax: '30000', presets: [10000, 15000, 20000, 30000, 40000], link: 'vidange' },
+                { key: 'acFilter', label: 'فلتر المكيف', type: 'km', defaultMax: '20000', presets: [10000, 15000, 20000, 25000, 30000], link: 'vidange' },
+                { key: 'gearOil', label: 'زيت علبة السرعة', type: 'km', defaultMax: '40000', presets: [40000, 60000, 80000, 100000, 120000], spec: { label: 'نوع زيت العلبة', presets: ['ATF', '75W-80', '75W-90', '80W-90', 'CVT'], warn: 'أنواع زيوت علب السرعة غير قابلة للتبادل.' } }
+            ],
+            belts: [
+                { key: 'timingBelt', label: 'حزام التوزيع', type: 'km', defaultMax: '60000', presets: [60000, 80000, 100000, 120000, 150000] },
+                { key: 'tensioner', label: 'الشداد', type: 'km', defaultMax: '60000', presets: [60000, 80000, 100000, 120000, 150000], link: 'belt' },
+                { key: 'accessoryBelts', label: 'أحزمة اللواحق', type: 'km', defaultMax: '40000', presets: [40000, 60000, 80000, 100000, 120000] },
+                { key: 'waterPump', label: 'مضخة الماء', type: 'km', defaultMax: '60000', presets: [60000, 80000, 100000, 120000, 150000], link: 'belt' }
+            ],
+            general: [
+                { key: 'brakeFluid', label: 'سائل الفرامل', type: 'time', presets: [12, 24, 36], spec: { label: 'درجة سائل الفرامل', presets: ['DOT 3', 'DOT 4', 'DOT 4 LV', 'DOT 5.1', 'DOT 5'], warn: 'تختلف درجات السوائل في حرارة الغليان.' } },
+                { key: 'coolant', label: 'سائل التبريد', type: 'time', presets: [12, 24, 48], spec: { label: 'نوع سائل التبريد', presets: ['G11 أخضر', 'G12 أحمر', 'G12+ وردي', 'G12++ / G13 بنفسجي', 'جاهز مخلوط'], warn: 'أنواع سائل التبريد لا تُخلط.' } },
+                { key: 'powerSteering', label: 'زيت المقود', type: 'km', defaultMax: '50000', presets: [30000, 50000, 60000, 80000, 100000], spec: { label: 'نوع زيت المقود', presets: ['ATF', 'PSF', 'معدني', 'CHF', 'LHM'], warn: 'أنواع زيوت المقود لا تُخلط.' } },
+                { key: 'brakePadsFront', label: 'بلاكات أمامية', type: 'km', defaultMax: '40000', presets: [20000, 30000, 40000, 50000, 60000] },
+                { key: 'brakePadsRear', label: 'بلاكات خلفية', type: 'km', defaultMax: '80000', presets: [40000, 60000, 80000, 100000, 120000], link: 'pads', defaultBasis: 'v2' },
+                { key: 'discsFront', label: 'أقراص أمامية', type: 'km', defaultMax: '80000', presets: [60000, 80000, 100000, 120000, 150000] },
+                { key: 'discsRear', label: 'أقراص خلفية', type: 'km', defaultMax: '100000', presets: [80000, 100000, 120000, 150000, 200000], link: 'discs', defaultBasis: 'v2' },
+                { key: 'sparkPlugs', label: 'شمعات الاحتراق', type: 'km', defaultMax: '40000', presets: [20000, 30000, 40000, 60000, 100000], spec: { label: 'نوع الشمعات', presets: ['نحاس', 'بلاتين', 'إريديوم', 'مزدوجة', 'فضة'], warn: 'نوع الشمعة يحدده مصنع محركك.' } }
+            ]
+        };
+
+        function getItemMeta(modKey, itemKey) {
+            return (metadata[modKey] || []).find(i => i.key === itemKey) || null;
+        }
+        function isTimeItem(modKey, itemKey) {
+            let m = getItemMeta(modKey, itemKey);
+            return !!(m && m.type === 'time');
+        }
+
+        function makeEmptyRecords() {
+            let rec = {
+                car: { odoLog: [], odometer: { lastManualOdo: 0, lastManualDate: getTodayDateString(), averageMileage: 2000, rateUserSet: false, currentEstimatedOdo: 0, lastManualTs: 0 } }
+            };
+            Object.keys(LINKS).forEach(n => { rec[LINKS[n].counter] = { count: 0 }; });
+            MODULE_ORDER.forEach(mod => {
+                rec[mod] = {};
+                metadata[mod].forEach(item => {
+                    rec[mod][item.key] = item.type === 'time'
+                        ? { expiryDate: '', active: false }
+                        : { max: 0, lastDate: '', lastOdo: 0, active: false };
+                });
+            });
+            return rec;
+        }
+
+        let isFirstRun = true;
+        try { isFirstRun = localStorage.getItem('gmax_records') === null; } catch (e) { isFirstRun = true; }
+        let onboardingStep = null;
+        let records = makeEmptyRecords();
+
+        function mergeSavedRecords(saved) {
+            let rec = makeEmptyRecords();
+            if (!saved || typeof saved !== 'object') return rec;
+
+            if (saved.car && saved.car.odometer && typeof saved.car.odometer === 'object') {
+                let so = saved.car.odometer;
+                if (Number.isFinite(so.lastManualOdo) && so.lastManualOdo >= 0 && so.lastManualOdo <= 999999) rec.car.odometer.lastManualOdo = so.lastManualOdo;
+                if (isValidDateStr(so.lastManualDate)) rec.car.odometer.lastManualDate = so.lastManualDate;
+                if (Number.isFinite(so.lastManualTs) && so.lastManualTs > 0 && so.lastManualTs < 4102444800000) rec.car.odometer.lastManualTs = so.lastManualTs;
+                if (Number.isFinite(so.averageMileage) && so.averageMileage >= 100 && so.averageMileage <= 15000) rec.car.odometer.averageMileage = Math.round(so.averageMileage);
+                if (Number.isFinite(so.currentEstimatedOdo) && so.currentEstimatedOdo >= 0 && so.currentEstimatedOdo <= 999999) rec.car.odometer.currentEstimatedOdo = so.currentEstimatedOdo;
+                rec.car.odometer.rateUserSet = so.rateUserSet === true;
+                if (!rec.car.odometer.rateUserSet) rec.car.odometer.averageMileage = 2000;
+            }
+            if (saved.car && Array.isArray(saved.car.odoLog)) {
+                rec.car.odoLog = saved.car.odoLog
+                    .filter(e => e && Number.isFinite(e.odo) && e.odo >= 0 && e.odo <= 999999 && isValidDateStr(e.date))
+                    .map((e, i) => ({ seq: Number.isFinite(e.seq) ? e.seq : i + 1, date: e.date, odo: e.odo }));
+            } else {
+                rec.car.odoLog = undefined;
+                ensureOdoLog(rec);
+            }
+
+            Object.keys(LINKS).forEach(n => {
+                let c = saved[LINKS[n].counter];
+                if (c && Number.isInteger(c.count) && c.count >= 0 && c.count <= 100000) rec[LINKS[n].counter] = { count: c.count };
+            });
+
+            MODULE_ORDER.forEach(mod => {
+                metadata[mod].forEach(item => {
+                    let o = saved[mod] && saved[mod][item.key];
+                    if (!o && item.key === 'powerSteering' && saved.fluids) o = saved.fluids.powerSteering;
+                    if (!o && item.key === 'brakePadsFront' && saved[mod]) o = saved[mod].brakePads;
+                    if (!o && item.key === 'discsFront' && saved[mod]) o = saved[mod].brakeDiscs;
+                    if (!o || typeof o !== 'object') return;
+                    if (item.type === 'time') {
+                        if (!isValidDateStr(o.expiryDate)) return;
+                        rec[mod][item.key] = { expiryDate: o.expiryDate, active: o.active !== false };
+                        if (item.spec && typeof o.spec === 'string' && o.spec.trim()) rec[mod][item.key].spec = o.spec.trim().slice(0, 40);
+                    } else {
+                        if (!Number.isFinite(o.max) || o.max < 0 || o.max > 99999999) return;
+                        let t = o.linkTarget !== undefined ? o.linkTarget : o.vidangeTarget;
+                        let obj = {
+                            max: o.max,
+                            lastDate: isValidDateStr(o.lastDate) ? o.lastDate : '',
+                            lastOdo: (Number.isFinite(o.lastOdo) && o.lastOdo >= 0 && o.lastOdo <= 999999) ? o.lastOdo : 0,
+                            active: o.active !== false
+                        };
+                        if (item.link && Number.isInteger(t) && t >= 0 && t <= 100000) obj.linkTarget = t;
+                        if (item.spec && typeof o.spec === 'string' && o.spec.trim()) obj.spec = o.spec.trim().slice(0, 40);
+                        rec[mod][item.key] = obj;
+                    }
+                });
+            });
+            return rec;
+        }
+
+        if (!isFirstRun) {
+            try { records = mergeSavedRecords(JSON.parse(localStorage.getItem('gmax_records'))); } catch (e) {}
+        }
+
+        const MAX_ODO = 999999;
+
+        function parseDateStr(str) {
+            let p = str.split('-');
+            let d = new Date(parseInt(p[0]), parseInt(p[1]) - 1, parseInt(p[2]));
+            d.setHours(0, 0, 0, 0);
+            return d;
+        }
+        function daysBetweenDates(fromStr, toStr) {
+            return Math.round((parseDateStr(toStr) - parseDateStr(fromStr)) / 86400000);
+        }
+
+        function ensureOdoLog(rec) {
+            if (!rec.car) rec.car = {};
+            if (!rec.car.odometer) rec.car.odometer = { lastManualOdo: 0, lastManualDate: getTodayDateString(), averageMileage: 2000, currentEstimatedOdo: 0 };
+            if (!Array.isArray(rec.car.odoLog)) {
+                let o = rec.car.odometer;
+                rec.car.odoLog = (o.lastManualDate && Number.isFinite(o.lastManualOdo) && o.lastManualOdo > 0)
+                    ? [{ seq: 1, date: o.lastManualDate, odo: o.lastManualOdo }] : [];
+            }
+        }
+
+        function syncOdoFromLog() {
+            let o = records.car.odometer;
+            let log = records.car.odoLog;
+            if (log.length) {
+                let last = log[log.length - 1];
+                o.lastManualOdo = last.odo;
+                o.lastManualDate = last.date;
+            } else {
+                o.lastManualOdo = 0;
+                o.lastManualDate = getTodayDateString();
+            }
+        }
+
+        function computePersonalMonthlyRate() {
+            let log = records.car.odoLog || [];
+            if (log.length < 2) return null;
+            let today = getTodayDateString();
+            let num = 0, den = 0, totalDays = 0;
+            for (let i = 0; i < log.length - 1; i++) {
+                let days = daysBetweenDates(log[i].date, log[i + 1].date);
+                let km = log[i + 1].odo - log[i].odo;
+                if (days <= 0 || km < 0) continue;
+                let age = Math.max(0, daysBetweenDates(log[i + 1].date, today));
+                let w = Math.pow(0.5, age / 90);
+                num += km * w;
+                den += days * w;
+                totalDays += days;
+            }
+            if (den === 0 || totalDays < 14) return null;
+            let rate = Math.round((30 * num / den) / 10) * 10;
+            return Math.min(15000, Math.max(100, rate));
+        }
+
+        function updateEstimatedOdometerDaily() {
+            if (!records.car || !records.car.odometer) return;
+            ensureOdoLog(records);
+            syncOdoFromLog();
+            let odo = records.car.odometer;
+            let log = records.car.odoLog;
+            if (!log.length) { odo.currentEstimatedOdo = 0; return; }
+            let last = log[log.length - 1];
+            let diffDays = daysBetweenDates(last.date, getTodayDateString());
+            if (diffDays > 0) {
+                let monthlyRate = odo.averageMileage || 2000;
+                odo.currentEstimatedOdo = Math.min(MAX_ODO, Math.round(last.odo + diffDays * (monthlyRate / 30)));
+            } else {
+                odo.currentEstimatedOdo = last.odo;
+            }
+        }
+        updateEstimatedOdometerDaily();
+        
+        let elOdo = document.getElementById('welcome-odo-display');
+        if(elOdo) elOdo.innerText = formatNumberWithSpace(records.car.odometer.currentEstimatedOdo);
+
+        let saveWarned = false;
+
+        // دالة الحفظ الهجينة (تختار سحابياً عبر Firebase أو محلياً عبر LocalStorage بناءً على رغبة المستخدم)
+        async function saveAppData() {
+            updateGlobalLight();
+            try {
+                if (window.isCloudStorage && window.firebaseAuth && window.firebaseAuth.currentUser) {
+                    const user = window.firebaseAuth.currentUser;
+                    await window.setDoc(window.doc(window.firebaseDb, "cars", user.uid), records);
+                    console.log("تم الحفظ في سحابة Firebase بنجاح");
+                } else {
+                    localStorage.setItem('gmax_records', JSON.stringify(records));
+                    console.log("تم الحفظ محلياً في LocalStorage");
+                }
+                saveWarned = false;
+                return true;
+            } catch (e) {
+                console.error("خطأ في حفظ البيانات:", e);
+                if (!saveWarned) {
+                    saveWarned = true;
+                    showInfo('تعذّر الحفظ', 'حدث خطأ أثناء حفظ البيانات. تأكد من اتصالك بالإنترنت إن كنت تستعمل الحساب السحابي.');
+                }
+                return false;
+            }
+        }
+
+        // دالة جلب البيانات من السحاب للمستخدم عند تسجيل الدخول
+        window.loadCloudData = async function(uid) {
+            try {
+                const docSnap = await window.getDoc(window.doc(window.firebaseDb, "cars", uid));
+                if (docSnap.exists()) {
+                    records = mergeSavedRecords(docSnap.data());
+                    console.log("تم جلب بيانات السحاب بنجاح");
+                } else {
+                    // إذا لم تكن موجودة، نرفع البيانات الحالية للسحاب
+                    await saveAppData();
+                }
+                refreshDaily();
+                if (appStarted) navigateMainDashboard();
+            } catch (err) {
+                console.error("خطأ في جلب بيانات السحاب:", err);
+            }
+        };
+
+        // تسجيل الدخول عبر حساب جوجل
+        async function startAppWithGoogle() {
+            try {
+                const result = await window.signInWithPopup(window.firebaseAuth, window.googleProvider);
+                window.isCloudStorage = true;
+                appStarted = true;
+                
+                document.getElementById('welcome-page').style.display = 'none';
+                document.getElementById('cloud-status-card').style.display = 'flex';
+                document.getElementById('cloud-status-title').innerText = `الحساب السحابي: متصل (${result.user.email})`;
+                
+                await window.loadCloudData(result.user.uid);
+                navigateAlertsPage();
+            } catch (error) {
+                console.error("فشل تسجيل الدخول بجوجل:", error);
+                alert("تعذّر إتمام تسجيل الدخول بحساب جوجل. حاول مجدداً.");
+            }
+        }
+
+        // بدء الاستخدام محلياً دون ربط جوجل
+        function startAppLocal() {
+            window.isCloudStorage = false;
+            if (isFirstRun) { installApp(); return; }
+            appStarted = true;
+            lastVisitedGroup = null;
+            lastIndicatorsView = 'alerts';
+            document.getElementById('welcome-page').style.display = 'none';
+            document.getElementById('cloud-status-card').style.display = 'none';
+            navigateAlertsPage();
+        }
+
+        // تبديل أو قطع الاتصال بالسحاب من صفحة الإعدادات
+        async function toggleCloudSync() {
+            if (window.isCloudStorage) {
+                if (confirm('هل تريد قطع الاتصال بالحساب السحابي والانتقال للتخزين المحلي فقط؟')) {
+                    await window.signOut(window.firebaseAuth);
+                    window.isCloudStorage = false;
+                    document.getElementById('cloud-status-card').style.display = 'none';
+                    alert('تم الانتقال إلى وضع التخزين المحلي.');
+                    navigateSettingsPage();
+                }
+            } else {
+                try {
+                    const result = await window.signInWithPopup(window.firebaseAuth, window.googleProvider);
+                    window.isCloudStorage = true;
+                    document.getElementById('cloud-status-card').style.display = 'flex';
+                    document.getElementById('cloud-status-title').innerText = `الحساب السحابي: متصل (${result.user.email})`;
+                    await window.loadCloudData(result.user.uid);
+                    alert('تم ربط الحساب السحابي بنجاح ونقل البيانات!');
+                } catch(e) {
+                    console.error(e);
+                }
+            }
+        }
+
+        let lastRefreshDay = '';
+        function refreshDaily() {
+            updateEstimatedOdometerDaily();
+            let el = document.getElementById('welcome-odo-display');
+            if (el) el.innerText = formatNumberWithSpace(records.car.odometer.currentEstimatedOdo);
+            updateGlobalLight();
+            lastRefreshDay = getTodayDateString();
+        }
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState !== 'visible' || appStarted === false || getTodayDateString() === lastRefreshDay) return;
+            refreshDaily();
+            if (document.getElementById('detail-page-container').style.display === 'block' && currentDetailKey) { if (!singleUpdateState) openDetailModal(currentDetailKey); return; }
+            if (document.getElementById('main-app-container').style.display === 'block' && currentModule) { renderForm(currentModule); updateNavAlertsDot(); }
+        });
+
+        function getTodayDateString() {
+            const now = new Date();
+            return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+        }
+
+        let odoDlg = null;
+
+        function openWelcomeOdoModal() {
+            if (isFirstRun) return;
+            openOdoDialog('welcome');
+        }
+
+        function openOdoDialog(origin) {
+            let o = records.car.odometer;
+            let personal = computePersonalMonthlyRate();
+            odoDlg = {
+                origin: origin,
+                view: 'main',
+                field: 'odo',
+                odo: String(o.currentEstimatedOdo),
+                odoEdited: false,
+                rate: String(personal !== null ? personal : (o.averageMileage || 2000)),
+                personal: personal,
+                prevVal: '',
+                rejectCount: 0,
+                pendingValue: null,
+                msg: ''
+            };
+            renderOdoDialog();
+            document.getElementById('welcome-odo-overlay').style.display = 'flex';
+        }
+
+        function closeOdoDialog() {
+            document.getElementById('welcome-odo-overlay').style.display = 'none';
+            odoDlg = null;
+        }
+
+        function renderOdoDialog() {
+            let d = odoDlg;
+            let titleEl = document.getElementById('odo-dlg-title');
+            let contentEl = document.getElementById('odo-dlg-content');
+            let actionsEl = document.getElementById('odo-dlg-actions');
+            let warn = `<div style="font-size: 11px; color: #ff9800; text-align: center; margin-top: 8px; min-height: 16px; font-weight: bold; line-height: 1.7;">${d.msg || ''}</div>`;
+
+            if (d.view === 'replace') {
+                let log = records.car.odoLog;
+                let last = log[log.length - 1];
+                titleEl.innerText = 'تنبيه';
+                contentEl.innerHTML = `
+                    <div style="font-size: 13px; line-height: 1.9; text-align: center; margin: 14px 0; color: rgba(255,255,255,0.88);">
+                        هذا العدد (<span class="num-ltr">${formatNumberWithSpace(d.pendingValue)}</span> كم) أقل من آخر عدد مسجَّل
+                        (<span class="num-ltr">${formatNumberWithSpace(last.odo)}</span> كم بتاريخ ${convertDateToReadableArabic(last.date)}).<br>
+                        هل تريد استبدال العدد السابق بهذا العدد وبتاريخ اليوم؟
+                    </div>`;
+                actionsEl.innerHTML = `
+                    <button class="numpad-action-btn numpad-cancel-btn" onclick="odoDlg.view='main'; odoDlg.pendingValue=null; renderOdoDialog();">لا</button>
+                    <button class="numpad-action-btn numpad-confirm-btn" onclick="odoDlgFinish('replace')">نعم، استبدل</button>`;
+                return;
+            }
+
+            if (d.view === 'jump') {
+                titleEl.innerText = 'تأكّد من الرقم';
+                contentEl.innerHTML = `
+                    <div style="font-size: 13px; line-height: 1.9; text-align: center; margin: 14px 0; color: rgba(255,255,255,0.88);">
+                        هذا العدد (<span class="num-ltr">${formatNumberWithSpace(d.pendingValue)}</span> كم) أكبر من آخر عدد مسجَّل بـ
+                        <span class="num-ltr">${formatNumberWithSpace(d.jumpKm)}</span> كم خلال <span class="num-ltr">${d.jumpDays}</span> يومًا.<br>
+                        هل أنت متأكد من صحته؟
+                    </div>`;
+                actionsEl.innerHTML = `
+                    <button class="numpad-action-btn numpad-cancel-btn" onclick="odoDlg.view='main'; odoDlg.pendingValue=null; renderOdoDialog();">راجع الرقم</button>
+                    <button class="numpad-action-btn numpad-confirm-btn" onclick="odoDlg.jumpOk=true; odoDlg.view='main'; odoDlgSave();">نعم، صحيح</button>`;
+                return;
+            }
+
+            if (d.view === 'pad') {
+                let isOdo = d.field === 'odo';
+                titleEl.innerText = isOdo ? 'تعديل العداد الحالي' : 'تعديل معدل السير الشهري';
+                contentEl.innerHTML = `
+                    <div class="wizard-display-box" style="margin-top: 8px;">
+                        <span class="wizard-number-part">${formatNumberWithSpace(d[d.field]) || '0'}</span>
+                        <span class="wizard-unit-part">${isOdo ? 'كم' : 'كم / شهر'}</span>
+                    </div>
+                    <div class="numpad-grid" style="margin-top: 10px;">
+                        <button class="numpad-btn" onclick="odoDlgDigit('1')">1</button>
+                        <button class="numpad-btn" onclick="odoDlgDigit('2')">2</button>
+                        <button class="numpad-btn" onclick="odoDlgDigit('3')">3</button>
+                        <button class="numpad-btn" onclick="odoDlgDigit('4')">4</button>
+                        <button class="numpad-btn" onclick="odoDlgDigit('5')">5</button>
+                        <button class="numpad-btn numpad-btn-del" onclick="odoDlgDel()">⌫</button>
+                        <button class="numpad-btn" onclick="odoDlgDigit('6')">6</button>
+                        <button class="numpad-btn" onclick="odoDlgDigit('7')">7</button>
+                        <button class="numpad-btn" onclick="odoDlgDigit('8')">8</button>
+                        <button class="numpad-btn" onclick="odoDlgDigit('9')">9</button>
+                        <button class="numpad-btn" onclick="odoDlgDigit('0')">0</button>
+                        <button class="numpad-btn numpad-btn-del" onclick="odoDlgClear()" style="color:#ff8888;">مسح</button>
+                    </div>
+                    ${warn}`;
+                actionsEl.innerHTML = `
+                    <button class="numpad-action-btn numpad-cancel-btn" onclick="odoDlgPadCancel()">إلغاء</button>
+                    <button class="numpad-action-btn numpad-confirm-btn" onclick="odoDlgPadConfirm()">تأكيد</button>`;
+                return;
+            }
+
+            let o = records.car.odometer;
+            let rateNote = d.personal !== null ? `معدلك الشخصي المحسوب هو <b class="num-ltr">${formatNumberWithSpace(d.personal)}</b> كم/شهر.` : '2 000 كم/شهر متوسط مناسب للبداية.';
+            titleEl.innerText = 'العداد ومعدل السير';
+            contentEl.innerHTML = `
+                <div class="field-row-inline" style="margin-top:8px;">
+                    <span class="field-label-text">تاريخ اليوم:</span>
+                    <div class="date-display-box" onclick="showDateInfo()">${convertDateToReadableArabic(getTodayDateString())}</div>
+                </div>
+                <div class="field-row-inline">
+                    <span class="field-label-text">العداد الحالي:</span>
+                    <div class="date-display-box editable ${d.touchOdo ? 'touched' : ''}" onclick="odoDlg.touchOdo=true; odoDlgOpenPad('odo')"><span class="num-ltr">${formatNumberWithSpace(d.odo) || '—'}</span> كم</div>
+                </div>
+                <div class="field-row-inline">
+                    <span class="field-label-text">معدل السير الشهري:</span>
+                    <div class="date-display-box editable ${d.touchRate ? 'touched' : ''}" onclick="odoDlg.touchRate=true; odoDlgOpenPad('rate')"><span class="num-ltr">${formatNumberWithSpace(d.rate) || '—'}</span> كم</div>
+                </div>
+                <div class="tap-hint">اضغط للتعديل</div>
+                <div style="font-size: 11px; color: rgba(255,255,255,0.55); text-align: center; margin-top: 8px; line-height: 1.7;">${rateNote}</div>
+                ${warn}`;
+            actionsEl.innerHTML = `
+                <button class="numpad-action-btn numpad-cancel-btn" onclick="closeOdoDialog()">إلغاء</button>
+                <button class="numpad-action-btn numpad-confirm-btn" onclick="odoDlgSave()">تأكيد</button>`;
+        }
+
+        function odoDlgOpenPad(field) {
+            odoDlg.field = field;
+            odoDlg.prevVal = odoDlg[field];
+            odoDlg[field] = '';
+            odoDlg.view = 'pad';
+            odoDlg.msg = '';
+            renderOdoDialog();
+        }
+        function odoDlgDigit(dg) {
+            let maxLen = odoDlg.field === 'odo' ? 6 : 5;
+            let cur = odoDlg[odoDlg.field];
+            if (cur === '0') cur = '';
+            if (cur.length >= maxLen) return;
+            odoDlg[odoDlg.field] = cur + dg;
+            odoDlg.msg = '';
+            renderOdoDialog();
+        }
+        function odoDlgDel() {
+            odoDlg[odoDlg.field] = odoDlg[odoDlg.field].slice(0, -1);
+            odoDlg.msg = '';
+            renderOdoDialog();
+        }
+        function odoDlgClear() {
+            odoDlg[odoDlg.field] = '';
+            odoDlg.msg = '';
+            renderOdoDialog();
+        }
+        function odoDlgPadCancel() {
+            odoDlg[odoDlg.field] = odoDlg.prevVal;
+            odoDlg.view = 'main'; odoDlg.msg = '';
+            renderOdoDialog();
+        }
+        function odoDlgPadConfirm() {
+            let d = odoDlg;
+            let v = parseInt(d[d.field], 10);
+            if (isNaN(v)) { d.msg = 'أدخل رقماً'; renderOdoDialog(); return; }
+            if (d.field === 'odo') {
+                if (v < 0 || v > MAX_ODO) { d.msg = 'قيمة العداد غير مقبولة'; renderOdoDialog(); return; }
+                d.odoEdited = true; d.jumpOk = false;
+            } else {
+                if (v < 100 || v > 15000) { d.msg = 'معدل غير معقول'; renderOdoDialog(); return; }
+            }
+            d[d.field] = String(v);
+            d.view = 'main'; d.msg = '';
+            renderOdoDialog();
+        }
+
+        function odoDlgSave() {
+            let d = odoDlg;
+            let odoVal = parseInt(d.odo, 10);
+            let rateVal = parseInt(d.rate, 10);
+            if (isNaN(odoVal) || isNaN(rateVal)) { d.msg = 'أكمل العداد والمعدل'; renderOdoDialog(); return; }
+
+            let log = records.car.odoLog;
+            if (onboardingStep === 'odo' && !d.odoEdited) { d.msg = 'أدخل رقم العداد'; renderOdoDialog(); return; }
+
+            if (!d.odoEdited) { odoDlgFinish('none'); return; }
+            if (log.length === 0) { odoDlgFinish('new'); return; }
+
+            let last = log[log.length - 1];
+            let prev = log.length >= 2 ? log[log.length - 2] : null;
+
+            if (odoVal > last.odo) {
+                let days = Math.max(1, daysBetweenDates(last.date, getTodayDateString()));
+                let expected = days * ((records.car.odometer.averageMileage || 2000) / 30);
+                let jump = odoVal - last.odo;
+                if (!d.jumpOk && jump > Math.max(10000, expected * 3)) {
+                    d.pendingValue = odoVal; d.jumpKm = jump; d.jumpDays = days;
+                    d.view = 'jump'; renderOdoDialog(); return;
+                }
+                odoDlgFinish('new'); return;
+            }
+
+            if (prev && odoVal <= prev.odo) {
+                d.rejectCount++;
+                d.msg = 'هذا العدد أقل من أعداد مسجَّلة سابقاً.';
+                renderOdoDialog();
+                return;
+            }
+            d.pendingValue = odoVal;
+            d.view = 'replace';
+            renderOdoDialog();
+        }
+
+        function odoDlgFinish(mode) {
+            let d = odoDlg;
+            let odoVal = parseInt(d.odo, 10);
+            let rateVal = parseInt(d.rate, 10);
+            let log = records.car.odoLog;
+            let today = getTodayDateString();
+
+            if (mode === 'new') {
+                log.push({ seq: log.length ? log[log.length - 1].seq + 1 : 1, date: today, odo: odoVal });
+            } else if (mode === 'replace') {
+                let last = log[log.length - 1];
+                last.date = today;
+                last.odo = odoVal;
+            }
+
+            let o = records.car.odometer;
+            if (mode !== 'none') o.lastManualTs = Date.now();
+            o.averageMileage = rateVal;
+            o.rateUserSet = true;
+            syncOdoFromLog();
+            o.currentEstimatedOdo = log.length ? log[log.length - 1].odo : 0;
+            if (mode === 'none') updateEstimatedOdometerDaily();
+
+            document.getElementById('welcome-odo-display').innerText = formatNumberWithSpace(o.currentEstimatedOdo);
+            saveAppData();
+            let origin = d.origin;
+            closeOdoDialog();
+            if (onboardingStep === 'odo' && origin === 'welcome') { onboardingAfterOdometer(); return; }
+        }
+
+        let currentDetailKey = "";
+        let detailActiveModule = ""; 
+        let singleUpdateState = null;
+        let tempGlobalSettingsState = {};
+
+        function formatNumberWithSpace(num) {
+            if (isNaN(num) || num === "") return num;
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        }
+
+        function escapeHtml(v) {
+            return String(v === undefined || v === null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+
+        function isValidDateStr(str) {
+            if (typeof str !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(str)) return false;
+            let p = str.split('-').map(Number);
+            let d = new Date(p[0], p[1] - 1, p[2]);
+            return d.getFullYear() === p[0] && d.getMonth() === p[1] - 1 && d.getDate() === p[2];
+        }
+
+        function convertDateToReadableArabic(dateStr) {
+            if (!dateStr || !isValidDateStr(dateStr)) return escapeHtml(dateStr);
+            let parts = dateStr.split('-');
+            let monthIdx = parseInt(parts[1], 10) - 1;
+            return (monthIdx >= 0 && monthIdx < 12) ? `<span dir="rtl" style="unicode-bidi: isolate;">${parseInt(parts[2], 10)} ${monthsAlgeria[monthIdx]} ${parts[0]}</span>` : dateStr;
+        }
+
+        function calculateRemainingDays(expiryDateStr) {
+            if (!expiryDateStr) return 0;
+            let parts = expiryDateStr.split('-');
+            let exp = new Date(Date.UTC(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]), 12, 0, 0));
+            let today = new Date();
+            let todayUtc = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), 12, 0, 0));
+            let diffTime = exp.getTime() - todayUtc.getTime();
+            return Math.round(diffTime / (1000 * 60 * 60 * 24));
+        }
+
+        function getLinkCount(linkName) {
+            return records[LINKS[linkName].counter].count;
+        }
+        function getLinkDiff(modKey, itemKey, obj) {
+            let m = getItemMeta(modKey, itemKey);
+            if (!m || !m.link || !obj || obj.linkTarget === null || obj.linkTarget === undefined) return null;
+            return obj.linkTarget - getLinkCount(m.link);
+        }
+        function getLinkLabel(linkName, diff) {
+            let L = LINKS[linkName];
+            if (diff <= 0) return L.due;
+            if (diff === 1) return L.next;
+            if (diff === 2) return L.x2;
+            if (diff === 3) return L.x3;
+            return `بعد ${diff} تغييرات`;
+        }
+
+        function getIndicatorStatus(modKey, itemKey, dataRec) {
+            let obj = dataRec[itemKey];
+            if (!obj || obj.active === false) return 'green';
+            if (isTimeItem(modKey, itemKey)) {
+                if (!isValidDateStr(obj.expiryDate)) return 'green';
+                let rem = calculateRemainingDays(obj.expiryDate);
+                if (rem <= 0) return 'red';
+                if (rem <= 30) return 'yellow';
+                return 'green';
+            } else {
+                let vDiff = getLinkDiff(modKey, itemKey, obj);
+                if (vDiff !== null) {
+                    if (vDiff <= 0) return 'red';
+                    if (vDiff === 1) {
+                        let A = LINKS[getItemMeta(modKey, itemKey).link];
+                        return getIndicatorStatus(A.mod, A.key, records[A.mod]);
+                    }
+                    return 'green';
+                }
+                let rem = obj.max - records.car.odometer.currentEstimatedOdo;
+                if (rem <= 0) return 'red';
+                if (rem <= 2000) return 'yellow';
+                return 'green';
+            }
+        }
+
+        function getModuleStatus(modKey) {
+            let dataRec = records[modKey];
+            let metaList = metadata[modKey];
+            let hasRed = false;
+            let hasYellow = false;
+            let hasActive = false;
+            metaList.forEach(item => {
+                if (dataRec[item.key] && dataRec[item.key].active !== false) {
+                    hasActive = true;
+                    let st = getIndicatorStatus(modKey, item.key, dataRec);
+                    if (st === 'red') hasRed = true;
+                    if (st === 'yellow') hasYellow = true;
+                }
+            });
+            if (!hasActive) return 'none';
+            if (hasRed) return 'red';
+            if (hasYellow) return 'yellow';
+            return 'green';
+        }
+
+        function updateGlobalLight() {
+            let hasRed = false;
+            let hasYellow = false;
+            let allNone = true;
+            MODULE_ORDER.forEach(modKey => {
+                let st = getModuleStatus(modKey);
+                if (st !== 'none') allNone = false;
+                if (st === 'red') hasRed = true;
+                if (st === 'yellow') hasYellow = true;
+            });
+            let lightEl = document.querySelector('.single-global-light');
+            if (!lightEl) return;
+            lightEl.className = 'single-global-light';
+            if (allNone) {
+                lightEl.style.backgroundColor = 'rgba(255, 255, 255, 0.25)';
+                lightEl.style.boxShadow = 'none';
+            } else if (hasRed) {
+                lightEl.style.backgroundColor = '#f44336';
+                lightEl.style.boxShadow = '0 0 16px #f44336';
+            } else if (hasYellow) {
+                lightEl.style.backgroundColor = '#ff9800';
+                lightEl.style.boxShadow = '0 0 16px #ff9800';
+            } else {
+                lightEl.style.backgroundColor = '#4caf50';
+                lightEl.style.boxShadow = '0 0 16px #4caf50';
+            }
+        }
+
+        updateGlobalLight();
+        document.getElementById('bottom-nav-bar').style.display = 'none';
+
+        function setNavActive(btnId) {
+            document.querySelectorAll('.bottom-nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            let targetBtn = document.getElementById(btnId);
+            if (targetBtn) {
+                targetBtn.classList.add('active');
+            }
+        }
+
+        function hideAllPages(navId) {
+            refreshDaily();
+            if (document.getElementById('detail-page-container').style.display === 'block' && singleUpdateState) {
+                activationCallback = null;
+                singleUpdateState = null;
+            }
+            document.getElementById('detail-page-container').classList.remove('up-locked');
+            document.getElementById('up-sheet-overlay').style.display = 'none';
+            document.getElementById('welcome-page').style.display = 'none';
+            document.getElementById('main-app-container').style.display = 'none';
+            document.getElementById('settings-page-container').style.display = 'none';
+            document.getElementById('global-activator-page-container').style.display = 'none';
+            document.getElementById('backup-page-container').style.display = 'none';
+            document.getElementById('notes-page-container').style.display = 'none';
+            document.getElementById('detail-page-container').style.display = 'none';
+            setNavActive(navId);
+            document.getElementById('bottom-nav-bar').style.display = (appStarted && navId) ? 'flex' : 'none';
+        }
+
+        function navigateToModule(mod) {
+            currentModule = mod;
+            if (MODULE_ORDER.indexOf(mod) !== -1) lastVisitedGroup = mod;
+            if (mod === 'alerts' || MODULE_ORDER.indexOf(mod) !== -1) lastIndicatorsView = mod;
+            let navId = 'nav-indicators-btn';
+            hideAllPages(navId);
+            document.getElementById('main-app-container').style.display = 'block';
+            renderForm(mod);
+            setNavActive(navId);
+        }
+
+        function navigateMainDashboard() {
+            navigateToModule(lastIndicatorsView || 'alerts');
+        }
+
+        function navigateExpensesPage() {
+            currentModule = 'expenses';
+            hideAllPages('nav-expenses-btn');
+            document.getElementById('main-app-container').style.display = 'block';
+            renderForm('expenses');
+        }
+
+        function showExpensesHelp() {
+            showInfo('عن هذه الصفحة', 'هنا تسجّل مصاريف الوقود فقط.');
+        }
+
+        function navigateAlertsPage() {
+            navigateToModule('alerts');
+        }
+
+        function installApp() {
+            try { localStorage.setItem('gmax_records', JSON.stringify(records)); } catch (e) {}
+            isFirstRun = false;
+            onboardingStep = 'odo';
+            document.getElementById('welcome-page').style.display = 'flex';
+            showOnboardingMsg(
+                'مرحباً بك',
+                'اضغط على <b>خانة عداد السيارة</b> في الأعلى، ثم أدخل رقم العداد الحالي.',
+                'حسناً',
+                function() { document.getElementById('welcome-odo-display').classList.add('odo-attention'); }
+            );
+        }
+
+        function onboardingAfterOdometer() {
+            document.getElementById('welcome-odo-display').classList.remove('odo-attention');
+            onboardingStep = 'indicators';
+            showOnboardingMsg(
+                'تم حفظ العداد ✓',
+                'اضغط هنا لإدخال المؤشرات الخاصة بك.',
+                'إدخال المؤشرات',
+                function() { openGlobalActivatorPage(); }
+            );
+        }
+
+        function finishOnboarding() {
+            onboardingStep = null;
+            appStarted = true;
+            navigateAlertsPage();
+        }
+
+        function goHome() {
+            hideAllPages();
+            document.getElementById('welcome-page').style.display = 'flex';
+        }
+
+        function navigateSettingsPage() {
+            currentModule = null;
+            hideAllPages('nav-settings-btn');
+            document.getElementById('settings-page-container').style.display = 'block';
+        }
+
+        const NOTES_KEY = 'gmax_notes_v1';
+        const NOTES_DRAFT_KEY = 'gmax_notes_draft_v1';
+        let notesSaved = '';
+        let notesDraftTimer = null;
+
+        function notesRead(key) {
+            try { let v = localStorage.getItem(key); return (typeof v === 'string') ? v : null; } catch (e) { return null; }
+        }
+        function notesSetStatus(text, color) {
+            let el = document.getElementById('notes-status');
+            el.innerText = text || '';
+            el.style.color = color || 'rgba(255,255,255,0.55)';
+        }
+        function notesIsDirty() {
+            return document.getElementById('notes-textarea').value !== notesSaved;
+        }
+        function notesRefreshStatus() {
+            if (notesIsDirty()) notesSetStatus('تعديلات غير محفوظة. اضغط «حفظ».', '#ff9800');
+            else notesSetStatus(notesSaved ? 'محفوظة ✓' : '', '#76ff03');
+        }
+
+        function openNotesPage() {
+            notesSaved = notesRead(NOTES_KEY) || '';
+            let draft = notesRead(NOTES_DRAFT_KEY);
+            let box = document.getElementById('notes-textarea');
+            box.value = (draft !== null) ? draft : notesSaved;
+            hideAllPages();
+            document.getElementById('notes-page-container').style.display = 'block';
+            notesRefreshStatus();
+        }
+
+        function onNotesInput() {
+            clearTimeout(notesDraftTimer);
+            notesDraftTimer = setTimeout(function () {
+                try { localStorage.setItem(NOTES_DRAFT_KEY, document.getElementById('notes-textarea').value); } catch (e) {}
+            }, 400);
+            notesRefreshStatus();
+        }
+
+        function saveNotes() {
+            let text = document.getElementById('notes-textarea').value;
+            clearTimeout(notesDraftTimer);
+            try {
+                localStorage.setItem(NOTES_KEY, text);
+                try { localStorage.removeItem(NOTES_DRAFT_KEY); } catch (e) {}
+                notesSaved = text;
+                notesSetStatus('تم الحفظ ✓', '#76ff03');
+            } catch (e) {
+                notesSetStatus('تعذّر الحفظ.', '#f44336');
+            }
+        }
+
+        function copyNotes() {
+            let box = document.getElementById('notes-textarea');
+            let text = box.value;
+            if (!text) { notesSetStatus('لا توجد ملاحظات لنسخها.', '#ff9800'); return; }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => notesSetStatus('تم النسخ ✓', '#76ff03'));
+            }
+        }
+
+        function closeNotesPage() {
+            if (notesIsDirty()) {
+                if (confirm('تعديلات غير محفوظة. حفظ والخروج؟')) saveNotes();
+            }
+            navigateSettingsPage();
+        }
+
+        function openBackupPage() {
+            let jsonStorageContent = JSON.stringify(records, null, 4);
+            document.getElementById('backup-textarea-content').textContent = jsonStorageContent;
+            document.getElementById('undo-import-row').style.display = hasPrevBackup() ? 'block' : 'none';
+            hideAllPages();
+            document.getElementById('backup-page-container').style.display = 'block';
+        }
+
+        function closeBackupPageModal() {
+            navigateSettingsPage();
+        }
+
+        function downloadBackupJson() {
+            let jsonStorageContent = JSON.stringify(records, null, 4);
+            let blob = new Blob([jsonStorageContent], { type: 'application/json' });
+            let url = URL.createObjectURL(blob);
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = `gmax_auto_backup_${getTodayDateString()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function triggerUploadJson() {
+            document.getElementById('json-file-input').click();
+        }
+
+        function handleFileSelected(event) {
+            let file = event.target.files[0];
+            if (!file) return;
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    let parsed = JSON.parse(e.target.result);
+                    if (parsed.car && parsed.car.odometer) {
+                        pendingImportData = parsed;
+                        document.getElementById('confirm-filename').innerText = file.name;
+                        let odoVal = parsed.car.odometer.currentEstimatedOdo || parsed.car.odometer.lastManualOdo || 0;
+                        document.getElementById('confirm-odo').innerText = formatNumberWithSpace(odoVal);
+                        document.getElementById('backup-error-msg').innerText = "";
+                        document.getElementById('backup-confirm-overlay').style.display = 'flex';
+                    } else {
+                        alert('ملف غير صالح.');
+                    }
+                } catch(err) {
+                    alert('خطأ في قراءة الملف.');
+                }
+                event.target.value = ""; 
+            };
+            reader.readAsText(file);
+        }
+
+        function hasPrevBackup() {
+            try { return localStorage.getItem('gmax_records_prev') !== null; } catch (e) { return false; }
+        }
+        function undoLastImport() {
+            let raw = null;
+            try { raw = localStorage.getItem('gmax_records_prev'); } catch (e) {}
+            if (!raw) return;
+            if (!confirm('التراجع عن الاسترجاع الأخير؟')) return;
+            try { records = mergeSavedRecords(JSON.parse(raw)); } catch (e) { return; }
+            saveAppData();
+            try { localStorage.removeItem('gmax_records_prev'); } catch (e) {}
+            refreshDaily();
+            alert('تمت الاستعادة بنجاح.');
+            openBackupPage();
+        }
+
+        function closeBackupConfirmModal() {
+            pendingImportData = null;
+            document.getElementById('backup-confirm-overlay').style.display = 'none';
+        }
+
+        function executeBackupImport() {
+            if (!pendingImportData) return;
+            try { localStorage.setItem('gmax_records_prev', JSON.stringify(records)); } catch (e) {}
+            records = mergeSavedRecords(pendingImportData);
+            saveAppData();
+            updateEstimatedOdometerDaily();
+            document.getElementById('welcome-odo-display').innerText = formatNumberWithSpace(records.car.odometer.currentEstimatedOdo);
+            closeBackupConfirmModal();
+            closeBackupPageModal();
+            alert('تم استبدال البيانات بنجاح!');
+            navigateAlertsPage();
+        }
+
+        function showInfo(title, html) {
+            document.getElementById('info-title').innerText = title;
+            document.getElementById('info-body').innerHTML = html;
+            document.getElementById('date-info-overlay').style.display = 'flex';
+        }
+        function showWelcomeHelp() {
+            showInfo('عن التطبيق', 'جي ماكس أوتو يُذكّرك بمواعيد صيانة سيارتك.');
+        }
+        function showAlertsPageHelp() {
+            showInfo('التنبيهات', 'تجمع هذه الصفحة كل ما يستحق انتباهك.');
+        }
+        function showSettingsPageHelp() {
+            showInfo('الإعدادات', 'خيارات النسخ الاحتياطي والمزيد.');
+        }
+        function showSheetHelp() {
+            showInfo('لوحة التعديل', 'استعمل الاقتراحات أو أدخل القيم بدقة.');
+        }
+        function showDetailPageHelp() {
+            showInfo('تفاصيل المؤشر', 'هنا تجد تفاصيل ومواعيد الصيانة.');
+        }
+        function showGroupPageHelp() {
+            showInfo('المجموعات', 'استعرض المؤشرات بكل قسم.');
+        }
+        function showDateInfo() {
+            showInfo('تاريخ اليوم', 'التاريخ مأخوذ من هاتفك.');
+        }
+        function openFactoryResetModal() {
+            document.getElementById('factory-reset-overlay').style.display = 'flex';
+        }
+        function closeFactoryResetModal() {
+            document.getElementById('factory-reset-overlay').style.display = 'none';
+        }
+        function executeFactoryReset() {
+            try { localStorage.removeItem('gmax_records'); localStorage.removeItem('gmax_records_prev'); } catch (e) {}
+            records = makeEmptyRecords();
+            isFirstRun = true;
+            onboardingStep = null;
+            closeFactoryResetModal();
+            alert('تم تفريغ البيانات بنجاح.');
+            appStarted = false;
+            goHome();
+        }
+
+        const CARD_ICONS = { docs: ico('docs', 22), oil: ico('oil', 22), belts: ico('belts', 22), general: ico('general', 22) };
+        function getTabStatus(key) {
+            if (key !== 'alerts') return getModuleStatus(key);
+            let sts = MODULE_ORDER.map(getModuleStatus);
+            if (sts.every(x => x === 'none')) return 'none';
+            if (sts.includes('red')) return 'red';
+            if (sts.includes('yellow')) return 'yellow';
+            return 'green';
+        }
+
+        function tripSentenceHtml() {
+            return `<div class="trip-line">هل تخطط لرحلة طويلة؟</div>`;
+        }
+        function getAllClearHtml() {
+            return `<div class="alerts-empty"><div class="alerts-empty-check">${ico('check', 34)}</div><div class="alerts-empty-text">لا توجد مواعيد تستدعي الانتباه حاليًا.</div></div>`;
+        }
+        function helpBtnHtml(fn) {
+            return `<div class="group-help-wrap"><div class="odo-why-btn" style="margin:0;" onclick="${fn}()">؟</div></div>`;
+        }
+
+        const FORM_EL = () => document.getElementById('editor-form-container');
+
+        function renderTabsBar(show) {
+            if (show === false) { document.getElementById('categories-filter-bar-container').innerHTML = ''; return; }
+            const pills = [['docs', 'الوثائق'], ['oil', 'الزيت'], ['belts', 'الأحزمة'], ['general', 'الصيانة']];
+            document.getElementById('categories-filter-bar-container').innerHTML = `
+                <div class="seg-tabs">
+                    <div class="seg-row">
+                        ${pills.map(p => {
+                            const st = getTabStatus(p[0]);
+                            return `<button class="seg-tab ${currentModule === p[0] ? 'active' : ''}" onclick="navigateToModule('${p[0]}')">${p[1]}${['red','yellow'].includes(st) ? `<span class="seg-dot status-light status-${st}"></span>` : ''}</button>`;
+                        }).join('')}
+                    </div>
+                    <button class="seg-tab seg-wide ${currentModule === 'alerts' ? 'active' : ''}" onclick="navigateAlertsPage()">ملخص التنبيهات والتحذيرات</button>
+                </div>`;
+        }
+
+        function collectItems(mods, onlyAlerts) {
+            let totalActive = 0, items = [];
+            mods.forEach(mKey => {
+                const dataRec = records[mKey], metaList = metadata[mKey];
+                if (!dataRec || !metaList) return;
+                metaList.forEach(item => {
+                    const obj = dataRec[item.key];
+                    if (!obj || obj.active === false) return;
+                    totalActive++;
+                    const st = getIndicatorStatus(mKey, item.key, dataRec);
+                    if (onlyAlerts && st !== 'red' && st !== 'yellow') return;
+                    const isT = isTimeItem(mKey, item.key);
+                    const vDiff = isT ? null : getLinkDiff(mKey, item.key, obj);
+                    items.push({
+                        vLabel: vDiff !== null ? getLinkLabel(item.link, vDiff) : null,
+                        modKey: mKey, key: item.key, label: item.label,
+                        rem: isT ? calculateRemainingDays(obj.expiryDate) : obj.max - records.car.odometer.currentEstimatedOdo,
+                        status: st, isDoc: isT
+                    });
+                });
+            });
+            const pr = { red: 1, yellow: 2, green: 3 };
+            items.sort((a, b) => pr[a.status] - pr[b.status]);
+            return { items, totalActive };
+        }
+
+        const FUEL_KEY = 'gmax_fuel_v1';
+        let fuelAmountStr = '';
+        let fuelMsg = '';
+
+        function fuelLoad() {
+            try {
+                let a = JSON.parse(localStorage.getItem(FUEL_KEY) || '[]');
+                if (!Array.isArray(a)) return [];
+                return a.filter(x => x && typeof x.d === 'string' && Number(x.a) > 0);
+            } catch (e) { return []; }
+        }
+        function fuelStore(arr) {
+            try { localStorage.setItem(FUEL_KEY, JSON.stringify(arr)); return true; } catch (e) { return false; }
+        }
+        function fuelSorted(arr) {
+            return arr.slice().sort((x, y) => (x.d < y.d ? 1 : x.d > y.d ? -1 : (y.id || 0) - (x.id || 0)));
+        }
+        function fuelDateLabel(d) {
+            let p = String(d).split('-');
+            return p.length === 3 ? `${p[2]}/${p[1]}/${p[0]}` : d;
+        }
+
+        function renderExpensesPage() {
+            document.getElementById('editor-title').innerText = "المصاريف";
+            renderTabsBar(false);
+            const list = fuelSorted(fuelLoad());
+            const total = list.reduce((t, x) => t + Number(x.a), 0);
+            const rows = list.length === 0
+                ? `<div class="fuel-empty">لا توجد تعبئات مسجّلة بعد.</div>`
+                : list.map(x => `<div class="fuel-row"><span class="fuel-d">${fuelDateLabel(x.d)}</span><span class="fuel-a"><span class="num-ltr">${formatNumberWithSpace(x.a)}</span> دج</span><button class="fuel-del" onclick="fuelDelete(${Number(x.id) || 0}, '${escapeHtml(x.d)}', ${Number(x.a)})">✕</button></div>`).join('');
+            FORM_EL().innerHTML =
+                `<div style="padding-top: 10px;"><button class="fuel-add-btn" onclick="fuelOpen()">+ تعبئة وقود</button>
+                <div class="fuel-total"><div class="fuel-total-label">مجموع الوقود</div><div class="fuel-total-val"><span class="num-ltr">${formatNumberWithSpace(total)}</span> دج</div></div>
+                ${rows}
+                <div class="fuel-status" id="fuel-status">${fuelMsg}</div></div>` + helpBtnHtml('showExpensesHelp');
+            fuelMsg = '';
+        }
+
+        function fuelRefreshAmount() {
+            let el = document.getElementById('fuel-amount');
+            if (!fuelAmountStr) { el.className = 'fuel-amount-box empty'; el.innerText = 'اكتب المبلغ'; }
+            else { el.className = 'fuel-amount-box'; el.innerText = formatNumberWithSpace(fuelAmountStr); }
+        }
+        function fuelOpen() {
+            fuelAmountStr = '';
+            document.getElementById('fuel-date').value = getTodayDateString();
+            document.getElementById('fuel-err').innerText = '';
+            fuelRefreshAmount();
+            document.getElementById('fuel-overlay').style.display = 'flex';
+        }
+        function fuelClose() { document.getElementById('fuel-overlay').style.display = 'none'; }
+        function fuelSetAmount(n) { fuelAmountStr = String(n); document.getElementById('fuel-err').innerText = ''; fuelRefreshAmount(); }
+        function fuelKey(k) {
+            document.getElementById('fuel-err').innerText = '';
+            if (k === 'del') fuelAmountStr = fuelAmountStr.slice(0, -1);
+            else {
+                if (fuelAmountStr === '' && (k === '0' || k === '00')) return;
+                if ((fuelAmountStr + k).length > 7) return;
+                fuelAmountStr += k;
+            }
+            fuelRefreshAmount();
+        }
+        function fuelSave() {
+            let err = document.getElementById('fuel-err');
+            let amount = parseInt(fuelAmountStr, 10);
+            let d = document.getElementById('fuel-date').value;
+            if (!amount || amount <= 0) { err.innerText = 'اكتب المبلغ المدفوع أولًا.'; return; }
+            let arr = fuelLoad();
+            arr.push({ id: Date.now(), d: d, a: amount });
+            fuelStore(arr);
+            fuelClose();
+            renderExpensesPage();
+        }
+        function fuelDelete(id, d, a) {
+            if (!confirm('حذف التعبئة؟')) return;
+            let arr = fuelLoad();
+            let i = arr.findIndex(x => (Number(x.id) || 0) === id && x.d === d && Number(x.a) === a);
+            if (i !== -1) arr.splice(i, 1);
+            fuelStore(arr);
+            renderExpensesPage();
+        }
+
+        function renderNoGroupPage() {
+            document.getElementById('editor-title').innerText = "المؤشرات";
+            renderTabsBar(true);
+            FORM_EL().innerHTML = `<div class="guide-line">اضغط على أيقونة مجموعة في الأعلى لعرض مؤشراتها.</div>` + helpBtnHtml('showGroupPageHelp');
+        }
+
+        function renderAlertsPage() {
+            document.getElementById('editor-title').innerText = "المؤشرات";
+            renderTabsBar();
+            const { items, totalActive } = collectItems(MODULE_ORDER, true);
+            if (items.length === 0) {
+                FORM_EL().innerHTML = (totalActive === 0
+                    ? `<div class="alerts-empty"><div class="alerts-empty-text" style="color:#aaa;">لم تُفعَّل مؤشرات بعد</div></div>`
+                    : getAllClearHtml()) + tripSentenceHtml() + helpBtnHtml('showAlertsPageHelp');
+                return;
+            }
+            const sentence = it => {
+                if (it.vLabel) return `${it.label}: ${it.vLabel}`;
+                const an = Math.abs(it.rem);
+                const n = `<span class="num-ltr">${formatNumberWithSpace(an)}</span>`;
+                const u = !it.isDoc ? 'كم' : 'يومًا';
+                if (it.rem > 0) return `${it.label}: بقي ${n} ${u}`;
+                if (it.rem === 0) return `${it.label}: حان الموعد اليوم`;
+                return `${it.label}: تجاوز الموعد بـ ${n} ${u}`;
+            };
+            const sect = (st, title) => {
+                const list = items.filter(x => x.status === st);
+                if (!list.length) return '';
+                return `<div class="alert-section"><div class="alert-section-title ${st}">${title}</div>${list.map(it => `<div class="alert-line" onclick="openDetailModalFromAll('${it.modKey}', '${it.key}', 'alerts')"><span>${sentence(it)}</span><div class="status-light status-${st}"></div></div>`).join('')}</div>`;
+            };
+            FORM_EL().innerHTML = sect('red', 'تحذيرات') + sect('yellow', 'تنبيهات') + tripSentenceHtml() + helpBtnHtml('showAlertsPageHelp');
+        }
+
+        function renderGroupPage(mod) {
+            document.getElementById('editor-title').innerText = "المؤشرات";
+            renderTabsBar();
+            const { items } = collectItems([mod], false);
+            const rows = items.length === 0
+                ? `<tr><td colspan="3" style="text-align:center; color:#888; padding:20px;">لا توجد مؤشرات مفعلة</td></tr>`
+                : items.map(it => `
+                    <tr onclick="openDetailModalFromAll('${it.modKey}', '${it.key}')">
+                        <td class="col-indicator"><span>${it.label}</span></td>
+                        <td class="col-remaining">${it.vLabel ? `<span style="font-size:11px;">${it.vLabel}</span>` : `<span class="num-ltr">${formatNumberWithSpace(it.rem)}</span> ${it.isDoc ? 'يوم' : ''}`}</td>
+                        <td class="col-toggle"><div class="status-light status-${it.status}"></div></td>
+                    </tr>`).join('');
+            FORM_EL().innerHTML = `
+                <div class="table-col-titles"><span>المؤشر</span><span>الباقي</span><span>الحالة</span></div>
+                <table class="indicators-table"><tbody>${rows}</tbody></table>
+                <div class="group-help-wrap"><div class="odo-why-btn" style="margin:0;" onclick="showGroupPageHelp()">؟</div></div>`;
+        }
+
+        function renderForm(mod) {
+            let cb = document.getElementById('cfg-btn'), ex = mod === 'expenses';
+            cb.disabled = ex; cb.style.pointerEvents = ex ? 'none' : '';
+            if (mod === 'expenses') return renderExpensesPage();
+            if (mod === 'alerts') return renderAlertsPage();
+            if (mod === 'none') return renderNoGroupPage();
+            return renderGroupPage(mod);
+        }
+
+        function openDetailModalFromAll(modKey, key, origin) {
+            detailOrigin = origin === 'alerts' ? 'alerts' : 'group';
+            detailActiveModule = modKey;
+            openDetailModal(key);
+        }
+
+        function specRowHtml(itemObj, dataObj) {
+            if (!itemObj.spec || !dataObj.spec) return '';
+            return `<div class="detail-row"><span class="detail-label">${itemObj.spec.label}:</span><span class="detail-val">${escapeHtml(dataObj.spec)}</span></div>`;
+        }
+
+        function openDetailModal(key, activating) {
+            currentDetailKey = key;
+            if (!detailActiveModule) detailActiveModule = MODULE_ORDER.indexOf(currentModule) !== -1 ? currentModule : 'oil';
+
+            let itemObj = metadata[detailActiveModule].find(i => i.key === key);
+            let dataObj = records[detailActiveModule][key];
+            if (!itemObj || !dataObj) return;
+            let isTime = isTimeItem(detailActiveModule, key);
+
+            hideAllPages();
+            document.getElementById('detail-page-title').innerText = (activating ? 'تفعيل ' : '') + itemObj.label;
+            let contentArea = document.getElementById('detail-page-content-area');
+            let actionContainer = document.getElementById('detail-page-action-container');
+
+            const backBtn = `<button class="detail-back-btn" onclick="backFromDetail()">${activating ? 'إلغاء' : 'العودة إلى المؤشرات'}</button>`;
+            const actionsHtml = (isTime
+                ? `<div class="detail-actions-row"><button class="detail-act-btn detail-act-update" onclick="startDocUpdate()">${activating ? 'تحديد تاريخ الانتهاء' : 'تحديث'}</button></div>`
+                : `<div class="up-seg"><button class="up-seg-btn" onclick="startKmUpdate('change')">تغيير القطعة</button><button class="up-seg-btn" onclick="startKmUpdate('extend')">تمديد صلاحية</button></div>`) + backBtn;
+            
+            if (activating) {
+                contentArea.style.display = 'none';
+                actionContainer.innerHTML = actionsHtml;
+            } else {
+                contentArea.style.display = '';
+                if (isTime) {
+                    let remainingDays = calculateRemainingDays(dataObj.expiryDate);
+                    contentArea.innerHTML = `
+                        <div class="detail-row"><span class="detail-label">انتهاء الصلاحية:</span><span class="detail-val">${convertDateToReadableArabic(dataObj.expiryDate)}</span></div>
+                        <div class="detail-row"><span class="detail-label">الأيام المتبقية:</span><span class="detail-val"><span class="num-ltr">${remainingDays}</span> يوم</span></div>
+                        ${specRowHtml(itemObj, dataObj)}
+                    `;
+                } else {
+                    let usageKm = Math.max(0, records.car.odometer.currentEstimatedOdo - (dataObj.lastOdo || records.car.odometer.currentEstimatedOdo));
+                    let remainingKm = dataObj.max - records.car.odometer.currentEstimatedOdo;
+                    contentArea.innerHTML = `
+                        <div class="detail-row"><span class="detail-label">تاريخ آخر تحديث:</span><span class="detail-val">${convertDateToReadableArabic(dataObj.lastDate || 'غير محدد')}</span></div>
+                        <div class="detail-row"><span class="detail-label">العداد عند التحديث:</span><span class="detail-val"><span class="num-ltr">${formatNumberWithSpace(dataObj.lastOdo || 0)}</span> كم</span></div>
+                        <div class="detail-row"><span class="detail-label">الاستعمال الحالي:</span><span class="detail-val"><span class="num-ltr">${formatNumberWithSpace(usageKm)}</span> كم</span></div>
+                        <div class="detail-row"><span class="detail-label">المسافة المتبقية:</span><span class="detail-val"><span class="num-ltr">${formatNumberWithSpace(remainingKm)}</span> كم</span></div>
+                        ${specRowHtml(itemObj, dataObj)}
+                    `;
+                }
+                actionContainer.innerHTML = actionsHtml;
+            }
+
+            document.getElementById('detail-page-container').style.display = 'block';
+            window.scrollTo(0, 0);
+            if (activating && isTime) openSingleUpdateModalDoc(true);
+        }
+
+        let updateOrigin = 'details';
+        let activationCallback = null;
+
+        function backFromDetail() {
+            if (activationCallback) { leaveUpdatePage(false); return; }
+            navigateToModule(detailOrigin === 'alerts' ? 'alerts' : (detailActiveModule || lastVisitedGroup || 'docs'));
+        }
+        function startKmUpdate(mode) {
+            openSingleUpdateModalKm(updateOrigin === 'global' && !!activationCallback, mode);
+        }
+        function startDocUpdate() {
+            openSingleUpdateModalDoc(updateOrigin === 'global' && !!activationCallback);
+        }
+
+        function closeUpdatePanel() {
+            singleUpdateState = null;
+            document.getElementById('up-sheet-overlay').style.display = 'none';
+            document.getElementById('detail-page-container').classList.remove('up-locked');
+        }
+
+        function leaveUpdatePage(ok) {
+            let cb = activationCallback;
+            activationCallback = null;
+            singleUpdateState = null;
+            if (updateOrigin === 'global') {
+                hideAllPages();
+                document.getElementById('global-activator-page-container').style.display = 'block';
+            } else {
+                openDetailModal(currentDetailKey);
+            }
+            if (cb) cb(ok);
+        }
+
+        function finishUpdateFlow() {
+            if (activationCallback) { leaveUpdatePage(true); return; }
+            openDetailModal(currentDetailKey);
+        }
+
+        function openSingleUpdateModalKm(activating, mode) {
+            let itemObj = getItemMeta(detailActiveModule, currentDetailKey);
+            if (!itemObj) return;
+            singleUpdateState = {
+                type: 'km',
+                mode: mode,
+                odoAtAction: records.car.odometer.currentEstimatedOdo.toString(),
+                remaining: (itemObj.defaultMax || '10000').toString(),
+                basis: 'km',
+                sheetMode: 'presets',
+                sheetOpen: true,
+                activating: activating === true,
+                spec: records[detailActiveModule][currentDetailKey].spec || '',
+                field: 'main', warn: false, warnOk: false
+            };
+            renderUpdatePage();
+        }
+
+        function openSingleUpdateModalDoc(activating) {
+            let itemObj = getItemMeta(detailActiveModule, currentDetailKey);
+            if (!itemObj) return;
+            let now = new Date();
+            singleUpdateState = {
+                type: 'doc',
+                today: getTodayDateString(),
+                date: '',
+                sheetMode: 'presets',
+                sheetOpen: true,
+                activating: activating === true,
+                spec: records[detailActiveModule][currentDetailKey].spec || '',
+                field: 'main', warn: false, warnOk: false
+            };
+            renderUpdatePage();
+        }
+
+        function requestActivation(modKey, itemKey, cb) {
+            let glob = document.getElementById('global-activator-page-container');
+            updateOrigin = glob.style.display === 'block' ? 'global' : 'details';
+            detailActiveModule = modKey;
+            currentDetailKey = itemKey;
+            openDetailModal(itemKey, true);
+            activationCallback = cb || null;
+        }
+
+        function renderUpdatePage() {
+            let st = singleUpdateState;
+            if (!st) return;
+            let itemObj = getItemMeta(detailActiveModule, currentDetailKey);
+            if (!itemObj) return;
+            
+            let sheet = '', sheetTitle = '';
+            if (st.type === 'km') {
+                sheetTitle = st.mode === 'extend' ? 'المتبقّي للقطعة' : 'مدة الصلاحية';
+                let steps = itemObj.presets || [3000, 5000, 10000];
+                sheet = `<div class="suggestions-row" style="grid-template-columns: repeat(${steps.length}, 1fr);">
+                    ${steps.map((v, idx) => `<button class="suggestion-chip-btn" onclick="upApplySuggestion(${v})">${formatNumberWithSpace(v)}</button>`).join('')}
+                </div>`;
+            } else {
+                sheetTitle = 'تاريخ انتهاء الصلاحية';
+                let presets = itemObj.presets || [3, 6, 12];
+                sheet = `<div class="suggestions-row" style="grid-template-columns: repeat(${presets.length}, 1fr);">
+                    ${presets.map(m => `<button class="suggestion-chip-btn" onclick="applyDocPresetMonths(${m})">${m} أشهر</button>`).join('')}
+                </div>`;
+            }
+
+            let ov = document.getElementById('up-sheet-overlay');
+            ov.style.display = 'block';
+            document.getElementById('up-sheet-title').innerText = sheetTitle;
+            document.getElementById('up-sheet-body').innerHTML = sheet;
+        }
+
+        function upApplySuggestion(val) {
+            singleUpdateState.remaining = val.toString();
+            confirmSingleUpdateKm();
+        }
+
+        function applyDocPresetMonths(mCount) {
+            let now = new Date();
+            now.setMonth(now.getMonth() + mCount);
+            singleUpdateState.date = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+            confirmSingleUpdateDoc();
+        }
+
+        function upSheetOk() {
+            if (singleUpdateState.type === 'km') confirmSingleUpdateKm(); else confirmSingleUpdateDoc();
+        }
+        function upSheetCancel() {
+            closeUpdatePanel();
+        }
+
+        function confirmSingleUpdateDoc() {
+            let dataRec = records[detailActiveModule][currentDetailKey];
+            if (!singleUpdateState.date) singleUpdateState.date = getTodayDateString();
+            dataRec.expiryDate = singleUpdateState.date;
+            if (singleUpdateState.activating) dataRec.active = true;
+            saveAppData();
+            finishUpdateFlow();
+        }
+
+        function confirmSingleUpdateKm() {
+            let itemData = records[detailActiveModule][currentDetailKey];
+            let carOdo = records.car.odometer.currentEstimatedOdo;
+            let rem = parseInt(singleUpdateState.remaining) || 10000;
+
+            itemData.max = carOdo + rem;
+            itemData.lastDate = getTodayDateString();
+            itemData.lastOdo = carOdo;
+            if (singleUpdateState.activating) itemData.active = true;
+            
+            saveAppData();
+            finishUpdateFlow();
+        }
+
+        function openGlobalActivatorPage() {
+            tempGlobalSettingsState = {};
+            globalActivatorGroup = null;
+            MODULE_ORDER.forEach(modKey => {
+                tempGlobalSettingsState[modKey] = {};
+                metadata[modKey].forEach(item => {
+                    let obj = records[modKey][item.key];
+                    tempGlobalSettingsState[modKey][item.key] = obj ? obj.active !== false : true;
+                });
+            });
+
+            renderGlobalActivatorModalContent();
+            hideAllPages();
+            document.getElementById('global-activator-page-container').style.display = 'block';
+        }
+
+        let globalActivatorGroup = null;
+        function selectGlobalGroup(modKey) {
+            globalActivatorGroup = modKey;
+            renderGlobalActivatorModalContent();
+        }
+
+        function renderGlobalActivatorModalContent() {
+            let container = document.getElementById('global-settings-list-container');
+            let htmlContent = '';
+            const labels = { docs: 'الوثائق', oil: 'الزيت', belts: 'الأحزمة', general: 'الصيانة' };
+            document.getElementById('global-tabs-container').innerHTML = `
+                <div class="nav-tabs" style="margin-bottom: 12px;">
+                    ${MODULE_ORDER.map(k => `
+                        <div class="nav-tab ${globalActivatorGroup === k ? 'active' : ''}" onclick="selectGlobalGroup('${k}')">
+                            <div class="home-card-icon-box tab-icon-box">${CARD_ICONS[k]}</div>
+                            <span class="nav-tab-label">${labels[k]}</span>
+                        </div>`).join('')}
+                </div>
+                <div class="global-tabs-hint">اختر القسم لتفعيل أو تعطيل مؤشراته.</div>`;
+
+            MODULE_ORDER.forEach(modKey => {
+                if (modKey !== globalActivatorGroup) return;
+                metadata[modKey].forEach(item => {
+                    let isChecked = tempGlobalSettingsState[modKey][item.key];
+                    htmlContent += `
+                        <div class="checklist-item ${isChecked ? 'checked' : ''}" onclick="toggleGlobalSettingsItem('${modKey}', '${item.key}')">
+                            <span>${item.label}</span>
+                            <div class="checklist-checkbox">${isChecked ? ico('check', 11) : ''}</div>
+                        </div>
+                    `;
+                });
+            });
+            container.innerHTML = htmlContent;
+        }
+
+        function toggleGlobalSettingsItem(modKey, itemKey) {
+            let obj = records[modKey][itemKey];
+            if (!tempGlobalSettingsState[modKey][itemKey] && obj && obj.active === false) {
+                requestActivation(modKey, itemKey, ok => {
+                    if (ok) tempGlobalSettingsState[modKey][itemKey] = true;
+                    renderGlobalActivatorModalContent();
+                });
+                return;
+            }
+            tempGlobalSettingsState[modKey][itemKey] = !tempGlobalSettingsState[modKey][itemKey];
+            renderGlobalActivatorModalContent();
+        }
+
+        function saveGlobalSettingsChanges() {
+            MODULE_ORDER.forEach(modKey => {
+                let dataRec = records[modKey];
+                metadata[modKey].forEach(item => {
+                    let obj = dataRec[item.key];
+                    if (!obj) return;
+                    if (tempGlobalSettingsState[modKey][item.key] === false) obj.active = false;
+                });
+            });
+            saveAppData();
+            tempGlobalSettingsState = {};
+            if (onboardingStep === 'indicators') { finishOnboarding(); return; }
+            navigateToModule(lastIndicatorsView || 'alerts');
+        }
+
+        hydrateIcons();
+    </script>
+</body>
+</html>
