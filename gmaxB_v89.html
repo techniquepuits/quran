@@ -696,6 +696,36 @@
         }
     
         /* ===== نوافذ القرار (إدخال المستخدم): سطح كريمي مختلف عن صفحات القراءة السوداء ===== */
+        /* ===== سجل الوقود ===== */
+        #fuel-overlay { position: fixed; inset: 0; z-index: 36600; display: none; align-items: flex-end; justify-content: center; background: none; }
+        .fuel-sheet { width: calc(100% - 24px); max-width: 476px; box-sizing: border-box; margin-bottom: 12px; background: #e3e3df; border: 1.5px solid #2f6fb5; border-radius: 14px; padding: 12px 14px 14px; box-shadow: 0 8px 28px rgba(0,0,0,0.7); color: #1d3d66; animation: decideIn 0.16s ease-out; }
+        .fuel-title { font-size: 14px; font-weight: bold; color: #245a98; margin-bottom: 8px; }
+        .fuel-amount-box { direction: ltr; text-align: center; background: #f4f4f1; border: 2px solid #2f6fb5; border-radius: 10px; padding: 10px; font-size: 26px; font-weight: bold; color: #1d3d66; min-height: 34px; }
+        .fuel-amount-box.empty { color: #9aa6b6; font-size: 16px; line-height: 34px; padding: 10px; }
+        .fuel-chips { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin: 8px 0; direction: ltr; }
+        .fuel-chip { background: #f4f4f1; border: 1px solid #2f6fb5; color: #1f4f8a; border-radius: 8px; padding: 10px 0; font-size: 13px; font-weight: bold; font-family: inherit; cursor: pointer; }
+        .fuel-chip:active { background: #2f6fb5; color: #fff; }
+        .fuel-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; direction: ltr; }
+        .fuel-key { background: #f4f4f1; border: 1px solid #b8bec7; color: #222; border-radius: 8px; padding: 12px 0; font-size: 17px; font-family: inherit; cursor: pointer; }
+        .fuel-key:active { background: #d3dbe6; }
+        .fuel-key.del { background: #f6dcd6; border-color: #e3b5ab; color: #b3261e; }
+        .fuel-date-row { display: flex; align-items: center; justify-content: space-between; margin: 10px 0 0; font-size: 13px; color: #3d5a80; }
+        .fuel-date-row input { font-family: inherit; font-size: 14px; color: #1d3d66; background: #f4f4f1; border: 1px solid #aeb6c2; border-radius: 8px; padding: 6px 8px; }
+        .fuel-err { color: #b3261e; font-size: 12px; min-height: 16px; margin-top: 6px; }
+        .fuel-actions { display: flex; gap: 8px; margin-top: 8px; }
+        .fuel-ok { flex: 2; background: #2f6fb5; color: #fff; border: none; border-radius: 10px; height: 52px; font-size: 14px; font-weight: bold; font-family: inherit; cursor: pointer; }
+        .fuel-x { flex: 1; background: #c9ccd1; color: #333; border: none; border-radius: 10px; height: 52px; font-size: 13px; font-weight: bold; font-family: inherit; cursor: pointer; }
+        .fuel-add-btn { width: 100%; background: #2f6fb5; color: #fff; border: none; border-radius: 12px; height: 54px; font-size: 16px; font-weight: bold; font-family: inherit; cursor: pointer; margin: 6px 0 12px; }
+        .fuel-total { text-align: center; padding: 10px 6px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.25); border-radius: 12px; }
+        .fuel-total-label { font-size: 12px; color: rgba(255,255,255,0.6); }
+        .fuel-total-val { font-size: 24px; font-weight: bold; color: #ffda75; margin-top: 2px; }
+        .fuel-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 6px; border-bottom: 1px solid rgba(255,255,255,0.12); font-size: 15px; }
+        .fuel-row .fuel-d { color: rgba(255,255,255,0.75); direction: ltr; }
+        .fuel-row .fuel-a { color: #fff; font-weight: bold; }
+        .fuel-del { background: none; border: none; color: #e57373; font-size: 18px; padding: 4px 10px; cursor: pointer; font-family: inherit; }
+        .fuel-empty { text-align: center; color: #888; font-size: 13px; padding: 24px 10px; }
+        .fuel-copy { width: 100%; margin-top: 14px; background: #1a1a1a; border: 1px solid #b8860b; color: #ffda75; border-radius: 8px; padding: 12px; font-weight: bold; font-size: 13px; font-family: inherit; cursor: pointer; }
+        .fuel-status { text-align: center; font-size: 12px; min-height: 16px; margin-top: 6px; color: #76ff03; }
         #up-sheet-overlay { background: none; }
         #welcome-odo-overlay { background-color: transparent; }
         @keyframes decideIn { from { opacity: 0; margin-top: 8px; } to { opacity: 1; margin-top: 0; } }
@@ -762,9 +792,38 @@
             border: 1px solid #b8bec7;
             border-right: 7px solid #2f6fb5;
         }
+
+        /* ===== صفحة تسجيل الدخول (Google) ===== */
+        #login-page { display: flex; position: fixed; inset: 0; z-index: 50000; background: #121212; flex-direction: column; align-items: center; justify-content: flex-start; padding: 12vh 24px 30px; box-sizing: border-box; overflow-y: auto; }
+        .google-btn { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; max-width: 320px; background: #ffffff; color: #3c4043; border: none; border-radius: 12px; padding: 14px 18px; font-size: 16px; font-weight: bold; font-family: inherit; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.4); margin-top: 10px; box-sizing: border-box; }
+        .google-btn:active { background: #e8eaed; }
+        .login-link-btn { width: 100%; max-width: 320px; margin-top: 10px; padding: 12px; border-radius: 12px; background: none; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.75); font-size: 14px; font-weight: bold; font-family: inherit; cursor: pointer; box-sizing: border-box; }
+        .login-link-btn:active { background: #1c1c1c; }
+        #login-msg { font-size: 13px; line-height: 1.9; text-align: center; color: rgba(255,255,255,0.7); min-height: 24px; margin: 6px 0 14px; max-width: 320px; }
+        #login-msg.err { color: #f44336; }
+        .login-note { font-size: 11px; color: rgba(255,255,255,0.4); text-align: center; line-height: 1.8; margin-top: 18px; max-width: 320px; }
 </style>
 </head>
 <body>
+
+    <!-- صفحة تسجيل الدخول: تغطي كل شيء حتى يتم الدخول وتحميل البيانات -->
+    <div id="login-page">
+        <div class="logo-lockup">
+            <div class="gmax-brand">
+                <span class="gmax-white">G</span><span class="gmax-gold">MAX</span>
+            </div>
+            <div class="auto-row"><span class="auto-line"></span><span class="auto-text">AUTO</span><span class="auto-line"></span></div>
+            <div class="main-subtitle">مساعدك الذكي للصيانة</div>
+        </div>
+        <div id="login-msg">جارٍ التحقق من الجلسة…</div>
+        <button class="google-btn" id="login-google-btn" style="display:none;" onclick="signInWithGoogle()">
+            <svg width="22" height="22" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+            <span>المتابعة باستخدام Google</span>
+        </button>
+        <button class="google-btn" id="login-retry-btn" style="display:none;" onclick="retryLoad()">إعادة المحاولة</button>
+        <button class="login-link-btn" id="login-out-btn" style="display:none;" onclick="doSignOut()">تسجيل الخروج</button>
+        <div class="login-note" id="login-note" style="display:none;">تُحفظ بياناتك في حسابك على السحابة، فتجدها على أي هاتف تدخل منه بالحساب نفسه.</div>
+    </div>
 
     <div class="container">
         <!-- شاشة الترحيب (ظاهرة افتراضياً) -->
@@ -828,6 +887,10 @@
                             <span class="home-card-title">ملاحظات</span>
                             <span data-ico="note" data-s="26"></span>
                         </div>
+                        <div class="home-card" onclick="confirmSignOut()">
+                            <span class="home-card-title">تسجيل الخروج<span id="account-email" style="display:block; font-size:11px; font-weight:normal; color:#888; direction:ltr; text-align:right; margin-top:4px;"></span></span>
+                            <span data-ico="logout" data-s="26"></span>
+                        </div>
                         <div class="home-card" onclick="openFactoryResetModal()" style="border-color: rgba(244, 67, 54, 0.4);">
                             <span class="home-card-title" style="color: #f44336;">إعادة ضبط المصنع (تفريغ الذاكرة)</span>
                             <span style="color: #f44336;" data-ico="trash" data-s="26"></span>
@@ -888,7 +951,7 @@
                         <div style="display:flex;align-items:center;gap:14px;"><button class="unified-close-btn" onclick="closeBackupPageModal()">غلق</button><div class="header-mini-brand" onclick="goHome()"><div class="mini-brand-row"><span style="color:#ffffff;">G</span><span style="color:#b8860b;">MAX</span><span style="color:#3a86c8;">AUTO</span></div><div class="mini-brand-sub">مساعدك الذكي للصيانة</div></div></div>
                     </div>
                     <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; flex-grow: 1; margin-bottom: 20px;">
-                        <div style="font-size: 12px; color: #b8860b; font-weight: bold;">معلومات التخزين المحلي (JSON):</div>
+                        <div style="font-size: 12px; color: #b8860b; font-weight: bold;">معلومات التخزين السحابي (JSON):</div>
                         <textarea id="backup-textarea-content" readonly style="width: 100%; flex-grow: 1; min-height: 350px; background-color: #181818; color: #76ff03; border: 1px solid #333; border-radius: 8px; padding: 10px; font-size: 11px; box-sizing: border-box; resize: none; font-family: monospace;" dir="ltr"></textarea>
                         
                         <div style="display: flex; gap: 8px; margin-top: 10px;">
@@ -939,6 +1002,33 @@
         </button>
     </div>
 
+    <!-- نافذة تسجيل تعبئة وقود -->
+    <div id="fuel-overlay">
+        <div class="fuel-sheet">
+            <div class="fuel-title">تعبئة وقود: المبلغ المدفوع (دج)</div>
+            <div id="fuel-amount" class="fuel-amount-box empty">اكتب المبلغ</div>
+            <div class="fuel-chips">
+                <button class="fuel-chip" onclick="fuelSetAmount(1000)">1000</button>
+                <button class="fuel-chip" onclick="fuelSetAmount(1500)">1500</button>
+                <button class="fuel-chip" onclick="fuelSetAmount(2000)">2000</button>
+                <button class="fuel-chip" onclick="fuelSetAmount(2500)">2500</button>
+                <button class="fuel-chip" onclick="fuelSetAmount(3000)">3000</button>
+            </div>
+            <div class="fuel-pad">
+                <button class="fuel-key" onclick="fuelKey('1')">1</button><button class="fuel-key" onclick="fuelKey('2')">2</button><button class="fuel-key" onclick="fuelKey('3')">3</button>
+                <button class="fuel-key" onclick="fuelKey('4')">4</button><button class="fuel-key" onclick="fuelKey('5')">5</button><button class="fuel-key" onclick="fuelKey('6')">6</button>
+                <button class="fuel-key" onclick="fuelKey('7')">7</button><button class="fuel-key" onclick="fuelKey('8')">8</button><button class="fuel-key" onclick="fuelKey('9')">9</button>
+                <button class="fuel-key" onclick="fuelKey('00')">00</button><button class="fuel-key" onclick="fuelKey('0')">0</button><button class="fuel-key del" onclick="fuelKey('del')">⌫</button>
+            </div>
+            <div class="fuel-date-row"><span>التاريخ</span><input type="date" id="fuel-date"></div>
+            <div id="fuel-err" class="fuel-err"></div>
+            <div class="fuel-actions">
+                <button class="fuel-x" onclick="fuelClose()">إلغاء</button>
+                <button class="fuel-ok" onclick="fuelSave()">حفظ</button>
+            </div>
+        </div>
+    </div>
+
     <!-- نافذة الكتابة المنبثقة (لوحة الأرقام / الاقتراحات / التقويم) -->
     <div id="up-sheet-overlay" style="display:none;">
         <div class="up-sheet">
@@ -960,7 +1050,6 @@
                 <button class="up-sheet-x" onclick="upSheetCancel()">إلغاء</button>
                 <button class="up-sheet-ok" id="up-sheet-ok" onclick="upSheetOk()">تأكيد</button>
             </div>
-        </div>
         </div>
     </div>
 
@@ -1017,7 +1106,7 @@
         <div class="wizard-container" style="height: auto !important; max-height: 90vh !important;">
             <div class="wizard-header-title" style="color: #f44336;">تأكيد إعادة ضبط المصنع</div>
             <div style="padding: 6px 2px; margin: 8px 0; font-size: 13px; line-height: 1.6;">
-                <p style="color: #f44336; margin: 0 0 8px 0; font-weight: bold;">تحذير خطير: سيتم مسح الذاكرة المحلية (LocalStorage) نهائياً وتفريغ جميع البيانات للبدء من الصفر!</p>
+                <p style="color: #f44336; margin: 0 0 8px 0; font-weight: bold;">تحذير خطير: سيتم مسح بيانات السيارة والمؤشرات من حسابك في السحابة نهائياً وتفريغها للبدء من الصفر!</p>
                 <p style="color: #ccc; margin: 0; font-size: 12px;">هل أنت متأكد من رغبتك في المتابعة؟</p>
             </div>
             <div class="numpad-actions-row" style="margin-top: 15px;">
@@ -1027,7 +1116,169 @@
         </div>
     </div>
 
+    <!-- مكتبات Firebase (النسخة المتوافقة compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
     <script>
+        // ====================================================================
+        //  إعدادات Firebase: ضع هنا القيم من  Firebase Console ← Project settings ← Your apps ← Web app
+        // ====================================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDRKHdIzq2juXY5HaRXa6C-V9jAIhJIlSs",
+            authDomain: "gmaxauto.firebaseapp.com",
+            projectId: "gmaxauto",
+            appId: "1:635663618304:web:9cdde1b73006cbf6d723e5"
+        };
+
+
+        // ====================================================================
+        //  طبقة التخزين السحابي (Firestore)
+        //  المسار: users/{uid}/data/{name}  والقيمة في الحقل v (نص)
+        //  الأسماء: records (كل بيانات السيارة) | records_prev (نسخة قبل الاستيراد) | notes | fuel
+        //  القراءة فورية من الذاكرة (cloud)، والكتابة تُرسَل إلى Firestore (وتُخزَّن مؤقتاً وتُرسَل لاحقاً عند انقطاع الاتصال)
+        // ====================================================================
+        let fbAuth = null, fbDb = null, currentUser = null;
+        const cloud = { records: null, records_prev: null, notes: null, fuel: null };
+        let saveWarned = false;
+
+        function cloudRef(name) {
+            return fbDb.collection('users').doc(currentUser.uid).collection('data').doc(name);
+        }
+        function cloudGet(name) {
+            return Object.prototype.hasOwnProperty.call(cloud, name) ? cloud[name] : null;
+        }
+        function onCloudError(e) {
+            console.error(e);
+            if (saveWarned) return;
+            saveWarned = true;
+            showInfo('تعذّر الحفظ في السحابة', 'لم يستطع التطبيق حفظ بياناتك في حسابك على السحابة. تحقّق من اتصالك بالإنترنت ومن قواعد الأمان في Firebase.<br>ما سجّلتَه الآن قد لا يُحفظ، فخذ نسخة احتياطية من «المزيد».');
+        }
+        function cloudSet(name, str) {
+            cloud[name] = str;
+            if (!currentUser || !fbDb) return false;
+            cloudRef(name).set({ v: str, updatedAt: firebase.firestore.FieldValue.serverTimestamp() })
+                .then(function () { saveWarned = false; })
+                .catch(onCloudError);
+            return true;
+        }
+        function cloudRemove(name) {
+            cloud[name] = null;
+            if (!currentUser || !fbDb) return;
+            cloudRef(name).delete().catch(onCloudError);
+        }
+        function cloudLoadAll() {
+            const names = Object.keys(cloud);
+            names.forEach(function (n) { cloud[n] = null; });
+            return Promise.all(names.map(function (n) {
+                return cloudRef(n).get().then(function (snap) {
+                    const d = snap.exists ? snap.data() : null;
+                    cloud[n] = (d && typeof d.v === 'string') ? d.v : null;
+                });
+            })).then(migrateLocalIfNeeded);
+        }
+        // ترحيل لمرة واحدة: إن كانت على هذا الجهاز بيانات قديمة في localStorage ولا بيانات في السحابة، تُرفع إلى حساب Firestore
+        function migrateLocalIfNeeded() {
+            try {
+                if (localStorage.getItem('gmax_migrated_v1')) return;
+                const map = { records: 'gmax_records', notes: 'gmax_notes_v1', fuel: 'gmax_fuel_v1' };
+                Object.keys(map).forEach(function (n) {
+                    if (cloud[n] === null) {
+                        const v = localStorage.getItem(map[n]);
+                        if (typeof v === 'string') cloudSet(n, v);
+                    }
+                });
+                localStorage.setItem('gmax_migrated_v1', '1');
+            } catch (e) {}
+        }
+
+        // ===== تسجيل الدخول عبر Google =====
+        function setLoginState(state, msg) {
+            const $ = id => document.getElementById(id);
+            $('login-page').style.display = 'flex';
+            const m = $('login-msg');
+            m.innerText = msg || '';
+            m.className = (state === 'error' || state === 'loaderror') ? 'err' : '';
+            $('login-google-btn').style.display = state === 'signin' ? 'flex' : 'none';
+            $('login-note').style.display = state === 'signin' ? 'block' : 'none';
+            $('login-retry-btn').style.display = state === 'loaderror' ? 'flex' : 'none';
+            $('login-out-btn').style.display = state === 'loaderror' ? 'block' : 'none';
+        }
+        function hideLogin() { document.getElementById('login-page').style.display = 'none'; }
+
+        function signInWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            provider.setCustomParameters({ prompt: 'select_account' });
+            setLoginState('loading', 'جارٍ فتح نافذة Google…');
+            fbAuth.signInWithPopup(provider).catch(function (err) {
+                const code = (err && err.code) || '';
+                if (code === 'auth/popup-blocked' || code === 'auth/operation-not-supported-in-this-environment') {
+                    fbAuth.signInWithRedirect(provider);
+                    return;
+                }
+                if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') {
+                    setLoginState('signin', '');
+                    return;
+                }
+                if (code === 'auth/unauthorized-domain') {
+                    setLoginState('signin', 'هذا الدومين غير مصرَّح له في Firebase. أضفه من Authentication ← Settings ← Authorized domains.');
+                    return;
+                }
+                setLoginState('signin', 'تعذّر تسجيل الدخول' + (code ? ' (' + code + ')' : '') + '. حاول مرة أخرى.');
+            });
+        }
+
+        function startSession() {
+            setLoginState('loading', 'جارٍ تحميل بياناتك…');
+            cloudLoadAll().then(function () {
+                initUserData();
+                updateAccountRow();
+                hideLogin();
+                goHome();
+            }).catch(function (err) {
+                console.error(err);
+                setLoginState('loaderror', 'تعذّر تحميل بياناتك من السحابة. تحقّق من اتصالك بالإنترنت ومن قواعد الأمان في Firebase، ثم أعد المحاولة.');
+            });
+        }
+        function retryLoad() { if (currentUser) startSession(); }
+        function doSignOut() {
+            if (!fbAuth) return;
+            fbAuth.signOut().then(function () { location.reload(); }, function () { location.reload(); });
+        }
+        function confirmSignOut() {
+            if (confirm('هل تريد تسجيل الخروج من حسابك؟\nبياناتك محفوظة في السحابة وستجدها عند الدخول مجدداً.')) doSignOut();
+        }
+        function updateAccountRow() {
+            const el = document.getElementById('account-email');
+            if (el) el.textContent = (currentUser && (currentUser.email || currentUser.displayName)) || '';
+        }
+
+        function initFirebase() {
+            if (typeof firebase === 'undefined') {
+                setLoginState('error', 'تعذّر تحميل مكتبات Firebase. تحقّق من اتصالك بالإنترنت ثم أعد فتح التطبيق.');
+                return;
+            }
+            if (/^YOUR_/.test(firebaseConfig.apiKey)) {
+                setLoginState('error', 'لم تُضبط إعدادات Firebase بعد. ضع قيم مشروعك في firebaseConfig أعلى السكربت.');
+                return;
+            }
+            firebase.initializeApp(firebaseConfig);
+            fbAuth = firebase.auth();
+            fbDb = firebase.firestore();
+            try { fbDb.enablePersistence({ synchronizeTabs: true }).catch(function () {}); } catch (e) {}
+            fbAuth.onAuthStateChanged(function (user) {
+                if (!user) {
+                    currentUser = null;
+                    setLoginState('signin', '');
+                    return;
+                }
+                if (currentUser && currentUser.uid === user.uid) return;
+                currentUser = user;
+                startSession();
+            });
+        }
+
         const monthsAlgeria = ["جانفي", "فيفري", "مارس", "أفريل", "ماي", "جوان", "جويلية", "أوت", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
         const arabicFullWeekdays = ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
         
@@ -1061,7 +1312,8 @@
             calendar: '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/>',
             check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
             undo: '<path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/>',
-            note: '<path d="M4 20h4L19 9a2.1 2.1 0 00-3-3L5 17z"/><path d="M14 7l3 3"/>'
+            note: '<path d="M4 20h4L19 9a2.1 2.1 0 00-3-3L5 17z"/><path d="M14 7l3 3"/>',
+            logout: '<path d="M9 4H6a2 2 0 00-2 2v12a2 2 0 002 2h3"/><path d="M16 8l4 4-4 4"/><path d="M20 12H9"/>'
         };
         function ico(name, size) {
             size = size || 20;
@@ -1141,9 +1393,8 @@
             return rec;
         }
 
-        // أول تشغيل = لا يوجد gmax_records في التخزين المحلي
+        // أول تشغيل = لا توجد بيانات محفوظة لهذا الحساب في Firestore (تُحدَّد بعد تسجيل الدخول داخل initUserData)
         let isFirstRun = true;
-        try { isFirstRun = localStorage.getItem('gmax_records') === null; } catch (e) { isFirstRun = true; }
         let onboardingStep = null;   // null | 'odo' | 'indicators'
 
 
@@ -1210,8 +1461,24 @@
             return rec;
         }
 
-        if (!isFirstRun) {
-            try { records = mergeSavedRecords(JSON.parse(localStorage.getItem('gmax_records'))); } catch (e) {}
+        // يُستدعى بعد تسجيل الدخول وتحميل البيانات من Firestore
+        function initUserData() {
+            isFirstRun = cloudGet('records') === null;
+            onboardingStep = null;
+            appStarted = false;
+            lastVisitedGroup = null;
+            lastIndicatorsView = 'alerts';
+            records = makeEmptyRecords();
+            if (!isFirstRun) {
+                try { records = mergeSavedRecords(JSON.parse(cloudGet('records'))); } catch (e) {}
+            }
+            updateEstimatedOdometerDaily();
+            let sb = document.getElementById('startBtn');
+            sb.innerText = isFirstRun ? 'تنزيل التطبيق' : 'Start';
+            sb.style.display = '';
+            document.getElementById('welcome-odo-display').innerText = formatNumberWithSpace(records.car.odometer.currentEstimatedOdo);
+            updateGlobalLight();
+            lastRefreshDay = getTodayDateString();
         }
 
         // ===== سجل قراءات العداد اليدوية =====
@@ -1291,25 +1558,11 @@
                 odo.currentEstimatedOdo = last.odo;
             }
         }
-        updateEstimatedOdometerDaily();
-        if (isFirstRun) document.getElementById('startBtn').innerText = 'تنزيل التطبيق';
 
-        document.getElementById('welcome-odo-display').innerText = formatNumberWithSpace(records.car.odometer.currentEstimatedOdo);
-
-        let saveWarned = false;
+        // الحفظ في Firestore (القراءة من الذاكرة فورية، والكتابة تُرسَل للسحابة)
         function saveAppData() {
             updateGlobalLight();
-            try {
-                localStorage.setItem('gmax_records', JSON.stringify(records));
-                saveWarned = false;
-                return true;
-            } catch (e) {
-                if (!saveWarned) {
-                    saveWarned = true;
-                    showInfo('تعذّر الحفظ', 'لم يستطع التطبيق حفظ بياناتك على هذا الجهاز، فقد تكون الذاكرة ممتلئة أو التخزين ممنوعًا في المتصفح (كالتصفح الخاص).<br>ما سجّلتَه الآن قد يضيع عند إغلاق التطبيق، فخذ نسخة احتياطية من «المزيد».');
-                }
-                return false;
-            }
+            return cloudSet('records', JSON.stringify(records));
         }
 
         // يجدّد ما يتغيّر بمرور الأيام: العداد التقديري والتاريخ والأضواء (يُستدعى عند كل انتقال وعند عودة التبويب)
@@ -1777,7 +2030,7 @@
         }
 
         function showExpensesHelp() {
-            showInfo('عن هذه الصفحة', 'ستجمع هذه الصفحة مصاريف سيارتك في مجموعات بسيطة، لتعرف أين يذهب مالك دون تفاصيل مرهقة. الصفحة قيد الإنجاز حاليًا.');
+            showInfo('عن هذه الصفحة', 'هنا تسجّل مصاريف الوقود فقط (تجربة). بعد كل تعبئة اضغط «تعبئة وقود»، اكتب المبلغ الذي دفعته واضغط حفظ، والتاريخ يكون اليوم تلقائيًا ويمكنك تغييره. تظهر القائمة بالتواريخ والمبالغ مع المجموع. زر ✕ يحذف تعبئة كُتبت بالخطأ، وزر «نسخ» يجهّز القائمة نصًّا للواتساب. هذه البيانات لا تمسحها إعادة ضبط المصنع.');
         }
 
         function navigateAlertsPage() {
@@ -1807,8 +2060,8 @@
         }
 
         function installApp() {
-            // أول شيء: إنشاء التخزين المحلي ببيانات فارغة
-            try { localStorage.setItem('gmax_records', JSON.stringify(records)); } catch (e) {}
+            // أول شيء: إنشاء مستند البيانات في Firestore ببيانات فارغة
+            cloudSet('records', JSON.stringify(records));
             isFirstRun = false;
             onboardingStep = 'odo';
             document.getElementById('startBtn').style.display = 'none';
@@ -1849,14 +2102,17 @@
             document.getElementById('settings-page-container').style.display = 'block';
         }
 
-        // ===== الملاحظات الحرة: مفاتيح تخزين مستقلة تماماً عن بيانات التطبيق (gmax_records) =====
-        const NOTES_KEY = 'gmax_notes_v1';
-        const NOTES_DRAFT_KEY = 'gmax_notes_draft_v1';
+        // ===== الملاحظات الحرة: تُحفظ في Firestore (المستند notes). المسودة المؤقتة فقط تبقى على الجهاز =====
         let notesSaved = '';
         let notesDraftTimer = null;
 
-        function notesRead(key) {
-            try { let v = localStorage.getItem(key); return (typeof v === 'string') ? v : null; } catch (e) { return null; }
+        function notesDraftKey() { return 'gmax_notes_draft_v1_' + (currentUser ? currentUser.uid : ''); }
+        function notesReadSaved() {
+            let v = cloudGet('notes');
+            return (typeof v === 'string') ? v : null;
+        }
+        function notesReadDraft() {
+            try { let v = localStorage.getItem(notesDraftKey()); return (typeof v === 'string') ? v : null; } catch (e) { return null; }
         }
         function notesSetStatus(text, color) {
             let el = document.getElementById('notes-status');
@@ -1872,8 +2128,8 @@
         }
 
         function openNotesPage() {
-            notesSaved = notesRead(NOTES_KEY) || '';
-            let draft = notesRead(NOTES_DRAFT_KEY);
+            notesSaved = notesReadSaved() || '';
+            let draft = notesReadDraft();
             let box = document.getElementById('notes-textarea');
             // إن بقيت مسودة لم تُحفظ (خرجتَ قبل الضغط على حفظ) فهي الأحدث، فنعرضها
             box.value = (draft !== null) ? draft : notesSaved;
@@ -1886,7 +2142,7 @@
             // حفظ تلقائي للمسودة فقط (لا يُعدّ حفظاً نهائياً) حتى لا يضيع ما كتبتَه إن خرجتَ فجأة
             clearTimeout(notesDraftTimer);
             notesDraftTimer = setTimeout(function () {
-                try { localStorage.setItem(NOTES_DRAFT_KEY, document.getElementById('notes-textarea').value); } catch (e) {}
+                try { localStorage.setItem(notesDraftKey(), document.getElementById('notes-textarea').value); } catch (e) {}
             }, 400);
             notesRefreshStatus();
         }
@@ -1894,13 +2150,12 @@
         function saveNotes() {
             let text = document.getElementById('notes-textarea').value;
             clearTimeout(notesDraftTimer);
-            try {
-                localStorage.setItem(NOTES_KEY, text);
-                try { localStorage.removeItem(NOTES_DRAFT_KEY); } catch (e) {}
+            if (cloudSet('notes', text)) {
+                try { localStorage.removeItem(notesDraftKey()); } catch (e) {}
                 notesSaved = text;
                 notesSetStatus('تم الحفظ ✓', '#76ff03');
-            } catch (e) {
-                notesSetStatus('تعذّر الحفظ على هذا الجهاز (الذاكرة ممتلئة أو التخزين ممنوع). انسخ ملاحظاتك بزر «نسخ» واحتفظ بها.', '#f44336');
+            } else {
+                notesSetStatus('تعذّر الحفظ في السحابة. انسخ ملاحظاتك بزر «نسخ» واحتفظ بها.', '#f44336');
             }
         }
 
@@ -1990,16 +2245,15 @@
         }
 
         function hasPrevBackup() {
-            try { return localStorage.getItem('gmax_records_prev') !== null; } catch (e) { return false; }
+            return cloudGet('records_prev') !== null;
         }
         function undoLastImport() {
-            let raw = null;
-            try { raw = localStorage.getItem('gmax_records_prev'); } catch (e) {}
+            let raw = cloudGet('records_prev');
             if (!raw) return;
             if (!confirm('هل تريد التراجع عن آخر استرجاع وإعادة بياناتك السابقة؟')) return;
             try { records = mergeSavedRecords(JSON.parse(raw)); } catch (e) { alert('تعذّر قراءة النسخة السابقة.'); return; }
             saveAppData();
-            try { localStorage.removeItem('gmax_records_prev'); } catch (e) {}
+            cloudRemove('records_prev');
             refreshDaily();
             alert('تمت إعادة بياناتك السابقة.');
             openBackupPage();
@@ -2012,7 +2266,7 @@
 
         function executeBackupImport() {
             if (!pendingImportData) return;
-            try { localStorage.setItem('gmax_records_prev', JSON.stringify(records)); } catch (e) {}
+            cloudSet('records_prev', JSON.stringify(records));
             records = mergeSavedRecords(pendingImportData);
             saveAppData();
             updateEstimatedOdometerDaily();
@@ -2036,7 +2290,7 @@
             showInfo('عن هذه الصفحة', '<b style="color:#b8860b;">التنبيهات</b><br>تجمع هذه الصفحة كل ما يستحق انتباهك في مكان واحد: «التحذيرات» لما حان موعده أو فات، و«التنبيهات» لما اقترب موعده. وإن لم تجد شيئًا فكل شيء على ما يرام بحسب المعلومات المسجّلة. اضغط على أي سطر لتفتح مؤشره وتحدّثه، أو اختر أحد الأقسام الأربعة في الأعلى لترى مؤشراتها بكل تفاصيلها.<br><br><b style="color:#b8860b;">زر التفعيل</b><br>الزر الذي في أعلى الصفحة (بجانب العنوان) لاختيار المؤشرات التي تريد متابعتها: فعّل ما يهمّك وأوقف ما لا تحتاجه.<br><br><b style="color:#b8860b;">شريط التنقّل</b><br>يرافقك الشريط السفلي في كل الصفحات. يكفي أن تضغط على أحد أزراره لتنتقل مباشرة من قسم إلى آخر.<br><br><b style="color:#b8860b;">علامة الاستفهام</b><br>ستجد في أسفل كل صفحة دائرة تحمل علامة استفهام. اضغط عليها لتحصل على شرح موجز للصفحة وطريقة استعمالها.');
         }
         function showSettingsPageHelp() {
-            showInfo('عن هذه الصفحة', '<b style="color:#b8860b;">النسخة الاحتياطية</b><br>لحفظ بياناتك في ملف تحتفظ به، أو لاسترجاعها منه عند تغيير الهاتف أو فقدان البيانات.<br><br><b style="color:#b8860b;">ملاحظات</b><br>مكان تكتب فيه ملاحظاتك الحرة وتحفظها، وتجدها كلها كلما فتحته. زر «نسخ» يساعدك على إرسالها إلى واتساب. وإعادة ضبط المصنع لا تمسحها.<br><br><b style="color:#b8860b;">إعادة ضبط المصنع</b><br>لمسح كل البيانات والبدء من جديد. استعملها بحذر، فلا يمكن التراجع عنها.');
+            showInfo('عن هذه الصفحة', '<b style="color:#b8860b;">النسخة الاحتياطية</b><br>لحفظ بياناتك في ملف تحتفظ به، أو لاسترجاعها منه عند الحاجة. وبياناتك محفوظة أصلًا في حسابك على السحابة.<br><br><b style="color:#b8860b;">ملاحظات</b><br>مكان تكتب فيه ملاحظاتك الحرة وتحفظها، وتجدها كلها كلما فتحته. زر «نسخ» يساعدك على إرسالها إلى واتساب. وإعادة ضبط المصنع لا تمسحها.<br><br><b style="color:#b8860b;">تسجيل الخروج</b><br>يُخرجك من حساب Google على هذا الهاتف فقط. بياناتك تبقى في السحابة، وتعود إليك عند الدخول بالحساب نفسه من أي هاتف.<br><br><b style="color:#b8860b;">إعادة ضبط المصنع</b><br>لمسح بيانات السيارة والمؤشرات من حسابك والبدء من جديد. استعملها بحذر، فلا يمكن التراجع عنها.');
         }
         function showSheetHelp() {
             showInfo('عن لوحة التعديل', '<b style="color:#b8860b;">الاقتراحات الجاهزة</b><br>اضغط على أحدها ليُوضع في الخانة. وإن أردت قيمة أخرى فاضغط الزر الذي بجانب ✕ في أعلى اللوحة (⌨️ كتابة أو 📅 تقويم) لتكتب رقمًا بالكيلومتر أو تختار تاريخًا. ومن الزر نفسه، وقد صار «اقتراحات جاهزة»، تعود إلى الاقتراحات.<br><br><b style="color:#b8860b;">التأكيد والتراجع</b><br>اضغط ✓ لتأكيد التحديث وحفظه، أو ✕ لإغلاق اللوحة والتراجع عمّا كتبته.');
@@ -2059,7 +2313,8 @@
         }
 
         function executeFactoryReset() {
-            try { localStorage.removeItem('gmax_records'); localStorage.removeItem('gmax_records_prev'); } catch (e) {}
+            cloudRemove('records');
+            cloudRemove('records_prev');
             records = makeEmptyRecords();
             isFirstRun = true;
             onboardingStep = null;
@@ -2150,16 +2405,116 @@
             return { items, totalActive };
         }
 
+        // ===== سجل الوقود: يُحفظ في Firestore (المستند fuel، قائمة JSON) =====
+        let fuelAmountStr = '';
+        let fuelMsg = '';
+
+        function fuelLoad() {
+            try {
+                let a = JSON.parse(cloudGet('fuel') || '[]');
+                if (!Array.isArray(a)) return [];
+                return a.filter(x => x && typeof x.d === 'string' && Number(x.a) > 0);
+            } catch (e) { return []; }
+        }
+        function fuelStore(arr) {
+            return cloudSet('fuel', JSON.stringify(arr));
+        }
+        function fuelSorted(arr) {
+            return arr.slice().sort((x, y) => (x.d < y.d ? 1 : x.d > y.d ? -1 : (y.id || 0) - (x.id || 0)));
+        }
+        function fuelDateLabel(d) {
+            let p = String(d).split('-');
+            return p.length === 3 ? `${p[2]}/${p[1]}/${p[0]}` : d;
+        }
+
         function renderExpensesPage() {
             document.getElementById('editor-title').innerText = "المصاريف";
             renderTabsBar(false);
-            const cats = [['docs', 'الوثائق'], ['oil', 'الزيت والفلاتر'], ['belts', 'الأحزمة'], ['general', 'الصيانة العامة'], ['fuel', 'الوقود'], ['misc', 'متفرقات']];
+            const list = fuelSorted(fuelLoad());
+            const total = list.reduce((t, x) => t + Number(x.a), 0);
+            const rows = list.length === 0
+                ? `<div class="fuel-empty">لا توجد تعبئات مسجّلة بعد.<br>اضغط «تعبئة وقود» بعد كل تعبئة.</div>`
+                : list.map(x => `<div class="fuel-row"><span class="fuel-d">${fuelDateLabel(x.d)}</span><span class="fuel-a"><span class="num-ltr">${formatNumberWithSpace(x.a)}</span> دج</span><button class="fuel-del" onclick="fuelDelete(${Number(x.id) || 0}, '${escapeHtml(x.d)}', ${Number(x.a)})">✕</button></div>`).join('');
             FORM_EL().innerHTML =
-                `<div class="cards-container" style="margin-top: 10px;">${cats.map(c => `<div class="home-card" style="cursor: default;"><span class="home-card-title">${c[1]}</span><span>${ico(c[0], 26)}</span></div>`).join('')}</div>
-                <div class="guide-line" style="padding: 24px 24px 6px; color: #ff9800;">تنبيه: هذه الصفحة قيد الإنجاز.</div>` + helpBtnHtml('showExpensesHelp');
+                `<div style="padding-top: 10px;"><button class="fuel-add-btn" onclick="fuelOpen()">+ تعبئة وقود</button>
+                <div class="fuel-total"><div class="fuel-total-label">مجموع الوقود${list.length ? ` (${list.length} تعبئة)` : ''}</div><div class="fuel-total-val"><span class="num-ltr">${formatNumberWithSpace(total)}</span> دج</div></div>
+                ${rows}
+                ${list.length ? `<button class="fuel-copy" onclick="fuelCopy()">نسخ القائمة (للواتساب)</button>` : ''}
+                <div class="fuel-status" id="fuel-status">${fuelMsg}</div></div>` + helpBtnHtml('showExpensesHelp');
+            fuelMsg = '';
         }
 
-        function renderNoGroupPage() {
+        function fuelRefreshAmount() {
+            let el = document.getElementById('fuel-amount');
+            if (!fuelAmountStr) { el.className = 'fuel-amount-box empty'; el.innerText = 'اكتب المبلغ'; }
+            else { el.className = 'fuel-amount-box'; el.innerText = formatNumberWithSpace(fuelAmountStr); }
+        }
+        function fuelOpen() {
+            fuelAmountStr = '';
+            document.getElementById('fuel-date').value = getTodayDateString();
+            document.getElementById('fuel-err').innerText = '';
+            fuelRefreshAmount();
+            document.getElementById('fuel-overlay').style.display = 'flex';
+        }
+        function fuelClose() { document.getElementById('fuel-overlay').style.display = 'none'; }
+        function fuelSetAmount(n) { fuelAmountStr = String(n); document.getElementById('fuel-err').innerText = ''; fuelRefreshAmount(); }
+        function fuelKey(k) {
+            document.getElementById('fuel-err').innerText = '';
+            if (k === 'del') fuelAmountStr = fuelAmountStr.slice(0, -1);
+            else {
+                if (fuelAmountStr === '' && (k === '0' || k === '00')) return;
+                if ((fuelAmountStr + k).length > 7) return;
+                fuelAmountStr += k;
+            }
+            fuelRefreshAmount();
+        }
+        function fuelSave() {
+            let err = document.getElementById('fuel-err');
+            let amount = parseInt(fuelAmountStr, 10);
+            let d = document.getElementById('fuel-date').value;
+            if (!amount || amount <= 0) { err.innerText = 'اكتب المبلغ المدفوع أولًا.'; return; }
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) { err.innerText = 'التاريخ غير صحيح.'; return; }
+            let arr = fuelLoad();
+            arr.push({ id: Date.now(), d: d, a: amount });
+            if (!fuelStore(arr)) { err.innerText = 'تعذّر الحفظ في السحابة.'; return; }
+            fuelClose();
+            renderExpensesPage();
+        }
+        function fuelDelete(id, d, a) {
+            if (!confirm('حذف تعبئة ' + fuelDateLabel(d) + ' بمبلغ ' + formatNumberWithSpace(a) + ' دج؟')) return;
+            let arr = fuelLoad();
+            let i = arr.findIndex(x => (Number(x.id) || 0) === id && x.d === d && Number(x.a) === a);
+            if (i === -1) return;
+            arr.splice(i, 1);
+            if (!fuelStore(arr)) { fuelMsg = 'تعذّر الحذف.'; }
+            renderExpensesPage();
+        }
+        function fuelText() {
+            const list = fuelSorted(fuelLoad());
+            const total = list.reduce((t, x) => t + Number(x.a), 0);
+            return 'مصاريف الوقود\n' + list.map(x => `${fuelDateLabel(x.d)}: ${formatNumberWithSpace(x.a)} دج`).join('\n') + `\nالمجموع: ${formatNumberWithSpace(total)} دج`;
+        }
+        function fuelCopy() {
+            let text = fuelText();
+            function done(ok) {
+                let el = document.getElementById('fuel-status');
+                if (el) { el.style.color = ok ? '#76ff03' : '#f44336'; el.innerText = ok ? 'تم النسخ. ألصقها في واتساب ✓' : 'تعذّر النسخ.'; }
+            }
+            function fallback() {
+                try {
+                    let ta = document.createElement('textarea');
+                    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+                    document.body.appendChild(ta); ta.focus(); ta.select();
+                    let ok = document.execCommand('copy');
+                    document.body.removeChild(ta);
+                    done(ok);
+                } catch (e) { done(false); }
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { done(true); }).catch(fallback);
+            else fallback();
+        }
+
+                function renderNoGroupPage() {
             document.getElementById('editor-title').innerText = "المؤشرات";
             renderTabsBar(true);
             FORM_EL().innerHTML = `<div class="guide-line">اضغط على أيقونة مجموعة في الأعلى لعرض مؤشراتها وتحديثها.</div>` + helpBtnHtml('showGroupPageHelp');
@@ -2313,6 +2668,7 @@
 
         // ===== خطوات ما قبل التحديث: التحقق من التاريخ ثم تأكيد العداد (مؤشرات الكيلومتر) =====
         function dateStrOf(d) { return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
+        // علامة «تاريخ الهاتف مؤكَّد اليوم» خاصة بالجهاز نفسه (ليست من بيانات الحساب) فتبقى في localStorage
         function getDateOkDay() { try { return localStorage.getItem('gmax_dateok'); } catch (e) { return null; } }
         function setDateOkDay(v) { try { localStorage.setItem('gmax_dateok', v); } catch (e) {} }
         // يجلب الوقت الحقيقي من الإنترنت (UTC بالمللي ثانية) أو يفشل بعد مهلة قصيرة
@@ -2968,6 +3324,7 @@
             navigateToModule(lastIndicatorsView || 'alerts');
         }
             hydrateIcons();
+            initFirebase();
 </script>
 </body>
 </html>
