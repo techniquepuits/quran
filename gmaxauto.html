@@ -3,45 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GMAX AUTO - مساعدك الذكي للصيانة</title>
-    
-    <!-- استدعاء مكتبات Firebase الحديثة -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDRKHdIzq2juXY5HaRXa6C-V9jAIhJIlSs",
-            authDomain: "gmaxauto.firebaseapp.com",
-            projectId: "gmaxauto",
-            storageBucket: "gmaxauto.firebasestorage.app",
-            messagingSenderId: "635663618304",
-            appId: "1:635663618304:web:9cdde1b73006cbf6d723e5"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const provider = new GoogleAuthProvider();
-
-        window.firebaseAuth = auth;
-        window.firebaseDb = db;
-        window.googleProvider = provider;
-        window.signInWithPopup = signInWithPopup;
-        window.signOut = signOut;
-        window.doc = doc;
-        window.getDoc = getDoc;
-        window.setDoc = setDoc;
-
-        onAuthStateChanged(auth, async (user) => {
-            if (user && window.isCloudStorage) {
-                console.log("المستخدم مسجل دخول سحابياً:", user.email);
-                await window.loadCloudData(user.uid);
-            }
-        });
-    </script>
-
+    <title>GMX AUTO - مساعدك الذكي للصيانة</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -97,7 +59,7 @@
             overflow-y: auto;
             padding-bottom: 30px;
         }
-        
+
         .gmax-brand {
             font-size: 70px;
             font-weight: 900;
@@ -173,35 +135,14 @@
             background-color: #b8860b;
             color: #000000;
             border: none;
-            padding: 15px 45px;
-            font-size: 18px;
+            padding: 15px 55px;
+            font-size: 20px;
             font-weight: bold;
             border-radius: 14px;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(184, 134, 11, 0.3);
-            margin-bottom: 12px;
-            width: 80%;
         }
         .start-app-btn:active { transform: scale(0.95); }
-
-        .google-login-btn {
-            background-color: #ffffff;
-            color: #333333;
-            border: none;
-            padding: 14px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 14px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
-            width: 80%;
-            margin-top: 5px;
-        }
-        .google-login-btn:active { transform: scale(0.95); }
 
         .page-header {
             display: flex;
@@ -213,7 +154,7 @@
             width: 100%;
             box-sizing: border-box;
         }
-        
+
         .title-area {
             display: flex;
             align-items: center;
@@ -225,37 +166,13 @@
             font-weight: bold; 
             color: #b8860b; 
         }
-        .seg-tabs { width: 100%; margin-bottom: 22px; box-sizing: border-box; padding: 4px; border-radius: 14px; background: #1a1a1a; display: flex; flex-direction: column; gap: 4px; }
         .seg-row { display: flex; gap: 4px; }
         .seg-tab { position: relative; flex: 1; min-width: 0; padding: 9px 2px; background: none; border: none; border-radius: 10px; color: #8a8a8a; font-family: inherit; font-size: 13px; font-weight: bold; cursor: pointer; white-space: nowrap; transition: background .15s, color .15s; -webkit-tap-highlight-color: transparent; }
-        .seg-wide { display: block; width: 100%; }
         .seg-tab.active { color: #d4a017; background: #2c2c2c; box-shadow: 0 1px 3px rgba(0,0,0,0.45); }
         .seg-tab:not(.active):active { background: #232323; }
-        .seg-tab .seg-dot { position: absolute; top: 6px; left: 8px; width: 7px; height: 7px; margin: 0; box-shadow: none; opacity: 0.9; }
-        .nav-tabs { display: flex; gap: 6px; width: 100%; margin-bottom: 50px; padding-bottom: 3px; border-bottom: 1px solid #2d2d2d; box-sizing: border-box; }
-        .nav-tab { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; padding: 6px 0 0; border-radius: 12px; border: 1px solid transparent; }
-        .nav-tab.active .home-card-icon-box { border-color: #b8860b; background-color: rgba(184,134,11,0.12); }
-        .nav-tab.active .nav-tab-label { color: #b8860b; }
-        .nav-tab .home-card-icon-box { width: 38px; height: 38px; font-size: 17px; }
-        .guide-line { text-align: center; color: #888; font-size: 13px; line-height: 1.9; padding: 40px 24px 10px; }
-        .alert-section-title { font-size: 14px; font-weight: bold; margin: 6px 0 8px; }
-        .alert-section-title.red { color: #f44336; }
-        .alert-section-title.yellow { color: #ff9800; }
-        .alert-section { margin-bottom: 22px; }
-        .alert-line { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 11px 2px; border-bottom: 1px solid #2d2d2d; font-size: 13px; color: rgba(255,255,255,0.88); line-height: 1.7; }
-        .alert-line .status-light { flex: none; margin: 0; }
-        .alert-line { cursor: pointer; }
-        .alert-line:active { background: #1c1c1c; }
-        .nav-tab-label { font-size: 11px; font-weight: bold; color: #aaa; white-space: nowrap; }
-        .tab-icon-box { position: relative; }
         .indicators-table td.col-indicator { white-space: normal; line-height: 1.4; }
-        .alerts-empty { text-align: center; padding: 50px 20px; }
-        .alerts-empty-check { font-size: 28px; color: rgba(129,199,132,0.55); line-height: 1; margin-bottom: 12px; }
-        .alerts-empty-text { font-size: 14px; font-weight: bold; color: rgba(255,255,255,0.85); line-height: 1.8; }
-        .alerts-basis { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 14px; line-height: 1.8; }
-        .alerts-basis.warn { color: rgba(255,152,0,0.7); }
-        .alerts-empty-sub { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 8px; line-height: 1.7; }
 
+        /* شعار مصغر في صفحة البطاقات الرئيسية أعلى اليسار */
         .header-mini-brand { display: flex; flex-direction: column; align-items: flex-start; cursor: pointer; user-select: none; }
         .mini-brand-row { font-size: 15px; font-weight: 900; letter-spacing: -0.5px; line-height: 1; display: flex; direction: ltr; }
         .mini-brand-sub { font-size: 9.5px; color: #888888; margin-top: 2px; letter-spacing: 0; white-space: nowrap; }
@@ -291,7 +208,7 @@
             border: 1px solid #2d2d2d;
             table-layout: fixed;
         }
-        
+
         .indicators-table th, 
         .indicators-table td {
             padding: 12px 8px;
@@ -307,8 +224,6 @@
         .table-col-titles span:nth-child(1) { width: 45%; text-align: right; padding-right: 10px; box-sizing: border-box; }
         .table-col-titles span:nth-child(2) { width: 40%; text-align: center; }
         .table-col-titles span:nth-child(3) { width: 15%; text-align: center; }
-        .global-tabs-hint { font-size: 12px; color: rgba(255,255,255,0.45); text-align: center; margin: 0 0 16px; }
-        .group-help-wrap { display: flex; justify-content: flex-start; margin: 16px 0 20px; }
         .indicators-table th {
             background-color: #1e1e1e;
             color: #b8860b;
@@ -348,14 +263,6 @@
             gap: 14px;
             margin-top: 30px;
             width: 100%;
-        }
-        .home-card-icon-box {
-            width: 36px; height: 36px;
-            background-color: #262626;
-            border: 1px solid #383838;
-            border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 16px; flex-shrink: 0;
         }
 
         .home-card {
@@ -430,9 +337,6 @@
         .ico { display: block; flex-shrink: 0; }
         .up-sheet-x, .up-sheet-ok { display: inline-flex; align-items: center; justify-content: center; padding: 0; }
         .home-card > span:last-child { display: flex; align-items: center; color: #b8860b; }
-        .home-card-icon-box { color: rgba(255,255,255,0.75); }
-        .nav-tab.active .home-card-icon-box { color: #b8860b; }
-        .alerts-empty-check { display: flex; justify-content: center; }
 
         .bottom-nav-label {
             font-size: 11px;
@@ -476,7 +380,7 @@
             margin-bottom: 4px;
             flex-shrink: 0;
         }
-        
+
         .wizard-display-box {
             background-color: #121212;
             border: 2px solid #444;
@@ -493,47 +397,9 @@
             direction: rtl;
             flex-shrink: 0;
         }
-        
+
         .wizard-number-part { direction: ltr; unicode-bidi: embed; color: rgba(255, 255, 255, 0.6); }
         .wizard-unit-part { color: rgba(255, 255, 255, 0.6); font-size: 14px; font-weight: normal; }
-
-        .checklist-container {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-bottom: 10px;
-            flex-grow: 1;
-            overflow-y: auto;
-        }
-        .checklist-item {
-            background-color: #262626;
-            border: 1px solid #444;
-            padding: 10px 12px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: bold;
-            user-select: none;
-            color: #ffffff;
-        }
-        .checklist-checkbox {
-            width: 16px;
-            height: 16px;
-            border: 2px solid #666;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-        }
-        .checklist-item.checked .checklist-checkbox {
-            background-color: #b8860b;
-            border-color: #b8860b;
-            color: #000;
-        }
 
         .numpad-grid {
             display: grid;
@@ -556,7 +422,7 @@
         }
         .numpad-btn:active { background-color: #444; }
         .numpad-btn-del { background-color: #3a1a1a; color: #ff8888; border-color: #552222; font-size: 11px; }
-        
+
         .numpad-actions-row {
             display: flex;
             gap: 10px;
@@ -589,7 +455,7 @@
         }
         .cal-nav-btn { background: none; border: 1px solid #444; color: #b8860b; font-weight: bold; padding: 2px 6px; border-radius: 4px; cursor: pointer; }
         .cal-nav-label { font-size: 12px; font-weight: bold; color: #fff; direction: rtl; }
-        
+
         .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; margin-bottom: 4px; }
         .cal-weekday-badge {
             display: inline-flex;
@@ -630,7 +496,7 @@
             text-align: center;
             flex-grow: 1;
         }
-        
+
         .date-display-box.editable { color: #fff; cursor: pointer; }
         .date-display-box { border-color: rgba(255,255,255,0.25) !important; }
         .date-display-box.touched { border-color: #b8860b !important; }
@@ -663,59 +529,16 @@
         .detail-row:last-child { border-bottom: none; }
         .detail-label { color: rgba(255, 255, 255, 0.6); }
         .detail-val { font-weight: bold; color: #fff; }
-        
-        .detail-actions-row { display: flex; gap: 10px; margin-top: 12px; }
-        .detail-act-btn { flex: 1; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; box-sizing: border-box; }
-        .detail-act-update { background-color: #332710; border: 1px solid #b8860b; color: #ffda75; box-shadow: 0 2px 8px rgba(184, 134, 11, 0.3); }
-        .detail-act-update:active { background-color: #b8860b; color: #000; }
-
-        .up-summary { font-size: 12px; color: rgba(255,255,255,0.6); text-align: center; margin-top: 6px; }
-        .trip-line { text-align: center; font-size: 13px; color: rgba(255,255,255,0.55); margin: 34px 0 0; }
-        .up-fld-lbl { font-size: 11px; font-weight: bold; color: #245a98; margin: 6px 2px 3px; }
-        .up-sheet .date-display-box.pick { cursor: pointer; }
         .up-sheet .date-display-box.on { border: 2px solid #2f6fb5 !important; background: #fff; }
-        #up-sheet-body .spec-display { direction: ltr; min-height: 22px; padding: 10px; font-size: 16px; font-weight: bold; border-radius: 8px; border: 1px solid #b8bec7; background: #fff; color: #1d3d66; text-align: center; margin: 8px 0; word-break: break-all; }
-        .spec-kb { direction: ltr; display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; }
-        .skb-btn { padding: 8px 0; font-size: 12px; font-weight: bold; border-radius: 5px; background: #f4f4f1; border: 1px solid #b8bec7; color: #222; cursor: pointer; user-select: none; min-width: 0; }
-        .skb-btn:active { background: #d3dbe6; }
-        .skb-space { grid-column: span 4; font-size: 11px; }
-        .skb-del { grid-column: span 3; background: #f6dcd6; border-color: #e3b5ab; color: #b3261e; font-size: 11px; }
         .up-warn-text { font-size: 14px; line-height: 2; text-align: center; color: #1d3d66; margin-top: 14px; }
-        .up-sheet .up-summary { color: #3d5a80; margin: 5px 0 6px; }
-        .detail-top-info { font-size: 12px; color: rgba(255,255,255,0.6); }
-        #detail-page-container.up-locked .page-header, #detail-page-container.up-locked #detail-page-content-area, #detail-page-container.up-locked #detail-page-action-container { pointer-events: none; }
-        .detail-act-update { position: relative; }
-        .up-seg { display: flex; gap: 0; }
-        .up-seg-btn { flex: 1; padding: 13px 6px; font-size: 14px; font-weight: bold; background: #1f1f1f; border: 1px solid #444; color: #ccc; cursor: pointer; }
-        .up-seg-btn:first-child { border-radius: 0 10px 10px 0; }
-        .up-seg-btn:last-child { border-radius: 10px 0 0 10px; border-right: none; }
-        .up-seg-btn:active { background: #2a2a2a; }
-        .detail-act-update { background: #1f1f1f; border: 1px solid #444; color: #fff; box-shadow: none; }
-        .detail-act-update:active { background: #2a2a2a; color: #fff; }
-        .detail-back-btn { display: block; width: 100%; margin-top: 12px; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; box-sizing: border-box; background: #1f1f1f; border: 1px solid #444; color: #fff; font-family: inherit; }
-        .detail-back-btn:active { background: #2a2a2a; }
         .cfg-btn { display: inline-flex; align-items: center; gap: 5px; height: 40px; margin: 0; padding: 0 2px 0 8px; background: none; border: none; color: #b8860b; font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
         .cfg-btn svg { stroke-width: 2.6; }
         .cfg-btn:active { opacity: 0.6; }
-        #up-sheet-overlay { position: fixed; inset: 0; z-index: 36500; pointer-events: none; }
         .up-sheet { position: absolute; left: 50%; transform: translateX(-50%); width: calc(100% - 24px); max-width: 476px; box-sizing: border-box; background: #1e1e1e; border: 1px solid rgba(255,255,255,0.3); border-radius: 14px; padding: 12px 14px 14px; box-shadow: 0 6px 22px rgba(0,0,0,0.6); pointer-events: auto; display: flex; flex-direction: column; }
-        .up-sheet-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-shrink: 0; }
-        .up-sheet-title { font-size: 14px; font-weight: bold; color: #b8860b; }
-        #up-sheet-field { flex-shrink: 0; }
-        #up-error { min-height: 0; margin: 0; }
-        #up-error:empty { display: none; }
-        #up-sheet-field .date-display-box { text-align: center; font-size: 15px; padding: 10px 12px; }
-        #up-sheet-body { flex: 1; min-height: 0; overflow-y: auto; margin-top: 0; }
-        #up-sheet-body .wizard-calendar-box { margin-top: 2px; flex-grow: 0; }
         .up-sheet-actions { display: flex; gap: 8px; margin-top: 10px; flex-shrink: 0; }
-        .up-act { flex: 1; height: 52px; font-size: 11px !important; line-height: 1.3; direction: rtl !important; padding: 0 4px !important; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; }
-        .up-act.on { background: #fff !important; border: 2px solid #2f6fb5 !important; }
         .up-sheet-ok { flex: 1; background: #b8860b; color: #000; border: none; border-radius: 10px; height: 52px; font-size: 14px; font-weight: bold; cursor: pointer; }
         .up-sheet-x { flex: 1; background: #333; color: #ccc; border: none; border-radius: 10px; height: 52px; font-size: 13px; font-weight: bold; cursor: pointer; }
         .up-label { font-size: 11px; color: #b8860b; margin: 0 0 4px 0; font-weight: bold; }
-        #up-sheet-body .numpad-btn { padding: 12px 0; font-size: 16px; }
-        #up-sheet-body .numpad-grid { gap: 6px; }
-        #up-sheet-body .suggestion-chip-btn { padding: 10px 2px; font-size: 11px; }
         .suggestions-row {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -735,15 +558,11 @@
             text-align: center;
             direction: ltr;
         }
-        .suggestion-chip-btn.active-suggestion {
-            border-color: #ffffff !important;
-            background-color: #3a2f10;
-        }
         .suggestion-chip-btn:active {
             background-color: #b8860b;
             color: #000;
         }
-        
+
         .error-inline-msg {
             color: #f44336;
             font-size: 11px;
@@ -752,7 +571,9 @@
             margin-top: 6px;
             min-height: 16px;
         }
-    
+
+        /* ===== نوافذ القرار (إدخال المستخدم): سطح كريمي مختلف عن صفحات القراءة السوداء ===== */
+        /* ===== سجل الوقود ===== */
         #fuel-overlay { position: fixed; inset: 0; z-index: 36600; display: none; align-items: flex-end; justify-content: center; background: none; }
         .fuel-sheet { width: calc(100% - 24px); max-width: 476px; box-sizing: border-box; margin-bottom: 12px; background: #e3e3df; border: 1.5px solid #2f6fb5; border-radius: 14px; padding: 12px 14px 14px; box-shadow: 0 8px 28px rgba(0,0,0,0.7); color: #1d3d66; animation: decideIn 0.16s ease-out; }
         .fuel-title { font-size: 14px; font-weight: bold; color: #245a98; margin-bottom: 8px; }
@@ -782,18 +603,65 @@
         .fuel-empty { text-align: center; color: #888; font-size: 13px; padding: 24px 10px; }
         .fuel-copy { width: 100%; margin-top: 14px; background: #1a1a1a; border: 1px solid #b8860b; color: #ffda75; border-radius: 8px; padding: 12px; font-weight: bold; font-size: 13px; font-family: inherit; cursor: pointer; }
         .fuel-status { text-align: center; font-size: 12px; min-height: 16px; margin-top: 6px; color: #76ff03; }
-        #up-sheet-overlay { background: none; }
+        .fuel-sheet { max-height: calc(100vh - 24px); overflow-y: auto; }
+        .exp-cat-btn { display: block; width: 100%; background: #f4f4f1; border: 1px solid #2f6fb5; color: #1f4f8a; border-radius: 10px; height: 50px; margin-bottom: 8px; font-size: 15px; font-weight: bold; font-family: inherit; cursor: pointer; }
+        .exp-cat-btn:active { background: #2f6fb5; color: #fff; }
+        .exp-title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+        .exp-change { background: none; border: none; color: #2f6fb5; font-size: 13px; font-weight: bold; font-family: inherit; cursor: pointer; padding: 4px 6px; }
+        .exp-note { width: 100%; box-sizing: border-box; margin-top: 8px; padding: 9px 10px; border: 1px solid #aeb6c2; border-radius: 8px; background: #f4f4f1; color: #1d3d66; font-family: inherit; font-size: 13px; }
+        .exp-sum { display: flex; gap: 8px; }
+        .exp-sum .fuel-total { flex: 1; }
+        .exp-sum .fuel-total-val { font-size: 19px; }
+        .exp-mid { flex: 1; padding: 0 10px; font-size: 12px; color: rgba(255,255,255,0.7); text-align: right; }
+        .exp-mid small { display: block; font-size: 11px; color: rgba(255,255,255,0.45); }
+        .exp-big-btn { width: 100%; border-radius: 12px; height: 54px; font-size: 16px; font-weight: bold; font-family: inherit; cursor: pointer; margin: 0 0 12px; }
+        .exp-big-btn.stats { background: #b8860b; color: #fff; border: none; }
+        .exp-big-btn.stats:active { background: #9a7009; }
+        .exp-big-btn.list { background: #4b5f78; color: #fff; border: none; }
+        .exp-big-btn.list:active { background: #3d4e63; }
+        .exp-subhead { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; font-size: 16px; font-weight: bold; color: #b8860b; }
+        .exp-back { background: #1e1e1e; border: 1px solid #2d2d2d; color: #b8860b; width: 38px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; }
+        .st-hint { font-size: 13px; color: rgba(255,255,255,0.55); margin: 0 0 10px; }
+        .st-q { display: block; width: 100%; text-align: right; background: #1e1e1e; border: 1px solid #2d2d2d; border-right: 4px solid #b8860b; border-radius: 12px; padding: 18px 16px; margin-bottom: 10px; color: #fff; font-size: 15px; font-weight: bold; font-family: inherit; cursor: pointer; }
+        .st-q:active { border-color: #b8860b; }
+        .st-foot { font-size: 11px; color: rgba(255,255,255,0.4); text-align: center; margin-top: 14px; }
+        #story-overlay { position: fixed; inset: 0; z-index: 36700; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.86); }
+        #story-card { position: relative; width: calc(100% - 24px); max-width: 440px; height: calc(100% - 40px); max-height: 720px; box-sizing: border-box; border-radius: 22px; padding: 22px 20px 16px; background: linear-gradient(165deg, #1b1a2e 0%, #2b2410 62%, #141414 100%); border: 1px solid rgba(255,213,74,0.25); display: flex; flex-direction: column; text-align: center; color: #fff; overflow: hidden; }
+        .st-prog { display: flex; gap: 5px; direction: ltr; margin-bottom: 14px; }
+        .st-prog span { flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,0.22); }
+        .st-prog span.on { background: #ffd54a; }
+        .st-close { position: absolute; top: 28px; left: 14px; background: none; border: none; color: rgba(255,255,255,0.7); font-size: 18px; cursor: pointer; padding: 6px 10px; font-family: inherit; }
+        .st-q-title { font-size: 16px; font-weight: bold; margin: 14px 26px 18px; line-height: 1.6; color: rgba(255,255,255,0.9); }
+        .st-big { font-size: 52px; font-weight: bold; color: #ffd54a; line-height: 1.1; }
+        .st-unit { font-size: 15px; color: #fff; margin-top: 4px; }
+        .st-cap { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; min-height: 16px; }
+        .st-body { flex: 1; min-height: 0; margin-top: 16px; display: flex; flex-direction: column; align-items: center; overflow-y: auto; }
+        .st-body::before, .st-body::after { content: ''; margin: auto; }
+        .st-pick { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 4px; }
+        .st-year-title { font-size: 13px; font-weight: bold; color: #ffd54a; margin: 16px 0 10px; align-self: flex-start; }
+        .st-chart { width: 100%; max-width: 330px; height: auto; direction: ltr; }
+        .st-trend { margin-top: 14px; padding: 9px 16px; border-radius: 20px; font-size: 13px; font-weight: bold; }
+        .st-trend.up { background: rgba(239,83,80,0.18); color: #ff8a80; }
+        .st-trend.down { background: rgba(102,187,106,0.18); color: #a5d6a7; }
+        .st-trend.neutral { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); line-height: 1.7; }
+        .st-empty { font-size: 14px; line-height: 2; color: rgba(255,255,255,0.7); padding: 0 12px; }
+        .st-cats { width: 100%; text-align: right; }
+        .st-cat { margin-bottom: 14px; }
+        .st-cat-top { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px; }
+        .st-cat-bar { height: 9px; border-radius: 5px; background: rgba(255,255,255,0.1); overflow: hidden; }
+        .st-cat-bar > div { height: 100%; border-radius: 5px; margin-right: 0; margin-left: auto; }
+        .st-nav { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 10px; }
         #welcome-odo-overlay { background-color: transparent; }
         @keyframes decideIn { from { opacity: 0; margin-top: 8px; } to { opacity: 1; margin-top: 0; } }
         .up-sheet, #welcome-odo-overlay .wizard-container { animation: decideIn 0.16s ease-out; }
 
         .up-sheet { background: #e3e3df; border: 1.5px solid #2f6fb5; color: #1d3d66; box-shadow: 0 8px 28px rgba(0,0,0,0.7); }
-        .up-sheet .up-sheet-title, .up-sheet .up-label, .up-sheet .wizard-header-title { color: #245a98; }
+        .up-sheet .up-label,
+        .up-sheet .wizard-header-title { color: #245a98; }
         .up-sheet .numpad-btn { background: #f4f4f1; border: 1px solid #b8bec7; color: #222; }
         .up-sheet .numpad-btn:active { background: #d3dbe6; }
         .up-sheet .numpad-btn-del { background: #f6dcd6; border-color: #e3b5ab; color: #b3261e !important; }
         .up-sheet .suggestion-chip-btn { background: #f4f4f1; border: 1px solid #2f6fb5; color: #1f4f8a; }
-        .up-sheet .suggestion-chip-btn.active-suggestion { background: #2f6fb5; color: #fff; }
         .up-sheet .up-sheet-ok, .up-sheet .numpad-confirm-btn { background: #2f6fb5; color: #fff; }
         .up-sheet .up-sheet-x, .up-sheet .numpad-cancel-btn { background: #c9ccd1; color: #333; }
         .up-sheet .odo-why-btn { color: #3d5a80; border-color: #8091a8; }
@@ -816,12 +684,12 @@
         .up-sheet [style*="#ff9800"] { color: #b45f00 !important; }
 
         #welcome-odo-overlay .wizard-container { background: #e3e3df; border: 1.5px solid #2f6fb5; color: #1d3d66; box-shadow: 0 8px 28px rgba(0,0,0,0.7); }
-        #welcome-odo-overlay .wizard-container .up-sheet-title, #welcome-odo-overlay .wizard-container .up-label, #welcome-odo-overlay .wizard-container .wizard-header-title { color: #245a98; }
+        #welcome-odo-overlay .wizard-container .up-label,
+        #welcome-odo-overlay .wizard-container .wizard-header-title { color: #245a98; }
         #welcome-odo-overlay .wizard-container .numpad-btn { background: #f4f4f1; border: 1px solid #b8bec7; color: #222; }
         #welcome-odo-overlay .wizard-container .numpad-btn:active { background: #d3dbe6; }
         #welcome-odo-overlay .wizard-container .numpad-btn-del { background: #f6dcd6; border-color: #e3b5ab; color: #b3261e !important; }
         #welcome-odo-overlay .wizard-container .suggestion-chip-btn { background: #f4f4f1; border: 1px solid #2f6fb5; color: #1f4f8a; }
-        #welcome-odo-overlay .wizard-container .suggestion-chip-btn.active-suggestion { background: #2f6fb5; color: #fff; }
         #welcome-odo-overlay .wizard-container .up-sheet-ok, #welcome-odo-overlay .wizard-container .numpad-confirm-btn { background: #2f6fb5; color: #fff; }
         #welcome-odo-overlay .wizard-container .up-sheet-x, #welcome-odo-overlay .wizard-container .numpad-cancel-btn { background: #c9ccd1; color: #333; }
         #welcome-odo-overlay .wizard-container .odo-why-btn { color: #3d5a80; border-color: #8091a8; }
@@ -843,16 +711,122 @@
         #welcome-odo-overlay .wizard-container [style*="rgba(255,255,255"] { color: #2b4a73 !important; }
         #welcome-odo-overlay .wizard-container [style*="#ff9800"] { color: #b45f00 !important; }
 
+        /* شكل البطاقة: شريط أزرق عريض على الحافة اليمنى (بداية القراءة بالعربية) بدل الظل */
         .up-sheet, #welcome-odo-overlay .wizard-container {
             border: 1px solid #b8bec7;
             border-right: 7px solid #2f6fb5;
         }
-    </style>
+
+        /* ===== صفحة تسجيل الدخول (Google) ===== */
+        #login-page { display: flex; position: fixed; inset: 0; z-index: 50000; background: #121212; flex-direction: column; align-items: center; justify-content: flex-start; padding: 12vh 24px 30px; box-sizing: border-box; overflow-y: auto; }
+        .google-btn { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; max-width: 320px; background: #ffffff; color: #3c4043; border: none; border-radius: 12px; padding: 14px 18px; font-size: 16px; font-weight: bold; font-family: inherit; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.4); margin-top: 10px; box-sizing: border-box; }
+        .google-btn:active { background: #e8eaed; }
+        .login-link-btn { width: 100%; max-width: 320px; margin-top: 10px; padding: 12px; border-radius: 12px; background: none; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.75); font-size: 14px; font-weight: bold; font-family: inherit; cursor: pointer; box-sizing: border-box; }
+        .login-link-btn:active { background: #1c1c1c; }
+        #login-msg { font-size: 13px; line-height: 1.9; text-align: center; color: rgba(255,255,255,0.7); min-height: 24px; margin: 6px 0 14px; max-width: 320px; }
+        #login-msg.err { color: #f44336; }
+        .login-note { font-size: 11px; color: rgba(255,255,255,0.4); text-align: center; line-height: 1.8; margin-top: 18px; max-width: 320px; }
+        .row-off .col-indicator { color: rgba(255,255,255,0.4); }
+
+        .welcome-odometer-text { cursor: default; }
+        .odo-card { padding-top: 32px; padding-bottom: 32px; margin-bottom: 10px; }
+        .odo-card-val { color: #fff; font-size: 19px; font-weight: bold; white-space: nowrap; }
+        #spec-pop-overlay { display: none; position: fixed; inset: 0; z-index: 37800; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; }
+        #spec-pop-box { width: 100%; max-width: 340px; background: #e3e3df; border: 1px solid #b8bec7; border-right: 7px solid #2f6fb5; border-radius: 14px; padding: 14px; box-sizing: border-box; box-shadow: 0 8px 28px rgba(0,0,0,0.7); display: flex; flex-direction: column; gap: 8px; max-height: 85vh; overflow-y: auto; }
+        .spec-pop-title { font-size: 14px; font-weight: bold; color: #245a98; margin-bottom: 2px; }
+        .spec-pop-opt { background: #f4f4f1; border: 1px solid #b8bec7; color: #1d3d66; border-radius: 8px; padding: 13px 8px; font-size: 15px; font-weight: bold; font-family: inherit; cursor: pointer; text-align: center; }
+        .spec-pop-opt.on { background: #2f6fb5; border-color: #2f6fb5; color: #fff; }
+        .spec-pop-opt:active { background: #d3dbe6; }
+        .spec-pop-cancel { background: #c9ccd1; color: #333; border: none; border-radius: 8px; padding: 12px; font-size: 13px; font-weight: bold; font-family: inherit; cursor: pointer; margin-top: 2px; }
+
+        .numpad-grid { direction: ltr; gap: 3px; }
+        #odo-dlg-content .numpad-btn { padding: 15px 0; font-size: 18px; }
+
+        #odo-dlg-title { text-align: center; font-size: 15px; margin-bottom: 8px; }
+
+        @keyframes odoFade { from { opacity: 0; } to { opacity: 1; } }
+        #welcome-odo-overlay .wizard-container { animation: odoFade 0.12s ease-out; }
+
+        .table-col-titles { background: #2b2410; border: 1px solid rgba(255,213,74,0.35); border-bottom: none; border-radius: 10px 10px 0 0; padding: 10px 1px; margin-top: 4px; color: #ffd54a; font-weight: bold; font-size: 12px; }
+        .table-col-titles + .indicators-table { margin-top: 0; border-radius: 0 0 10px 10px; }
+        .indicators-table .col-indicator { color: #e0b030; }
+        .indicators-table .row-off .col-indicator { color: rgba(224,176,48,0.4); }
+        .indicators-table .col-remaining { color: #fff; font-weight: normal; }
+        .more-circle { width: 42px; height: 42px; border-radius: 50%; border: none; background: #e0a800; color: #fff; font-size: 28px; font-weight: bold; line-height: 1; font-family: inherit; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0 0 3px; box-shadow: 0 2px 8px rgba(224,168,0,0.3); -webkit-tap-highlight-color: transparent; }
+        .more-circle:active { background: #c99700; }
+
+        #time-pop-overlay { display: none; position: fixed; inset: 0; z-index: 36500; background: rgba(0,0,0,0.35); }
+        #tp-sheet { overflow: hidden; }
+        .tp-head { display: flex; align-items: center; gap: 12px; background: #2f6fb5; color: #fff; margin: -12px -14px 12px; padding: 12px 14px; font-size: 15px; font-weight: bold; flex-shrink: 0; }
+        .tp-sw { position: relative; width: 46px; height: 26px; border-radius: 13px; background: rgba(255,255,255,0.35); cursor: pointer; flex-shrink: 0; transition: background .15s; }
+        .tp-sw::after { content: ''; position: absolute; top: 3px; right: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: right .15s; }
+        .tp-sw.on { background: #4caf50; }
+        .tp-sw.on::after { right: 23px; }
+        #tp-body { flex: 1; min-height: 0; overflow-y: auto; }
+        .tp-date-line { font-size: 15px; color: #1d3d66; text-align: center; margin: 2px 0 10px; }
+        .tp-date-line b { font-weight: bold; }
+        .tp-off-msg { font-size: 14px; line-height: 2; text-align: center; color: #1d3d66; padding: 26px 8px; }
+
+        .more-circle { background: #b8860b; }
+        .more-circle:active { background: #9a7009; }
+        .more-circle.q { font-size: 22px; padding: 0; }
+        .grp-frame { margin-top: 0; border: 1px solid #2c2c2c; border-radius: 12px; overflow: hidden; background: #181818; }
+        .page-header.compact { margin-bottom: 8px; padding-bottom: 4px; }
+        .page-header.compact .cfg-btn { height: 30px; }
+        #main-app-container .main-container:has(.page-header.compact) { padding-top: 10px; }
+        .grp-more .more-circle { width: 34px; height: 34px; font-size: 22px; background: #1d1d1d; color: #aaa; border: 1px solid #444; box-shadow: none; padding: 0 0 2px; }
+        .grp-more .more-circle:active { background: #2a2a2a; }
+        #app-menu-overlay { display: none; position: fixed; inset: 0; z-index: 36000; background: rgba(0,0,0,0.35); }
+        #app-menu { position: absolute; width: 230px; background: #1e1e1e; border: 1px solid rgba(184,134,11,0.5); border-radius: 12px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,0.5); }
+        .am-item { display: block; width: 100%; background: none; border: none; border-bottom: 1px solid #2d2d2d; color: #fff; padding: 14px 16px; text-align: right; font-size: 14px; font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+        .am-item:last-child { border-bottom: none; }
+        .am-item:active { background: #2b2410; }
+        .am-item.danger { color: #f44336; }
+        .am-item small { display: block; margin-top: 3px; font-size: 11px; color: rgba(255,255,255,0.45); direction: ltr; text-align: right; }
+        .grp-menu { color: rgba(255,255,255,0.55); gap: 7px; padding: 0; }
+        .hdr-left { display: flex; align-items: center; gap: 12px; }
+        .hdr-home { background: none; border: none; padding: 0; color: rgba(255,255,255,0.55); display: flex; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+        .hdr-home:active { opacity: 0.6; }
+        .grp-tag { font-size: 14px; font-weight: normal; color: rgba(255,255,255,0.55); }
+        .table-col-titles.grp-cols { background: none; color: rgba(255,255,255,0.5); font-weight: normal; border: none; border-radius: 0; margin: 2px 0 4px; padding: 0 1px; font-size: 12px; }
+        .grp-frame .indicators-table { margin: 0; border: none; border-radius: 0; }
+        .grp-frame .indicators-table td { border-bottom: 1px solid #2a2a2a; }
+        .grp-frame .indicators-table tr:last-child td { border-bottom: none; }
+        .chev { display: inline-block; width: 0; height: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-right: 7px solid #6f6f6f; margin-left: 9px; vertical-align: middle; }
+        .row-off .chev { opacity: 0.5; }
+        .grp-more { display: flex; justify-content: center; margin-top: 16px; }
+        .grp-pills { margin-bottom: 24px; padding: 4px; border-radius: 14px; background: #1a1a1a; }
+        .kp-edit { margin-right: 8px; background: #2f6fb5; color: #fff; border: none; border-radius: 6px; padding: 4px 12px; font-size: 12px; font-weight: bold; font-family: inherit; cursor: pointer; }
+        .kp-edit:active { background: #245a98; }
+        #tp-body .numpad-btn { padding: 12px 0; font-size: 16px; }
+
+        .kp-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 8px 0 14px; }
+        .kp-label { font-size: 15px; color: #1d3d66; line-height: 1.8; }
+</style>
 </head>
 <body>
 
+    <!-- صفحة تسجيل الدخول: تغطي كل شيء حتى يتم الدخول وتحميل البيانات -->
+    <div id="login-page">
+        <div class="logo-lockup">
+            <div class="gmax-brand">
+                <span class="gmax-white">G</span><span class="gmax-gold">MAX</span>
+            </div>
+            <div class="auto-row"><span class="auto-line"></span><span class="auto-text">AUTO</span><span class="auto-line"></span></div>
+            <div class="main-subtitle">مساعدك الذكي للصيانة</div>
+        </div>
+        <div id="login-msg">جارٍ التحقق من الجلسة…</div>
+        <button class="google-btn" id="login-google-btn" style="display:none;" onclick="signInWithGoogle()">
+            <svg width="22" height="22" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+            <span>المتابعة باستخدام Google</span>
+        </button>
+        <button class="google-btn" id="login-retry-btn" style="display:none;" onclick="retryLoad()">إعادة المحاولة</button>
+        <button class="login-link-btn" id="login-out-btn" style="display:none;" onclick="doSignOut()">تسجيل الخروج</button>
+        <div class="login-note" id="login-note" style="display:none;">تُحفظ بياناتك في حسابك على السحابة، فتجدها على أي هاتف تدخل منه بالحساب نفسه.</div>
+    </div>
+
     <div class="container">
-        <!-- شاشة الترحيب مع خيار البدء محلياً أو بتسجيل الدخول بجوجل -->
+        <!-- شاشة الترحيب (ظاهرة افتراضياً) -->
         <div id="welcome-page">
             <div class="logo-lockup">
                 <div class="gmax-brand">
@@ -862,75 +836,40 @@
                 <div class="main-subtitle">مساعدك الذكي للصيانة</div>
             </div>
             <div class="single-global-light"></div>
-            
+
             <div class="welcome-odometer-section">
-                <div class="welcome-odometer-text" id="welcome-odo-display" onclick="openWelcomeOdoModal()">120 000</div>
+                <div class="welcome-odometer-text" id="welcome-odo-display">120 000</div>
             </div>
 
-            <!-- أزرار البدء واختيار طريقة التخزين -->
-            <button class="start-app-btn" id="startBtn" onclick="startAppLocal()">بدء الاستخدام محلياً</button>
-            <button class="google-login-btn" onclick="startAppWithGoogle()">
-                <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.19v3.15C3.21 21.32 7.27 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.61H1.19C.43 8.15 0 9.89 0 12s.43 3.85 1.19 5.39l4.08-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.27 0 3.21 2.68 1.19 6.61l4.08 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
-                ربط بحساب جوجل (سحابي)
-            </button>
-
+            <button class="start-app-btn" id="startBtn" onclick="startApp()">Start</button>
             <div class="odo-why-btn" style="position: fixed; top: 16px; left: 16px; margin: 0; z-index: 5;" onclick="showWelcomeHelp()">؟</div>
         </div>
 
-        <!-- التطبيق الرئيسي -->
+        <!-- التطبيق الرئيسي (صفحة المؤشرات الشاملة والجزئية) -->
         <div id="main-app-container" style="display: none; width: 100%; min-height: 100vh;">
             <div class="main-container">
                 <div class="content-wrap">
                     <div class="page-header">
                         <div class="title-area">
-                            <button class="cfg-btn" id="cfg-btn" onclick="openGlobalActivatorPage()" aria-label="تفعيل المؤشرات"><span data-ico="menu" data-s="22"></span><span class="page-title" id="editor-title">المؤشرات</span></button>
+                            <button class="cfg-btn grp-menu" id="grp-menu-btn" onclick="openAppMenu()" aria-label="القائمة"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 6.5h16M4 12h16M4 17.5h16"/></svg><span class="grp-tag">مساعدك الذكي للصيانة</span></button>
                         </div>
-                        <div class="header-mini-brand" onclick="goHome()">
-                            <div class="mini-brand-row"><span style="color:#ffffff;">G</span><span style="color:#b8860b;">MAX</span><span style="color:#3a86c8;">AUTO</span></div>
-                            <div class="mini-brand-sub">مساعدك الذكي للصيانة</div>
+                        <div class="hdr-left">
+                            <div class="header-mini-brand" onclick="goHome()">
+                                <div class="mini-brand-row"><span style="color:#ffffff;">G</span><span style="color:#b8860b;">MAX</span><span style="color:#3a86c8;">AUTO</span></div>
+                            </div>
+                            <button class="hdr-home" onclick="goHome()" aria-label="الرئيسية"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-7 8 7"/><path d="M6 10v9a1 1 0 001 1h3.5v-5h3v5H17a1 1 0 001-1v-9"/></svg></button>
                         </div>
                     </div>
 
-                    <div id="categories-filter-bar-container"></div>
+                    <!-- حاوية عرض جدول المؤشرات وزر المؤشرات الإضافية تحته -->
                     <div id="editor-form-container"></div>
                 </div>
             </div>
         </div>
 
-        <!-- صفحة الإعدادات العامة -->
-        <div id="settings-page-container" style="display: none; width: 100%; min-height: 100vh; box-sizing: border-box;">
-            <div class="main-container">
-                <div class="content-wrap">
-                    <div class="page-header">
-                        <div class="title-area">
-                            <span class="page-title">الإعدادات العامة</span>
-                        </div>
-                        <div class="header-mini-brand" onclick="goHome()"><div class="mini-brand-row"><span style="color:#ffffff;">G</span><span style="color:#b8860b;">MAX</span><span style="color:#3a86c8;">AUTO</span></div><div class="mini-brand-sub">مساعدك الذكي للصيانة</div></div>
-                    </div>
-                    <div class="cards-container">
-                        <div class="home-card" id="cloud-status-card" style="display: none;" onclick="toggleCloudSync()">
-                            <span class="home-card-title" id="cloud-status-title">الحساب السحابي: متصل</span>
-                            <span data-ico="backup" data-s="26"></span>
-                        </div>
-                        <div class="home-card" onclick="openBackupPage()">
-                            <span class="home-card-title">النسخة الاحتياطية</span>
-                            <span data-ico="backup" data-s="26"></span>
-                        </div>
-                        <div class="home-card" onclick="openNotesPage()">
-                            <span class="home-card-title">ملاحظات</span>
-                            <span data-ico="note" data-s="26"></span>
-                        </div>
-                        <div class="home-card" onclick="openFactoryResetModal()" style="border-color: rgba(244, 67, 54, 0.4);">
-                            <span class="home-card-title" style="color: #f44336;">إعادة ضبط المصنع (تفريغ الذاكرة)</span>
-                            <span style="color: #f44336;" data-ico="trash" data-s="26"></span>
-                        </div>
-                    </div>
-                    <div class="group-help-wrap"><div class="odo-why-btn" style="margin:0;" onclick="showSettingsPageHelp()">؟</div></div>
-                </div>
-            </div>
-        </div>
+        <!-- صفحة الإعدادات العامة الكاملة -->
 
-        <!-- صفحة الملاحظات -->
+                <!-- صفحة الملاحظات الحرة -->
         <div id="notes-page-container" style="display: none; width: 100%; min-height: 100vh; box-sizing: border-box;">
             <div class="main-container">
                 <div class="content-wrap" style="display: flex; flex-direction: column;">
@@ -952,24 +891,9 @@
             </div>
         </div>
 
-        <!-- صفحة تفعيل المؤشرات -->
-        <div id="global-activator-page-container" style="display: none; width: 100%; min-height: 100vh; box-sizing: border-box;">
-            <div class="main-container">
-                <div class="content-wrap" style="display: flex; flex-direction: column;">
-                    <div class="page-header">
-                        <div class="title-area">
-                            <span class="page-title">تفعيل المؤشرات</span>
-                        </div>
-                        <div class="header-mini-brand" onclick="goHome()"><div class="mini-brand-row"><span style="color:#ffffff;">G</span><span style="color:#b8860b;">MAX</span><span style="color:#3a86c8;">AUTO</span></div><div class="mini-brand-sub">مساعدك الذكي للصيانة</div></div>
-                    </div>
-                    <div id="global-tabs-container"></div>
-                    <div class="checklist-container" id="global-settings-list-container" style="gap: 12px; flex-grow: 1; overflow-y: auto; margin-bottom: 8px;"></div>
-                    <button class="detail-back-btn" style="margin: 6px 0 24px;" onclick="saveGlobalSettingsChanges()">حفظ والعودة إلى المؤشرات</button>
-                </div>
-            </div>
-        </div>
+        <!-- صفحة تفعيل المؤشرات (من زر التفعيل في صفحة المؤشرات) -->
 
-        <!-- صفحة النسخة الاحتياطية -->
+        <!-- صفحة النسخة الاحتياطية الكاملة -->
         <div id="backup-page-container" style="display: none; width: 100%; min-height: 100vh; box-sizing: border-box;">
             <div class="main-container">
                 <div class="content-wrap" style="display: flex; flex-direction: column;">
@@ -980,9 +904,9 @@
                         <div style="display:flex;align-items:center;gap:14px;"><button class="unified-close-btn" onclick="closeBackupPageModal()">غلق</button><div class="header-mini-brand" onclick="goHome()"><div class="mini-brand-row"><span style="color:#ffffff;">G</span><span style="color:#b8860b;">MAX</span><span style="color:#3a86c8;">AUTO</span></div><div class="mini-brand-sub">مساعدك الذكي للصيانة</div></div></div>
                     </div>
                     <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; flex-grow: 1; margin-bottom: 20px;">
-                        <div style="font-size: 12px; color: #b8860b; font-weight: bold;">معلومات التخزين:</div>
+                        <div style="font-size: 12px; color: #b8860b; font-weight: bold;">معلومات التخزين السحابي (JSON):</div>
                         <textarea id="backup-textarea-content" readonly style="width: 100%; flex-grow: 1; min-height: 350px; background-color: #181818; color: #76ff03; border: 1px solid #333; border-radius: 8px; padding: 10px; font-size: 11px; box-sizing: border-box; resize: none; font-family: monospace;" dir="ltr"></textarea>
-                        
+
                         <div style="display: flex; gap: 8px; margin-top: 10px;">
                             <button onclick="downloadBackupJson()" style="flex: 1; background-color: #b8860b; color: #000; border: none; padding: 12px; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 12px;">تنزيل ملف JSON</button>
                             <button onclick="triggerUploadJson()" style="flex: 1; background-color: #1a1a1a; border: 1px solid #b8860b; color: #ffda75; padding: 12px; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 12px;">تحميل ملف JSON</button>
@@ -996,91 +920,73 @@
             </div>
         </div>
 
-        <!-- تفاصيل المؤشر الفرعي -->
-        <div id="detail-page-container" style="display: none; width: 100%; min-height: 100vh; box-sizing: border-box;">
-            <div class="main-container">
-                <div class="content-wrap" style="display: flex; flex-direction: column;">
-                    <div class="page-header">
-                        <div class="title-area">
-                            <span class="page-title" id="detail-page-title"></span>
-                        </div>
-                        <div class="header-mini-brand" onclick="goHome()"><div class="mini-brand-row"><span style="color:#ffffff;">G</span><span style="color:#b8860b;">MAX</span><span style="color:#3a86c8;">AUTO</span></div><div class="mini-brand-sub">مساعدك الذكي للصيانة</div></div><span id="detail-top-info" style="display:none;"></span>
-                    </div>
-                    <div style="background-color: #181818; border: 1px solid #2d2d2d; border-radius: 12px; padding: 15px; margin-bottom: 15px;" id="detail-page-content-area"></div>
-
-                    <div id="detail-page-action-container"></div>
-                    <div class="group-help-wrap" style="margin: 14px 0 0;"><div class="odo-why-btn" style="margin:0;" onclick="showDetailPageHelp()">؟</div></div>
-                </div>
-            </div>
-        </div>
+        <!-- صفحة المؤشر الفرعي: التفاصيل في الأعلى، وتحتها زر التحديث الذي يفتح قسم التحديث في الصفحة نفسها -->
     </div>
+
+    <div id="app-menu-overlay" onclick="closeAppMenu()"><div id="app-menu" onclick="event.stopPropagation()"></div></div>
+
+    <div id="story-overlay"><div id="story-card" onclick="storyTap(event)"></div></div>
 
     <!-- شريط التنقل السفلي -->
     <div class="bottom-nav-bar" id="bottom-nav-bar">
-        <button class="bottom-nav-item" id="nav-indicators-btn" onclick="navigateMainDashboard()">
-            <span class="bottom-nav-icon" data-ico="gauge" data-s="24"></span>
-            <span class="bottom-nav-label">المؤشرات</span>
+        <button class="bottom-nav-item" id="nav-indicators-btn" onclick="navigateAlertsPage()">
+            <span class="bottom-nav-icon" data-ico="calendar" data-s="24"></span>
+            <span class="bottom-nav-label">المواعيد</span>
         </button>
         <button class="bottom-nav-item" id="nav-expenses-btn" onclick="navigateExpensesPage()">
             <span class="bottom-nav-icon" data-ico="wallet" data-s="24"></span>
             <span class="bottom-nav-label">المصاريف</span>
         </button>
-        <button class="bottom-nav-item" id="nav-settings-btn" onclick="navigateSettingsPage()">
-            <span class="bottom-nav-icon" style="color: #5a9bd5;" data-ico="menu" data-s="24"></span>
-            <span class="bottom-nav-label">المزيد</span>
-        </button>
     </div>
 
-    <!-- نافذة تعبئة وقود -->
+    <!-- نافذة تسجيل مصروف: الخطوة 1 اختيار المجموعة، الخطوة 2 المبلغ -->
     <div id="fuel-overlay">
         <div class="fuel-sheet">
-            <div class="fuel-title">تعبئة وقود: المبلغ المدفوع (دج)</div>
-            <div id="fuel-amount" class="fuel-amount-box empty">اكتب المبلغ</div>
-            <div class="fuel-chips">
-                <button class="fuel-chip" onclick="fuelSetAmount(1000)">1000</button>
-                <button class="fuel-chip" onclick="fuelSetAmount(1500)">1500</button>
-                <button class="fuel-chip" onclick="fuelSetAmount(2000)">2000</button>
-                <button class="fuel-chip" onclick="fuelSetAmount(2500)">2500</button>
-                <button class="fuel-chip" onclick="fuelSetAmount(3000)">3000</button>
+            <div id="exp-step1">
+                <div class="fuel-title">نوع المصروف</div>
+                <div id="exp-cats"></div>
+                <div class="fuel-actions"><button class="fuel-x" onclick="fuelClose()">إلغاء</button></div>
             </div>
-            <div class="fuel-pad">
-                <button class="fuel-key" onclick="fuelKey('1')">1</button><button class="fuel-key" onclick="fuelKey('2')">2</button><button class="fuel-key" onclick="fuelKey('3')">3</button>
-                <button class="fuel-key" onclick="fuelKey('4')">4</button><button class="fuel-key" onclick="fuelKey('5')">5</button><button class="fuel-key" onclick="fuelKey('6')">6</button>
-                <button class="fuel-key" onclick="fuelKey('7')">7</button><button class="fuel-key" onclick="fuelKey('8')">8</button><button class="fuel-key" onclick="fuelKey('9')">9</button>
-                <button class="fuel-key" onclick="fuelKey('00')">00</button><button class="fuel-key" onclick="fuelKey('0')">0</button><button class="fuel-key del" onclick="fuelKey('del')">⌫</button>
-            </div>
-            <div class="fuel-date-row"><span>التاريخ</span><input type="date" id="fuel-date"></div>
-            <div id="fuel-err" class="fuel-err"></div>
-            <div class="fuel-actions">
-                <button class="fuel-x" onclick="fuelClose()">إلغاء</button>
-                <button class="fuel-ok" onclick="fuelSave()">حفظ</button>
+            <div id="exp-step2" style="display:none;">
+                <div class="exp-title-row"><div class="fuel-title" id="exp-title" style="margin:0;"></div><button class="exp-change" onclick="expShowStep1()">تغيير</button></div>
+                <div id="fuel-amount" class="fuel-amount-box empty">اكتب المبلغ</div>
+                <div class="fuel-chips" id="fuel-chips">
+                    <button class="fuel-chip" onclick="fuelSetAmount(1000)">1000</button>
+                    <button class="fuel-chip" onclick="fuelSetAmount(1500)">1500</button>
+                    <button class="fuel-chip" onclick="fuelSetAmount(2000)">2000</button>
+                    <button class="fuel-chip" onclick="fuelSetAmount(2500)">2500</button>
+                    <button class="fuel-chip" onclick="fuelSetAmount(3000)">3000</button>
+                </div>
+                <div class="fuel-pad" style="margin-top:8px;">
+                    <button class="fuel-key" onclick="fuelKey('1')">1</button><button class="fuel-key" onclick="fuelKey('2')">2</button><button class="fuel-key" onclick="fuelKey('3')">3</button>
+                    <button class="fuel-key" onclick="fuelKey('4')">4</button><button class="fuel-key" onclick="fuelKey('5')">5</button><button class="fuel-key" onclick="fuelKey('6')">6</button>
+                    <button class="fuel-key" onclick="fuelKey('7')">7</button><button class="fuel-key" onclick="fuelKey('8')">8</button><button class="fuel-key" onclick="fuelKey('9')">9</button>
+                    <button class="fuel-key" onclick="fuelKey('00')">00</button><button class="fuel-key" onclick="fuelKey('0')">0</button><button class="fuel-key del" onclick="fuelKey('del')">⌫</button>
+                </div>
+                <input type="text" id="exp-note" class="exp-note" maxlength="40" placeholder="ملاحظة (اختيارية): مثل بطارية أو غرامة سرعة">
+                <div class="fuel-date-row"><span>التاريخ</span><input type="date" id="fuel-date"></div>
+                <div id="fuel-err" class="fuel-err"></div>
+                <div class="fuel-actions">
+                    <button class="fuel-x" onclick="fuelClose()">إلغاء</button>
+                    <button class="fuel-ok" onclick="fuelSave()">حفظ</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- لوحة التعديل المنبثقة -->
-    <div id="up-sheet-overlay" style="display:none;">
-        <div class="up-sheet">
-            <div class="up-sheet-head">
-                <span id="up-sheet-title" class="up-sheet-title"></span>
-                <div class="odo-why-btn" style="margin:0;" onclick="showSheetHelp()">؟</div>
-            </div>
-            <div id="up-sheet-field"></div>
-            <div id="up-error" class="error-inline-msg"></div>
-            <div id="up-sheet-body"></div>
-            <div class="up-sheet-actions" id="up-warn-actions" style="display:none;">
-                <button class="up-sheet-x" onclick="upWarnBack()">رجوع</button>
-                <button class="up-sheet-ok" onclick="upWarnYes()">نعم، أنا متأكد</button>
-            </div>
-            <div class="up-sheet-actions" id="up-gate-actions" style="display:none;"></div>
-            <div class="up-sheet-actions" id="up-main-actions">
-                <button class="suggestion-chip-btn up-act" id="up-act-presets" onclick="upBackToPresets()"></button>
-                <button class="suggestion-chip-btn up-act" id="up-act-input" onclick="upEnterInput()"></button>
-                <button class="up-sheet-x" onclick="upSheetCancel()">إلغاء</button>
-                <button class="up-sheet-ok" id="up-sheet-ok" onclick="upSheetOk()">تأكيد</button>
-            </div>
+    <!-- نافذة الكتابة المنبثقة (لوحة الأرقام / الاقتراحات / التقويم) -->
+
+    <!-- نافذة تحديث المؤشرات الزمنية: تفتح مباشرة عند الضغط على المؤشر -->
+    <div id="time-pop-overlay">
+        <div class="up-sheet" id="tp-sheet">
+            <div class="tp-head"><span class="tp-sw" id="tp-sw" onclick="tpToggle()"></span><span id="tp-title"></span></div>
+            <div id="tp-body"></div>
+            <div id="tp-err" class="error-inline-msg"></div>
+            <div class="up-sheet-actions" id="tp-actions"></div>
         </div>
     </div>
+
+    <div id="spec-pop-overlay"><div id="spec-pop-box"></div></div>
 
     <!-- رسائل الإعداد الأولي -->
     <div id="onboarding-overlay" class="wizard-overlay" style="z-index: 38000;">
@@ -1093,7 +999,7 @@
         </div>
     </div>
 
-    <!-- نافذة العداد -->
+    <!-- نافذة العداد ومعدل السير الشهري (تُستدعى من صفحة الاستقبال ومن تحديث المؤشرات) -->
     <div id="welcome-odo-overlay" class="wizard-overlay" style="z-index: 37000;">
         <div class="wizard-container" style="height: auto !important; max-height: 95vh !important;">
             <div class="wizard-header-title" id="odo-dlg-title"></div>
@@ -1102,14 +1008,14 @@
         </div>
     </div>
 
-    <!-- تأكيد استيراد ملف JSON -->
+    <!-- نافذة تأكيد استيراد ملف JSON -->
     <div id="backup-confirm-overlay" class="wizard-overlay">
         <div class="wizard-container" style="height: auto !important; max-height: 90vh !important;">
             <div class="wizard-header-title">تأكيد استيراد البيانات</div>
             <div style="padding: 6px 2px; margin: 8px 0; font-size: 13px; line-height: 1.6;">
-                <p style="color: #ff9800; margin: 0 0 8px 0; font-weight: bold;">تحذير: سيتم استبدال جميع البيانات الحالية بالبيانات الموجودة في الملف.</p>
+                <p style="color: #ff9800; margin: 0 0 8px 0; font-weight: bold;">تحذير: سيتم استبدال جميع البيانات الحالية للسيارة والمؤشرات بالبيانات الموجودة في الملف المختار.</p>
                 <div class="detail-row"><span class="detail-label">اسم الملف:</span><span class="detail-val" id="confirm-filename">-</span></div>
-                <div class="detail-row"><span class="detail-label">عداد السيارة:</span><span class="detail-val"><span class="num-ltr" id="confirm-odo">-</span> كم</span></div>
+                <div class="detail-row"><span class="detail-label">عداد السيارة المسجل:</span><span class="detail-val"><span class="num-ltr" id="confirm-odo">-</span> كم</span></div>
             </div>
             <div id="backup-error-msg" class="error-inline-msg"></div>
             <div class="numpad-actions-row" style="margin-top: 15px;">
@@ -1130,12 +1036,12 @@
         </div>
     </div>
 
-    <!-- نافذة إعادة ضبط المصنع -->
+    <!-- نافذة تأكيد إعادة ضبط المصنع -->
     <div id="factory-reset-overlay" class="wizard-overlay">
         <div class="wizard-container" style="height: auto !important; max-height: 90vh !important;">
             <div class="wizard-header-title" style="color: #f44336;">تأكيد إعادة ضبط المصنع</div>
             <div style="padding: 6px 2px; margin: 8px 0; font-size: 13px; line-height: 1.6;">
-                <p style="color: #f44336; margin: 0 0 8px 0; font-weight: bold;">تحذير خطير: سيتم مسح البيانات نهائياً!</p>
+                <p style="color: #f44336; margin: 0 0 8px 0; font-weight: bold;">تحذير خطير: سيتم مسح بيانات السيارة والمؤشرات من حسابك في السحابة نهائياً وتفريغها للبدء من الصفر!</p>
                 <p style="color: #ccc; margin: 0; font-size: 12px;">هل أنت متأكد من رغبتك في المتابعة؟</p>
             </div>
             <div class="numpad-actions-row" style="margin-top: 15px;">
@@ -1145,23 +1051,178 @@
         </div>
     </div>
 
+    <!-- مكتبات Firebase (النسخة المتوافقة compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
     <script>
+        // ====================================================================
+        //  إعدادات Firebase: ضع هنا القيم من  Firebase Console ← Project settings ← Your apps ← Web app
+        // ====================================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDRKHdIzq2juXY5HaRXa6C-V9jAIhJIlSs",
+            authDomain: "gmaxauto.firebaseapp.com",
+            projectId: "gmaxauto",
+            appId: "1:635663618304:web:9cdde1b73006cbf6d723e5"
+        };
+
+        // ====================================================================
+        //  طبقة التخزين السحابي (Firestore)
+        //  المسار: users/{uid}/data/{name}  والقيمة في الحقل v (نص)
+        //  الأسماء: records (كل بيانات السيارة) | records_prev (نسخة قبل الاستيراد) | notes | fuel
+        //  القراءة فورية من الذاكرة (cloud)، والكتابة تُرسَل إلى Firestore (وتُخزَّن مؤقتاً وتُرسَل لاحقاً عند انقطاع الاتصال)
+        // ====================================================================
+        let fbAuth = null, fbDb = null, currentUser = null;
+        const cloud = { records: null, records_prev: null, notes: null, fuel: null };
+        let saveWarned = false;
+
+        function cloudRef(name) {
+            return fbDb.collection('users').doc(currentUser.uid).collection('data').doc(name);
+        }
+        function cloudGet(name) {
+            return Object.prototype.hasOwnProperty.call(cloud, name) ? cloud[name] : null;
+        }
+        function onCloudError(e) {
+            console.error(e);
+            if (saveWarned) return;
+            saveWarned = true;
+            showInfo('تعذّر الحفظ في السحابة', 'لم يستطع التطبيق حفظ بياناتك في حسابك على السحابة. تحقّق من اتصالك بالإنترنت ومن قواعد الأمان في Firebase.<br>ما سجّلتَه الآن قد لا يُحفظ، فخذ نسخة احتياطية من «المزيد».');
+        }
+        function cloudSet(name, str) {
+            cloud[name] = str;
+            if (!currentUser || !fbDb) return false;
+            cloudRef(name).set({ v: str, updatedAt: firebase.firestore.FieldValue.serverTimestamp() })
+                .then(function () { saveWarned = false; })
+                .catch(onCloudError);
+            return true;
+        }
+        function cloudRemove(name) {
+            cloud[name] = null;
+            if (!currentUser || !fbDb) return;
+            cloudRef(name).delete().catch(onCloudError);
+        }
+        function cloudLoadAll() {
+            const names = Object.keys(cloud);
+            names.forEach(function (n) { cloud[n] = null; });
+            return Promise.all(names.map(function (n) {
+                return cloudRef(n).get().then(function (snap) {
+                    const d = snap.exists ? snap.data() : null;
+                    cloud[n] = (d && typeof d.v === 'string') ? d.v : null;
+                });
+            })).then(migrateLocalIfNeeded);
+        }
+        // ترحيل لمرة واحدة: إن كانت على هذا الجهاز بيانات قديمة في localStorage ولا بيانات في السحابة، تُرفع إلى حساب Firestore
+        function migrateLocalIfNeeded() {
+            try {
+                if (localStorage.getItem('gmax_migrated_v1')) return;
+                const map = { records: 'gmax_records', notes: 'gmax_notes_v1', fuel: 'gmax_fuel_v1' };
+                Object.keys(map).forEach(function (n) {
+                    if (cloud[n] === null) {
+                        const v = localStorage.getItem(map[n]);
+                        if (typeof v === 'string') cloudSet(n, v);
+                    }
+                });
+                localStorage.setItem('gmax_migrated_v1', '1');
+            } catch (e) {}
+        }
+
+        // ===== تسجيل الدخول عبر Google =====
+        function setLoginState(state, msg) {
+            const $ = id => document.getElementById(id);
+            $('login-page').style.display = 'flex';
+            const m = $('login-msg');
+            m.innerText = msg || '';
+            m.className = (state === 'error' || state === 'loaderror') ? 'err' : '';
+            $('login-google-btn').style.display = state === 'signin' ? 'flex' : 'none';
+            $('login-note').style.display = state === 'signin' ? 'block' : 'none';
+            $('login-retry-btn').style.display = state === 'loaderror' ? 'flex' : 'none';
+            $('login-out-btn').style.display = state === 'loaderror' ? 'block' : 'none';
+        }
+        function hideLogin() { document.getElementById('login-page').style.display = 'none'; }
+
+        function signInWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            provider.setCustomParameters({ prompt: 'select_account' });
+            setLoginState('loading', 'جارٍ فتح نافذة Google…');
+            fbAuth.signInWithPopup(provider).catch(function (err) {
+                const code = (err && err.code) || '';
+                if (code === 'auth/popup-blocked' || code === 'auth/operation-not-supported-in-this-environment') {
+                    fbAuth.signInWithRedirect(provider);
+                    return;
+                }
+                if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') {
+                    setLoginState('signin', '');
+                    return;
+                }
+                if (code === 'auth/unauthorized-domain') {
+                    setLoginState('signin', 'هذا الدومين غير مصرَّح له في Firebase. أضفه من Authentication ← Settings ← Authorized domains.');
+                    return;
+                }
+                setLoginState('signin', 'تعذّر تسجيل الدخول' + (code ? ' (' + code + ')' : '') + '. حاول مرة أخرى.');
+            });
+        }
+
+        function startSession() {
+            setLoginState('loading', 'جارٍ تحميل بياناتك…');
+            cloudLoadAll().then(function () {
+                initUserData();
+                hideLogin();
+                goHome();
+            }).catch(function (err) {
+                console.error(err);
+                setLoginState('loaderror', 'تعذّر تحميل بياناتك من السحابة. تحقّق من اتصالك بالإنترنت ومن قواعد الأمان في Firebase، ثم أعد المحاولة.');
+            });
+        }
+        function retryLoad() { if (currentUser) startSession(); }
+        function doSignOut() {
+            if (!fbAuth) return;
+            fbAuth.signOut().then(function () { location.reload(); }, function () { location.reload(); });
+        }
+        function confirmSignOut() {
+            if (confirm('هل تريد تسجيل الخروج من حسابك؟\nبياناتك محفوظة في السحابة وستجدها عند الدخول مجدداً.')) doSignOut();
+        }
+
+        function initFirebase() {
+            if (typeof firebase === 'undefined') {
+                setLoginState('error', 'تعذّر تحميل مكتبات Firebase. تحقّق من اتصالك بالإنترنت ثم أعد فتح التطبيق.');
+                return;
+            }
+            if (/^YOUR_/.test(firebaseConfig.apiKey)) {
+                setLoginState('error', 'لم تُضبط إعدادات Firebase بعد. ضع قيم مشروعك في firebaseConfig أعلى السكربت.');
+                return;
+            }
+            firebase.initializeApp(firebaseConfig);
+            fbAuth = firebase.auth();
+            fbDb = firebase.firestore();
+            try { fbDb.enablePersistence({ synchronizeTabs: true }).catch(function () {}); } catch (e) {}
+            fbAuth.onAuthStateChanged(function (user) {
+                if (!user) {
+                    currentUser = null;
+                    setLoginState('signin', '');
+                    return;
+                }
+                if (currentUser && currentUser.uid === user.uid) return;
+                currentUser = user;
+                startSession();
+            });
+        }
+
         const monthsAlgeria = ["جانفي", "فيفري", "مارس", "أفريل", "ماي", "جوان", "جويلية", "أوت", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
         const arabicFullWeekdays = ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
-        
+
         let currentModule = 'none';
-        let lastVisitedGroup = null;
-        let lastIndicatorsView = 'alerts';
-        let detailOrigin = 'group';
         let appStarted = false;
         let pendingImportData = null;
 
-        // متغيرات نظام التخزين الهجين الجديد
-        window.isCloudStorage = false;
-
+        // ترتيب المجموعات: الوثائق ثم الزيت ثم الأحزمة ثم الصيانة (سلّة كل ما هو ثانوي)
         const MODULE_ORDER = ['docs', 'oil', 'belts', 'general'];
 
+        // مؤشر مرتبط (link): يُحدَّد موعده بـ «التغيير القادم» أو «×2» للمؤشر الرئيسي (المرساة) بدل الكيلومتر.
+        // counter: اسم العدّاد داخل records، ويرتفع بواحد كلما غُيّرت المرساة (وضع «تغيير القطعة»).
+        // ===== الأيقونات: خطية أحادية اللون، ترث لون النص (currentColor) =====
         const ICONS = {
+            home: '<path d="M4 11l8-7 8 7"/><path d="M6 10v9a1 1 0 001 1h3.5v-5h3v5H17a1 1 0 001-1v-9"/>',
             gauge: '<path d="M3.5 17a9 9 0 1117 0"/><path d="M12 14l4-5"/><circle cx="12" cy="14" r="1.2"/>',
             wallet: '<path d="M4 7a2 2 0 012-2h12v4"/><path d="M4 7v11a2 2 0 002 2h14V9H6a2 2 0 01-2-2z"/><circle cx="16.5" cy="14.5" r="1"/>',
             menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
@@ -1178,7 +1239,8 @@
             calendar: '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/>',
             check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
             undo: '<path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/>',
-            note: '<path d="M4 20h4L19 9a2.1 2.1 0 00-3-3L5 17z"/><path d="M14 7l3 3"/>'
+            note: '<path d="M4 20h4L19 9a2.1 2.1 0 00-3-3L5 17z"/><path d="M14 7l3 3"/>',
+            logout: '<path d="M9 4H6a2 2 0 00-2 2v12a2 2 0 002 2h3"/><path d="M16 8l4 4-4 4"/><path d="M20 12H9"/>'
         };
         function ico(name, size) {
             size = size || 20;
@@ -1188,13 +1250,7 @@
             document.querySelectorAll('[data-ico]').forEach(el => { el.innerHTML = ico(el.dataset.ico, parseInt(el.dataset.s) || 20); });
         }
 
-        const LINKS = {
-            vidange: { mod: 'oil',   key: 'engineOilNextOdo', counter: 'vidange',   next: 'الفيدونج القادم', x2: 'الفيدونج ×2', x3: 'الفيدونج ×3',  due: 'حان الفيدونج',   countLabel: 'عدد تغييرات الزيت المسجّلة' },
-            pads:    { mod: 'general', key: 'brakePadsFront', counter: 'padsCycle',  next: 'الأمامية القادمة', x2: 'الأمامية ×2', x3: 'الأمامية ×3', due: 'حان تغيير البلاكات', countLabel: 'عدد تغييرات البلاكات الأمامية المسجّلة' },
-            discs:   { mod: 'general', key: 'discsFront',     counter: 'discsCycle', next: 'الأمامية القادمة', x2: 'الأمامية ×2', x3: 'الأمامية ×3', due: 'حان تغيير الأقراص', countLabel: 'عدد تغييرات الأقراص الأمامية المسجّلة' },
-            belt:    { mod: 'belts', key: 'timingBelt',       counter: 'beltCycle', next: 'الحزام القادم',   x2: 'الحزام ×2', x3: 'الحزام ×3',    due: 'حان تغيير الحزام', countLabel: 'عدد تغييرات حزام التوزيع المسجّلة' }
-        };
-
+        // type: 'km' يعمل بالكيلومتر (الافتراضي) | 'time' يعمل بتاريخ انتهاء. presets: اقتراحات الأشهر لمؤشرات الوقت.
         const metadata = {
             docs: [
                 { key: 'insurance', label: 'التأمين', type: 'time', presets: [3, 6, 12] },
@@ -1207,28 +1263,28 @@
                 { key: 'transitLicense', label: 'رخصة التنقل', type: 'time', presets: [6, 12, 24] }
             ],
             oil: [
-                { key: 'engineOilNextOdo', label: 'زيت المحرك', type: 'km', defaultMax: '10000', presets: [5000, 7500, 10000, 12000, 15000], spec: { label: 'نوع الزيت', presets: ['5W-30', '5W-40', '10W-40', '15W-40', '0W-30'], warn: 'درجة الزيت يحدّدها مصنّع محركك.' } },
-                { key: 'oilFilter', label: 'فلتر الزيت', type: 'km', defaultMax: '10000', presets: [5000, 7500, 10000, 12000, 15000], link: 'vidange' },
-                { key: 'airFilter', label: 'فلتر الهواء', type: 'km', defaultMax: '20000', presets: [10000, 15000, 20000, 25000, 30000], link: 'vidange' },
-                { key: 'fuelFilter', label: 'فلتر الوقود', type: 'km', defaultMax: '30000', presets: [10000, 15000, 20000, 30000, 40000], link: 'vidange' },
-                { key: 'acFilter', label: 'فلتر المكيف', type: 'km', defaultMax: '20000', presets: [10000, 15000, 20000, 25000, 30000], link: 'vidange' },
-                { key: 'gearOil', label: 'زيت علبة السرعة', type: 'km', defaultMax: '40000', presets: [40000, 60000, 80000, 100000, 120000], spec: { label: 'نوع زيت العلبة', presets: ['ATF', '75W-80', '75W-90', '80W-90', 'CVT'], warn: 'أنواع زيوت علب السرعة غير قابلة للتبادل.' } }
+                { key: 'engineOilNextOdo', label: 'زيت المحرك', type: 'km', defaultMax: '10000', presets: [5000, 7500, 10000, 12000, 15000], spec: { label: 'نوع الزيت', presets: ['5W-30', '5W-40', '10W-40', '15W-40', '0W-30'], warn: 'درجة الزيت (اللزوجة) يحدّدها مصنّع محركك. استعمال درجة غير الموصى بها قد يضعف حماية المحرك أو يزيد استهلاك الوقود.' } },
+                { key: 'oilFilter', label: 'فلتر الزيت', type: 'km', defaultMax: '10000', presets: [5000, 7500, 10000, 12000, 15000] },
+                { key: 'airFilter', label: 'فلتر الهواء', type: 'km', defaultMax: '20000', presets: [10000, 15000, 20000, 25000, 30000] },
+                { key: 'fuelFilter', label: 'فلتر الوقود', type: 'km', defaultMax: '30000', presets: [10000, 15000, 20000, 30000, 40000] },
+                { key: 'acFilter', label: 'فلتر المكيف', type: 'km', defaultMax: '20000', presets: [10000, 15000, 20000, 25000, 30000] },
+                { key: 'gearOil', label: 'زيت علبة السرعة', type: 'km', defaultMax: '40000', presets: [40000, 60000, 80000, 100000, 120000], spec: { label: 'نوع زيت العلبة', presets: ['ATF', '75W-80', '75W-90', '80W-90', 'CVT'], warn: 'أنواع زيوت علب السرعة غير قابلة للتبادل: الأوتوماتيكية والـCVT واليدوية لكلٍّ زيتها، والخطأ فيها قد يتلف العلبة.' } }
             ],
             belts: [
                 { key: 'timingBelt', label: 'حزام التوزيع', type: 'km', defaultMax: '60000', presets: [60000, 80000, 100000, 120000, 150000] },
-                { key: 'tensioner', label: 'الشداد', type: 'km', defaultMax: '60000', presets: [60000, 80000, 100000, 120000, 150000], link: 'belt' },
+                { key: 'tensioner', label: 'الشداد', type: 'km', defaultMax: '60000', presets: [60000, 80000, 100000, 120000, 150000] },
                 { key: 'accessoryBelts', label: 'أحزمة اللواحق', type: 'km', defaultMax: '40000', presets: [40000, 60000, 80000, 100000, 120000] },
-                { key: 'waterPump', label: 'مضخة الماء', type: 'km', defaultMax: '60000', presets: [60000, 80000, 100000, 120000, 150000], link: 'belt' }
+                { key: 'waterPump', label: 'مضخة الماء', type: 'km', defaultMax: '60000', presets: [60000, 80000, 100000, 120000, 150000] }
             ],
             general: [
-                { key: 'brakeFluid', label: 'سائل الفرامل', type: 'time', presets: [12, 24, 36], spec: { label: 'درجة سائل الفرامل', presets: ['DOT 3', 'DOT 4', 'DOT 4 LV', 'DOT 5.1', 'DOT 5'], warn: 'تختلف درجات السوائل في حرارة الغليان.' } },
-                { key: 'coolant', label: 'سائل التبريد', type: 'time', presets: [12, 24, 48], spec: { label: 'نوع سائل التبريد', presets: ['G11 أخضر', 'G12 أحمر', 'G12+ وردي', 'G12++ / G13 بنفسجي', 'جاهز مخلوط'], warn: 'أنواع سائل التبريد لا تُخلط.' } },
-                { key: 'powerSteering', label: 'زيت المقود', type: 'km', defaultMax: '50000', presets: [30000, 50000, 60000, 80000, 100000], spec: { label: 'نوع زيت المقود', presets: ['ATF', 'PSF', 'معدني', 'CHF', 'LHM'], warn: 'أنواع زيوت المقود لا تُخلط.' } },
+                { key: 'brakeFluid', label: 'سائل الفرامل', type: 'time', presets: [12, 24, 36], spec: { label: 'درجة سائل الفرامل', presets: ['DOT 3', 'DOT 4', 'DOT 4 LV', 'DOT 5.1', 'DOT 5'], warn: 'السائل السيليكوني DOT 5 لا يُخلط بغيره من الدرجات، وتختلف الدرجات في حرارة الغليان. استعمل ما يوصي به مصنّع سيارتك.' } },
+                { key: 'coolant', label: 'سائل التبريد', type: 'time', presets: [12, 24, 48], spec: { label: 'نوع سائل التبريد', presets: ['G11 أخضر', 'G12 أحمر', 'G12+ وردي', 'G12++ / G13 بنفسجي', 'جاهز مخلوط'], warn: 'أنواع سائل التبريد لا تُخلط، فقد تتجبّن وتسدّ مجاري التبريد. وإن كان في الدائرة نوع آخر فيجب تفريغها وغسلها.' } },
+                { key: 'powerSteering', label: 'زيت المقود', type: 'km', defaultMax: '50000', presets: [30000, 50000, 60000, 80000, 100000], spec: { label: 'نوع زيت المقود', presets: ['ATF', 'PSF', 'معدني', 'CHF', 'LHM'], warn: 'أنواع زيوت المقود لا تُخلط، والخطأ فيها قد يتلف الحشوات ومضخة المقود.' } },
                 { key: 'brakePadsFront', label: 'بلاكات أمامية', type: 'km', defaultMax: '40000', presets: [20000, 30000, 40000, 50000, 60000] },
-                { key: 'brakePadsRear', label: 'بلاكات خلفية', type: 'km', defaultMax: '80000', presets: [40000, 60000, 80000, 100000, 120000], link: 'pads', defaultBasis: 'v2' },
+                { key: 'brakePadsRear', label: 'بلاكات خلفية', type: 'km', defaultMax: '80000', presets: [40000, 60000, 80000, 100000, 120000] },
                 { key: 'discsFront', label: 'أقراص أمامية', type: 'km', defaultMax: '80000', presets: [60000, 80000, 100000, 120000, 150000] },
-                { key: 'discsRear', label: 'أقراص خلفية', type: 'km', defaultMax: '100000', presets: [80000, 100000, 120000, 150000, 200000], link: 'discs', defaultBasis: 'v2' },
-                { key: 'sparkPlugs', label: 'شمعات الاحتراق', type: 'km', defaultMax: '40000', presets: [20000, 30000, 40000, 60000, 100000], spec: { label: 'نوع الشمعات', presets: ['نحاس', 'بلاتين', 'إريديوم', 'مزدوجة', 'فضة'], warn: 'نوع الشمعة يحدده مصنع محركك.' } }
+                { key: 'discsRear', label: 'أقراص خلفية', type: 'km', defaultMax: '100000', presets: [80000, 100000, 120000, 150000, 200000] },
+                { key: 'sparkPlugs', label: 'شمعات الاحتراق', type: 'km', defaultMax: '40000', presets: [20000, 30000, 40000, 60000, 100000], spec: { label: 'نوع الشمعات', presets: ['نحاس', 'بلاتين', 'إريديوم', 'مزدوجة', 'فضة'], warn: 'نوع الشمعة ومرجعها يحدّدهما مصنّع محركك، والخطأ فيهما قد يضعف الاحتراق أو يتلف المحرك.' } }
             ]
         };
 
@@ -1240,11 +1296,11 @@
             return !!(m && m.type === 'time');
         }
 
+        // بيانات فارغة: كل المؤشرات معطَّلة بلا قيم، والعداد 0 (تُستعمل عند أول تشغيل وعند إعادة ضبط المصنع)
         function makeEmptyRecords() {
             let rec = {
                 car: { odoLog: [], odometer: { lastManualOdo: 0, lastManualDate: getTodayDateString(), averageMileage: 2000, rateUserSet: false, currentEstimatedOdo: 0, lastManualTs: 0 } }
             };
-            Object.keys(LINKS).forEach(n => { rec[LINKS[n].counter] = { count: 0 }; });
             MODULE_ORDER.forEach(mod => {
                 rec[mod] = {};
                 metadata[mod].forEach(item => {
@@ -1256,11 +1312,13 @@
             return rec;
         }
 
+        // أول تشغيل = لا توجد بيانات محفوظة لهذا الحساب في Firestore (تُحدَّد بعد تسجيل الدخول داخل initUserData)
         let isFirstRun = true;
-        try { isFirstRun = localStorage.getItem('gmax_records') === null; } catch (e) { isFirstRun = true; }
-        let onboardingStep = null;
+        let onboardingStep = null;   // null | 'odo' | 'indicators'
+
         let records = makeEmptyRecords();
 
+        // يبني سجلات سليمة من بيانات محفوظة أو مستوردة: يتجاهل كل ما ليس في التعريف، ويرحّل الصيغ القديمة
         function mergeSavedRecords(saved) {
             let rec = makeEmptyRecords();
             if (!saved || typeof saved !== 'object') return rec;
@@ -1273,6 +1331,7 @@
                 if (Number.isFinite(so.averageMileage) && so.averageMileage >= 100 && so.averageMileage <= 15000) rec.car.odometer.averageMileage = Math.round(so.averageMileage);
                 if (Number.isFinite(so.currentEstimatedOdo) && so.currentEstimatedOdo >= 0 && so.currentEstimatedOdo <= 999999) rec.car.odometer.currentEstimatedOdo = so.currentEstimatedOdo;
                 rec.car.odometer.rateUserSet = so.rateUserSet === true;
+                // المعدل القديم (1500) كان ثابتاً في الكود لا اختيار المستخدم: نعتمد 2000 حتى يؤكد المستخدم معدله
                 if (!rec.car.odometer.rateUserSet) rec.car.odometer.averageMileage = 2000;
             }
             if (saved.car && Array.isArray(saved.car.odoLog)) {
@@ -1280,36 +1339,32 @@
                     .filter(e => e && Number.isFinite(e.odo) && e.odo >= 0 && e.odo <= 999999 && isValidDateStr(e.date))
                     .map((e, i) => ({ seq: Number.isFinite(e.seq) ? e.seq : i + 1, date: e.date, odo: e.odo }));
             } else {
-                rec.car.odoLog = undefined;
+                rec.car.odoLog = undefined;   // نسخة قديمة بلا سجل: يُنشأ من آخر قراءة
                 ensureOdoLog(rec);
             }
-
-            Object.keys(LINKS).forEach(n => {
-                let c = saved[LINKS[n].counter];
-                if (c && Number.isInteger(c.count) && c.count >= 0 && c.count <= 100000) rec[LINKS[n].counter] = { count: c.count };
-            });
 
             MODULE_ORDER.forEach(mod => {
                 metadata[mod].forEach(item => {
                     let o = saved[mod] && saved[mod][item.key];
+                    // ترحيل: «زيت المقود» كان في مجموعة السوائل المحذوفة
                     if (!o && item.key === 'powerSteering' && saved.fluids) o = saved.fluids.powerSteering;
+                    // ترحيل: البلاكات والأقراص كانت مؤشرًا واحدًا فصارت أمامية وخلفية
                     if (!o && item.key === 'brakePadsFront' && saved[mod]) o = saved[mod].brakePads;
                     if (!o && item.key === 'discsFront' && saved[mod]) o = saved[mod].brakeDiscs;
                     if (!o || typeof o !== 'object') return;
                     if (item.type === 'time') {
-                        if (!isValidDateStr(o.expiryDate)) return;
+                        if (!isValidDateStr(o.expiryDate)) return;   // تاريخ غير صالح: يبقى المؤشر معطّلاً بدل أن يظهر منتهيًا
                         rec[mod][item.key] = { expiryDate: o.expiryDate, active: o.active !== false };
                         if (item.spec && typeof o.spec === 'string' && o.spec.trim()) rec[mod][item.key].spec = o.spec.trim().slice(0, 40);
                     } else {
                         if (!Number.isFinite(o.max) || o.max < 0 || o.max > 99999999) return;
-                        let t = o.linkTarget !== undefined ? o.linkTarget : o.vidangeTarget;
+                        if (o.linkTarget !== undefined || o.vidangeTarget !== undefined) return;   // كان مرتبطًا بغيره: يبقى معطّلًا حتى تحدّد له موعدًا بالكيلومتر
                         let obj = {
                             max: o.max,
                             lastDate: isValidDateStr(o.lastDate) ? o.lastDate : '',
                             lastOdo: (Number.isFinite(o.lastOdo) && o.lastOdo >= 0 && o.lastOdo <= 999999) ? o.lastOdo : 0,
                             active: o.active !== false
                         };
-                        if (item.link && Number.isInteger(t) && t >= 0 && t <= 100000) obj.linkTarget = t;
                         if (item.spec && typeof o.spec === 'string' && o.spec.trim()) obj.spec = o.spec.trim().slice(0, 40);
                         rec[mod][item.key] = obj;
                     }
@@ -1318,10 +1373,26 @@
             return rec;
         }
 
-        if (!isFirstRun) {
-            try { records = mergeSavedRecords(JSON.parse(localStorage.getItem('gmax_records'))); } catch (e) {}
+        // يُستدعى بعد تسجيل الدخول وتحميل البيانات من Firestore
+        function initUserData() {
+            isFirstRun = cloudGet('records') === null;
+            onboardingStep = null;
+            appStarted = false;
+            records = makeEmptyRecords();
+            if (!isFirstRun) {
+                try { records = mergeSavedRecords(JSON.parse(cloudGet('records'))); } catch (e) {}
+            }
+            updateEstimatedOdometerDaily();
+            let sb = document.getElementById('startBtn');
+            sb.innerText = isFirstRun ? 'تنزيل التطبيق' : 'Start';
+            sb.style.display = '';
+            document.getElementById('welcome-odo-display').innerText = formatNumberWithSpace(records.car.odometer.currentEstimatedOdo);
+            updateGlobalLight();
+            lastRefreshDay = getTodayDateString();
         }
 
+        // ===== سجل قراءات العداد اليدوية =====
+        // records.car.odoLog = [{ seq, date, odo }, ...] : كل إدخال يدوي برقم تسلسلي. آخر إدخال هو المرجع في الحساب.
         const MAX_ODO = 999999;
 
         function parseDateStr(str) {
@@ -1334,6 +1405,7 @@
             return Math.round((parseDateStr(toStr) - parseDateStr(fromStr)) / 86400000);
         }
 
+        // يضمن وجود السجل ويُنشئه من آخر قراءة قديمة إن كانت البيانات من نسخة سابقة
         function ensureOdoLog(rec) {
             if (!rec.car) rec.car = {};
             if (!rec.car.odometer) rec.car.odometer = { lastManualOdo: 0, lastManualDate: getTodayDateString(), averageMileage: 2000, currentEstimatedOdo: 0 };
@@ -1344,6 +1416,7 @@
             }
         }
 
+        // يزامن حقول العداد المعروفة مع آخر إدخال في السجل
         function syncOdoFromLog() {
             let o = records.car.odometer;
             let log = records.car.odoLog;
@@ -1357,6 +1430,8 @@
             }
         }
 
+        // المعدل الشهري الشخصي: كل المقاطع بين القراءات المتتالية، بوزن يتناقص مع قِدَم المقطع (نصف الوزن كل 90 يوماً)
+        // فتكون الأولوية للأقرب ثم الأقرب، ولا يُهمل الأقدم. المعدل = 30 × (مجموع الكيلومترات الموزونة / مجموع الأيام الموزونة)
         function computePersonalMonthlyRate() {
             let log = records.car.odoLog || [];
             if (log.length < 2) return null;
@@ -1372,7 +1447,7 @@
                 den += days * w;
                 totalDays += days;
             }
-            if (den === 0 || totalDays < 14) return null;
+            if (den === 0 || totalDays < 14) return null;   // بيانات قليلة جداً: لا نقترح
             let rate = Math.round((30 * num / den) / 10) * 10;
             return Math.min(15000, Math.max(100, rate));
         }
@@ -1393,110 +1468,14 @@
                 odo.currentEstimatedOdo = last.odo;
             }
         }
-        updateEstimatedOdometerDaily();
-        
-        let elOdo = document.getElementById('welcome-odo-display');
-        if(elOdo) elOdo.innerText = formatNumberWithSpace(records.car.odometer.currentEstimatedOdo);
 
-        let saveWarned = false;
-
-        // دالة الحفظ الهجينة (تختار سحابياً عبر Firebase أو محلياً عبر LocalStorage بناءً على رغبة المستخدم)
-        async function saveAppData() {
+        // الحفظ في Firestore (القراءة من الذاكرة فورية، والكتابة تُرسَل للسحابة)
+        function saveAppData() {
             updateGlobalLight();
-            try {
-                if (window.isCloudStorage && window.firebaseAuth && window.firebaseAuth.currentUser) {
-                    const user = window.firebaseAuth.currentUser;
-                    await window.setDoc(window.doc(window.firebaseDb, "cars", user.uid), records);
-                    console.log("تم الحفظ في سحابة Firebase بنجاح");
-                } else {
-                    localStorage.setItem('gmax_records', JSON.stringify(records));
-                    console.log("تم الحفظ محلياً في LocalStorage");
-                }
-                saveWarned = false;
-                return true;
-            } catch (e) {
-                console.error("خطأ في حفظ البيانات:", e);
-                if (!saveWarned) {
-                    saveWarned = true;
-                    showInfo('تعذّر الحفظ', 'حدث خطأ أثناء حفظ البيانات. تأكد من اتصالك بالإنترنت إن كنت تستعمل الحساب السحابي.');
-                }
-                return false;
-            }
+            return cloudSet('records', JSON.stringify(records));
         }
 
-        // دالة جلب البيانات من السحاب للمستخدم عند تسجيل الدخول
-        window.loadCloudData = async function(uid) {
-            try {
-                const docSnap = await window.getDoc(window.doc(window.firebaseDb, "cars", uid));
-                if (docSnap.exists()) {
-                    records = mergeSavedRecords(docSnap.data());
-                    console.log("تم جلب بيانات السحاب بنجاح");
-                } else {
-                    // إذا لم تكن موجودة، نرفع البيانات الحالية للسحاب
-                    await saveAppData();
-                }
-                refreshDaily();
-                if (appStarted) navigateMainDashboard();
-            } catch (err) {
-                console.error("خطأ في جلب بيانات السحاب:", err);
-            }
-        };
-
-        // تسجيل الدخول عبر حساب جوجل
-        async function startAppWithGoogle() {
-            try {
-                const result = await window.signInWithPopup(window.firebaseAuth, window.googleProvider);
-                window.isCloudStorage = true;
-                appStarted = true;
-                
-                document.getElementById('welcome-page').style.display = 'none';
-                document.getElementById('cloud-status-card').style.display = 'flex';
-                document.getElementById('cloud-status-title').innerText = `الحساب السحابي: متصل (${result.user.email})`;
-                
-                await window.loadCloudData(result.user.uid);
-                navigateAlertsPage();
-            } catch (error) {
-                console.error("فشل تسجيل الدخول بجوجل:", error);
-                alert("تعذّر إتمام تسجيل الدخول بحساب جوجل. حاول مجدداً.");
-            }
-        }
-
-        // بدء الاستخدام محلياً دون ربط جوجل
-        function startAppLocal() {
-            window.isCloudStorage = false;
-            if (isFirstRun) { installApp(); return; }
-            appStarted = true;
-            lastVisitedGroup = null;
-            lastIndicatorsView = 'alerts';
-            document.getElementById('welcome-page').style.display = 'none';
-            document.getElementById('cloud-status-card').style.display = 'none';
-            navigateAlertsPage();
-        }
-
-        // تبديل أو قطع الاتصال بالسحاب من صفحة الإعدادات
-        async function toggleCloudSync() {
-            if (window.isCloudStorage) {
-                if (confirm('هل تريد قطع الاتصال بالحساب السحابي والانتقال للتخزين المحلي فقط؟')) {
-                    await window.signOut(window.firebaseAuth);
-                    window.isCloudStorage = false;
-                    document.getElementById('cloud-status-card').style.display = 'none';
-                    alert('تم الانتقال إلى وضع التخزين المحلي.');
-                    navigateSettingsPage();
-                }
-            } else {
-                try {
-                    const result = await window.signInWithPopup(window.firebaseAuth, window.googleProvider);
-                    window.isCloudStorage = true;
-                    document.getElementById('cloud-status-card').style.display = 'flex';
-                    document.getElementById('cloud-status-title').innerText = `الحساب السحابي: متصل (${result.user.email})`;
-                    await window.loadCloudData(result.user.uid);
-                    alert('تم ربط الحساب السحابي بنجاح ونقل البيانات!');
-                } catch(e) {
-                    console.error(e);
-                }
-            }
-        }
-
+        // يجدّد ما يتغيّر بمرور الأيام: العداد التقديري والتاريخ والأضواء (يُستدعى عند كل انتقال وعند عودة التبويب)
         let lastRefreshDay = '';
         function refreshDaily() {
             updateEstimatedOdometerDaily();
@@ -1508,8 +1487,7 @@
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState !== 'visible' || appStarted === false || getTodayDateString() === lastRefreshDay) return;
             refreshDaily();
-            if (document.getElementById('detail-page-container').style.display === 'block' && currentDetailKey) { if (!singleUpdateState) openDetailModal(currentDetailKey); return; }
-            if (document.getElementById('main-app-container').style.display === 'block' && currentModule) { renderForm(currentModule); updateNavAlertsDot(); }
+            if (document.getElementById('main-app-container').style.display === 'block' && currentModule) { renderForm(currentModule); }
         });
 
         function getTodayDateString() {
@@ -1517,21 +1495,17 @@
             return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
         }
 
+        // ===== نافذة العداد الحالي + معدل السير الشهري =====
         let odoDlg = null;
-
-        function openWelcomeOdoModal() {
-            if (isFirstRun) return;
-            openOdoDialog('welcome');
-        }
 
         function openOdoDialog(origin) {
             let o = records.car.odometer;
             let personal = computePersonalMonthlyRate();
             odoDlg = {
                 origin: origin,
-                view: 'main',
+                view: 'pad',
                 field: 'odo',
-                odo: String(o.currentEstimatedOdo),
+                odo: '',
                 odoEdited: false,
                 rate: String(personal !== null ? personal : (o.averageMileage || 2000)),
                 personal: personal,
@@ -1541,12 +1515,42 @@
                 msg: ''
             };
             renderOdoDialog();
-            document.getElementById('welcome-odo-overlay').style.display = 'flex';
+            const ov = document.getElementById('welcome-odo-overlay');
+            const box = ov.querySelector('.wizard-container');
+            ov.style.display = 'flex';
+            // من صفحة البطاقات: تظهر النافذة مباشرة تحت بطاقة العداد، وفي غيرها تبقى في الوسط
+            const card = origin === 'cards' ? document.getElementById('odo-card') : null;
+            if (card) {
+                window.scrollTo(0, 0);
+                const bottom = card.getBoundingClientRect().bottom;
+                ov.style.alignItems = 'flex-start';
+                box.style.marginTop = Math.max(0, bottom + 8 - 15) + 'px';
+                box.style.setProperty('max-height', 'calc(100vh - ' + Math.round(bottom + 22) + 'px)', 'important');
+                box.style.overflowY = 'auto';
+            } else {
+                ov.style.alignItems = '';
+                box.style.marginTop = '';
+                box.style.setProperty('max-height', '95vh', 'important');
+                box.style.overflowY = '';
+            }
         }
 
+        function odoDlgCancel() {
+            closeOdoDialog();
+            if (onboardingStep === 'odo') askInitialOdo();
+        }
         function closeOdoDialog() {
             document.getElementById('welcome-odo-overlay').style.display = 'none';
             odoDlg = null;
+        }
+
+        // لوحة أرقام تشبه لوحة المفاتيح: 0-5 في السطر الأول، ثم مسح (يسار) و6-9 وحذف (يمين)
+        function padKeysHtml(dig, del, clr) {
+            const k = n => `<button class="numpad-btn" onclick="${dig}('${n}')">${n}</button>`;
+            return ['0','1','2','3','4','5'].map(k).join('') +
+                `<button class="numpad-btn numpad-btn-del" onclick="${clr}()">مسح</button>` +
+                ['6','7','8','9'].map(k).join('') +
+                `<button class="numpad-btn numpad-btn-del" onclick="${del}()">⌫</button>`;
         }
 
         function renderOdoDialog() {
@@ -1567,7 +1571,7 @@
                         هل تريد استبدال العدد السابق بهذا العدد وبتاريخ اليوم؟
                     </div>`;
                 actionsEl.innerHTML = `
-                    <button class="numpad-action-btn numpad-cancel-btn" onclick="odoDlg.view='main'; odoDlg.pendingValue=null; renderOdoDialog();">لا</button>
+                    <button class="numpad-action-btn numpad-cancel-btn" onclick="odoDlg.view='pad'; odoDlg.pendingValue=null; renderOdoDialog();">لا</button>
                     <button class="numpad-action-btn numpad-confirm-btn" onclick="odoDlgFinish('replace')">نعم، استبدل</button>`;
                 return;
             }
@@ -1577,46 +1581,41 @@
                 contentEl.innerHTML = `
                     <div style="font-size: 13px; line-height: 1.9; text-align: center; margin: 14px 0; color: rgba(255,255,255,0.88);">
                         هذا العدد (<span class="num-ltr">${formatNumberWithSpace(d.pendingValue)}</span> كم) أكبر من آخر عدد مسجَّل بـ
-                        <span class="num-ltr">${formatNumberWithSpace(d.jumpKm)}</span> كم خلال <span class="num-ltr">${d.jumpDays}</span> يومًا.<br>
+                        <span class="num-ltr">${formatNumberWithSpace(d.jumpKm)}</span> كم خلال <span class="num-ltr">${d.jumpDays}</span> يومًا، وهذا فارق كبير.<br>
                         هل أنت متأكد من صحته؟
                     </div>`;
                 actionsEl.innerHTML = `
-                    <button class="numpad-action-btn numpad-cancel-btn" onclick="odoDlg.view='main'; odoDlg.pendingValue=null; renderOdoDialog();">راجع الرقم</button>
-                    <button class="numpad-action-btn numpad-confirm-btn" onclick="odoDlg.jumpOk=true; odoDlg.view='main'; odoDlgSave();">نعم، صحيح</button>`;
+                    <button class="numpad-action-btn numpad-cancel-btn" onclick="odoDlg.view='pad'; odoDlg.pendingValue=null; renderOdoDialog();">راجع الرقم</button>
+                    <button class="numpad-action-btn numpad-confirm-btn" onclick="odoDlg.jumpOk=true; odoDlg.view='pad'; odoDlgSave();">نعم، صحيح</button>`;
                 return;
             }
 
             if (d.view === 'pad') {
                 let isOdo = d.field === 'odo';
-                titleEl.innerText = isOdo ? 'تعديل العداد الحالي' : 'تعديل معدل السير الشهري';
+                titleEl.innerText = d.origin === 'popupNext' ? 'العداد عند التغيير القادم' : (isOdo ? 'العداد الحالي للسيارة' : 'تعديل معدل السير الشهري');
                 contentEl.innerHTML = `
                     <div class="wizard-display-box" style="margin-top: 8px;">
                         <span class="wizard-number-part">${formatNumberWithSpace(d[d.field]) || '0'}</span>
                         <span class="wizard-unit-part">${isOdo ? 'كم' : 'كم / شهر'}</span>
                     </div>
-                    <div class="numpad-grid" style="margin-top: 10px;">
-                        <button class="numpad-btn" onclick="odoDlgDigit('1')">1</button>
-                        <button class="numpad-btn" onclick="odoDlgDigit('2')">2</button>
-                        <button class="numpad-btn" onclick="odoDlgDigit('3')">3</button>
-                        <button class="numpad-btn" onclick="odoDlgDigit('4')">4</button>
-                        <button class="numpad-btn" onclick="odoDlgDigit('5')">5</button>
-                        <button class="numpad-btn numpad-btn-del" onclick="odoDlgDel()">⌫</button>
-                        <button class="numpad-btn" onclick="odoDlgDigit('6')">6</button>
-                        <button class="numpad-btn" onclick="odoDlgDigit('7')">7</button>
-                        <button class="numpad-btn" onclick="odoDlgDigit('8')">8</button>
-                        <button class="numpad-btn" onclick="odoDlgDigit('9')">9</button>
-                        <button class="numpad-btn" onclick="odoDlgDigit('0')">0</button>
-                        <button class="numpad-btn numpad-btn-del" onclick="odoDlgClear()" style="color:#ff8888;">مسح</button>
-                    </div>
+                    <div class="numpad-grid" style="margin-top: 10px;">${padKeysHtml('odoDlgDigit', 'odoDlgDel', 'odoDlgClear')}</div>
+                    ${d.origin === 'popupNext' ? nextSuggestHtml() : ''}
                     ${warn}`;
                 actionsEl.innerHTML = `
-                    <button class="numpad-action-btn numpad-cancel-btn" onclick="odoDlgPadCancel()">إلغاء</button>
+                    <button class="numpad-action-btn numpad-cancel-btn" onclick="odoDlgCancel()">إلغاء</button>
                     <button class="numpad-action-btn numpad-confirm-btn" onclick="odoDlgPadConfirm()">تأكيد</button>`;
                 return;
             }
 
             let o = records.car.odometer;
-            let rateNote = d.personal !== null ? `معدلك الشخصي المحسوب هو <b class="num-ltr">${formatNumberWithSpace(d.personal)}</b> كم/شهر.` : '2 000 كم/شهر متوسط مناسب للبداية.';
+            let rateNote;
+            if (d.personal !== null) {
+                rateNote = `معدلك الشخصي المحسوب من قراءاتك السابقة هو <b class="num-ltr">${formatNumberWithSpace(d.personal)}</b> كم/شهر. يمكنك إبقاؤه أو كتابة رقم آخر.`;
+            } else if (o.rateUserSet && o.averageMileage !== 2000) {
+                rateNote = 'هذا المعدل الذي اخترتَه. سيُحسب معدلك الشخصي تلقائياً بعد توفّر قراءات كافية.';
+            } else {
+                rateNote = '2 000 كم/شهر متوسط مناسب للبداية، عدّله متى عرفتَ معدلك الحقيقي.';
+            }
             titleEl.innerText = 'العداد ومعدل السير';
             contentEl.innerHTML = `
                 <div class="field-row-inline" style="margin-top:8px;">
@@ -1635,14 +1634,14 @@
                 <div style="font-size: 11px; color: rgba(255,255,255,0.55); text-align: center; margin-top: 8px; line-height: 1.7;">${rateNote}</div>
                 ${warn}`;
             actionsEl.innerHTML = `
-                <button class="numpad-action-btn numpad-cancel-btn" onclick="closeOdoDialog()">إلغاء</button>
+                <button class="numpad-action-btn numpad-cancel-btn" onclick="odoDlgCancel()">إلغاء</button>
                 <button class="numpad-action-btn numpad-confirm-btn" onclick="odoDlgSave()">تأكيد</button>`;
         }
 
         function odoDlgOpenPad(field) {
             odoDlg.field = field;
             odoDlg.prevVal = odoDlg[field];
-            odoDlg[field] = '';
+            odoDlg[field] = '';          // الكتابة تبدأ من خانة فارغة
             odoDlg.view = 'pad';
             odoDlg.msg = '';
             renderOdoDialog();
@@ -1650,7 +1649,7 @@
         function odoDlgDigit(dg) {
             let maxLen = odoDlg.field === 'odo' ? 6 : 5;
             let cur = odoDlg[odoDlg.field];
-            if (cur === '0') cur = '';
+            if (cur === '0') cur = '';            // لا أصفار زائدة في البداية
             if (cur.length >= maxLen) return;
             odoDlg[odoDlg.field] = cur + dg;
             odoDlg.msg = '';
@@ -1666,34 +1665,33 @@
             odoDlg.msg = '';
             renderOdoDialog();
         }
-        function odoDlgPadCancel() {
-            odoDlg[odoDlg.field] = odoDlg.prevVal;
-            odoDlg.view = 'main'; odoDlg.msg = '';
-            renderOdoDialog();
-        }
         function odoDlgPadConfirm() {
             let d = odoDlg;
-            let v = parseInt(d[d.field], 10);
-            if (isNaN(v)) { d.msg = 'أدخل رقماً'; renderOdoDialog(); return; }
-            if (d.field === 'odo') {
-                if (v < 0 || v > MAX_ODO) { d.msg = 'قيمة العداد غير مقبولة'; renderOdoDialog(); return; }
-                d.odoEdited = true; d.jumpOk = false;
-            } else {
-                if (v < 100 || v > 15000) { d.msg = 'معدل غير معقول'; renderOdoDialog(); return; }
+            if (d.origin === 'popupNext') {
+                const v = parseInt(d.odo, 10), cur = records.car.odometer.currentEstimatedOdo;
+                if (isNaN(v) || v <= 0) { d.msg = 'اكتب العداد عند التغيير القادم'; renderOdoDialog(); return; }
+                if (v <= cur) { d.msg = 'يجب أن يكون أكبر من العداد الحالي (' + formatNumberWithSpace(cur) + ' كم)'; renderOdoDialog(); return; }
+                if (tp) { tp.mode = null; tp.presetIdx = null; tp.next = String(v); }
+                closeOdoDialog();
+                if (tp) tpRender();
+                return;
             }
-            d[d.field] = String(v);
-            d.view = 'main'; d.msg = '';
-            renderOdoDialog();
+            let v = parseInt(d.odo, 10);
+            if (isNaN(v)) { d.msg = 'أدخل رقم العداد'; renderOdoDialog(); return; }
+            if (v < 0 || v > MAX_ODO) { d.msg = 'قيمة العداد غير مقبولة (من 0 إلى 999 999 كم)'; renderOdoDialog(); return; }
+            d.odo = String(v); d.odoEdited = true; d.jumpOk = false; d.msg = '';
+            odoDlgSave();
         }
 
+        // الحفظ: نصنّف إدخال العداد قبل أي كتابة
         function odoDlgSave() {
             let d = odoDlg;
             let odoVal = parseInt(d.odo, 10);
             let rateVal = parseInt(d.rate, 10);
-            if (isNaN(odoVal) || isNaN(rateVal)) { d.msg = 'أكمل العداد والمعدل'; renderOdoDialog(); return; }
+            if (isNaN(odoVal) || isNaN(rateVal)) { d.msg = 'أكمل العداد والمعدل الشهري'; renderOdoDialog(); return; }
 
             let log = records.car.odoLog;
-            if (onboardingStep === 'odo' && !d.odoEdited) { d.msg = 'أدخل رقم العداد'; renderOdoDialog(); return; }
+            if (onboardingStep === 'odo' && !d.odoEdited) { d.msg = 'أدخل رقم العداد الحالي لسيارتك'; renderOdoDialog(); return; }
 
             if (!d.odoEdited) { odoDlgFinish('none'); return; }
             if (log.length === 0) { odoDlgFinish('new'); return; }
@@ -1712,12 +1710,16 @@
                 odoDlgFinish('new'); return;
             }
 
+            // العدد ليس أكبر من آخر عدد مسجَّل
             if (prev && odoVal <= prev.odo) {
                 d.rejectCount++;
-                d.msg = 'هذا العدد أقل من أعداد مسجَّلة سابقاً.';
+                d.msg = d.rejectCount === 1
+                    ? 'هذا العدد أقل من أعداد مسجَّلة سابقاً، ولا يمكن قبوله. راجع رقم العداد.'
+                    : 'لا يمكن تصحيح الأعداد القديمة. إن كان الخطأ فيها فعلاً، فالحل الوحيد هو «إعادة ضبط المصنع» من «المزيد» ثم البدء من جديد.';
                 renderOdoDialog();
                 return;
             }
+            // يقع بين العدد قبل الأخير وآخر عدد: تصحيح لآخر إدخال بعد تأكيد المستخدم
             d.pendingValue = odoVal;
             d.view = 'replace';
             renderOdoDialog();
@@ -1734,13 +1736,13 @@
                 log.push({ seq: log.length ? log[log.length - 1].seq + 1 : 1, date: today, odo: odoVal });
             } else if (mode === 'replace') {
                 let last = log[log.length - 1];
-                last.date = today;
+                last.date = today;      // الرقم التسلسلي يبقى نفسه
                 last.odo = odoVal;
             }
 
             let o = records.car.odometer;
             if (mode !== 'none') o.lastManualTs = Date.now();
-            o.averageMileage = rateVal;
+            { const pr = computePersonalMonthlyRate(); o.averageMileage = (pr !== null) ? pr : rateVal; }
             o.rateUserSet = true;
             syncOdoFromLog();
             o.currentEstimatedOdo = log.length ? log[log.length - 1].odo : 0;
@@ -1751,12 +1753,10 @@
             let origin = d.origin;
             closeOdoDialog();
             if (onboardingStep === 'odo' && origin === 'welcome') { onboardingAfterOdometer(); return; }
-        }
+            if (origin === 'cards' && currentModule === 'alerts') renderCardsPage();
+            if (origin === 'popup' && tp) tpRender();
 
-        let currentDetailKey = "";
-        let detailActiveModule = ""; 
-        let singleUpdateState = null;
-        let tempGlobalSettingsState = {};
+        }
 
         function formatNumberWithSpace(num) {
             if (isNaN(num) || num === "") return num;
@@ -1767,6 +1767,7 @@
             return String(v === undefined || v === null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
         }
 
+        // تاريخ صالح بصيغة YYYY-MM-DD وقابل للوجود فعلاً (لا 2026-13-45)
         function isValidDateStr(str) {
             if (typeof str !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(str)) return false;
             let p = str.split('-').map(Number);
@@ -1785,48 +1786,24 @@
             if (!expiryDateStr) return 0;
             let parts = expiryDateStr.split('-');
             let exp = new Date(Date.UTC(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]), 12, 0, 0));
+
             let today = new Date();
             let todayUtc = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), 12, 0, 0));
+
             let diffTime = exp.getTime() - todayUtc.getTime();
             return Math.round(diffTime / (1000 * 60 * 60 * 24));
-        }
-
-        function getLinkCount(linkName) {
-            return records[LINKS[linkName].counter].count;
-        }
-        function getLinkDiff(modKey, itemKey, obj) {
-            let m = getItemMeta(modKey, itemKey);
-            if (!m || !m.link || !obj || obj.linkTarget === null || obj.linkTarget === undefined) return null;
-            return obj.linkTarget - getLinkCount(m.link);
-        }
-        function getLinkLabel(linkName, diff) {
-            let L = LINKS[linkName];
-            if (diff <= 0) return L.due;
-            if (diff === 1) return L.next;
-            if (diff === 2) return L.x2;
-            if (diff === 3) return L.x3;
-            return `بعد ${diff} تغييرات`;
         }
 
         function getIndicatorStatus(modKey, itemKey, dataRec) {
             let obj = dataRec[itemKey];
             if (!obj || obj.active === false) return 'green';
             if (isTimeItem(modKey, itemKey)) {
-                if (!isValidDateStr(obj.expiryDate)) return 'green';
+                if (!isValidDateStr(obj.expiryDate)) return 'green';   // مفعّل بلا تاريخ صالح: لا نُظهره منتهيًا
                 let rem = calculateRemainingDays(obj.expiryDate);
                 if (rem <= 0) return 'red';
                 if (rem <= 30) return 'yellow';
                 return 'green';
             } else {
-                let vDiff = getLinkDiff(modKey, itemKey, obj);
-                if (vDiff !== null) {
-                    if (vDiff <= 0) return 'red';
-                    if (vDiff === 1) {
-                        let A = LINKS[getItemMeta(modKey, itemKey).link];
-                        return getIndicatorStatus(A.mod, A.key, records[A.mod]);
-                    }
-                    return 'green';
-                }
                 let rem = obj.max - records.car.odometer.currentEstimatedOdo;
                 if (rem <= 0) return 'red';
                 if (rem <= 2000) return 'yellow';
@@ -1848,7 +1825,7 @@
                     if (st === 'yellow') hasYellow = true;
                 }
             });
-            if (!hasActive) return 'none';
+            if (!hasActive) return 'none';   // لا مؤشر مفعّل: ضوء أبيض باهت لا أخضر
             if (hasRed) return 'red';
             if (hasYellow) return 'yellow';
             return 'green';
@@ -1897,27 +1874,17 @@
 
         function hideAllPages(navId) {
             refreshDaily();
-            if (document.getElementById('detail-page-container').style.display === 'block' && singleUpdateState) {
-                activationCallback = null;
-                singleUpdateState = null;
-            }
-            document.getElementById('detail-page-container').classList.remove('up-locked');
-            document.getElementById('up-sheet-overlay').style.display = 'none';
             document.getElementById('welcome-page').style.display = 'none';
             document.getElementById('main-app-container').style.display = 'none';
-            document.getElementById('settings-page-container').style.display = 'none';
-            document.getElementById('global-activator-page-container').style.display = 'none';
             document.getElementById('backup-page-container').style.display = 'none';
             document.getElementById('notes-page-container').style.display = 'none';
-            document.getElementById('detail-page-container').style.display = 'none';
+            // الشريط السفلي: يظهر فقط بعد البدء وفي الصفحات الرئيسية الثلاث، ويُضبط الزر النشط مع الصفحة دائماً
             setNavActive(navId);
             document.getElementById('bottom-nav-bar').style.display = (appStarted && navId) ? 'flex' : 'none';
         }
 
         function navigateToModule(mod) {
             currentModule = mod;
-            if (MODULE_ORDER.indexOf(mod) !== -1) lastVisitedGroup = mod;
-            if (mod === 'alerts' || MODULE_ORDER.indexOf(mod) !== -1) lastIndicatorsView = mod;
             let navId = 'nav-indicators-btn';
             hideAllPages(navId);
             document.getElementById('main-app-container').style.display = 'block';
@@ -1925,35 +1892,57 @@
             setNavActive(navId);
         }
 
-        function navigateMainDashboard() {
-            navigateToModule(lastIndicatorsView || 'alerts');
-        }
-
         function navigateExpensesPage() {
             currentModule = 'expenses';
+            expView = 'home';
             hideAllPages('nav-expenses-btn');
             document.getElementById('main-app-container').style.display = 'block';
             renderForm('expenses');
         }
 
         function showExpensesHelp() {
-            showInfo('عن هذه الصفحة', 'هنا تسجّل مصاريف الوقود فقط.');
+            showInfo('عن هذه الصفحة', '<b style="color:#b8860b;">الأرقام</b><br>في الأعلى مجموع هذا الشهر ومجموع هذه السنة.<br><br><b style="color:#b8860b;">+ مصروف</b><br>اختر نوع المصروف (الوقود، الزيت والصيانة، الوثائق والرسوم، الطوارئ، مصاريف أخرى)، ثم اكتب المبلغ واضغط حفظ. والتاريخ يكون اليوم تلقائيًا ويمكنك تغييره. وفي غير الوقود يمكنك كتابة ملاحظة قصيرة كبطارية أو غرامة.<br><br><b style="color:#b8860b;">الإحصائيات</b><br>ثلاثة أرقام يريد معرفتها معظم السائقين: معدل تكلفة الوقود لكل 100 كم، ومعدل تكلفة السيارة لكل 100 كم، ومجموع تكلفة السيارة السنوي. اختر أحدها فيظهر رسم بالسنوات الخمس، تبدأ بأول سنة سجّلتَ فيها مصاريف. وفي المجموع السنوي اضغط على سنة لترى تفاصيلها. وتُحسب الأرقام بالمعدل السنوي لتتفادى تقلّب الطريق والسرعة والحمولة. ولحساب التكلفة لكل 100 كم يلزم تسجيل المصاريف وتحديث العداد بقراءتين بينهما شهر على الأقل.<br><br><b style="color:#b8860b;">قائمة المصاريف</b><br>كل ما سجّلته مرتبًا بالتاريخ. راجعها متى شككت في إدخال ما، واحذف بزر ✕ ما كُتب خطأً ثم أعد كتابته. وزر «نسخ» يجهّز القائمة للواتساب. هذه البيانات لا تمسحها إعادة ضبط المصنع.');
         }
 
         function navigateAlertsPage() {
             navigateToModule('alerts');
         }
 
+        function startApp() {
+            if (isFirstRun) { installApp(); return; }
+            appStarted = true;
+            document.getElementById('startBtn').style.display = 'none';
+            navigateAlertsPage();
+        }
+
+        // ===== الإعداد الأولي (أول استعمال) =====
+        function showOnboardingMsg(title, text, btnText, onClick) {
+            document.getElementById('ob-title').innerText = title;
+            document.getElementById('ob-text').innerHTML = text;
+            let btn = document.getElementById('ob-btn');
+            btn.innerText = btnText;
+            btn.onclick = function() {
+                document.getElementById('onboarding-overlay').style.display = 'none';
+                if (onClick) onClick();
+            };
+            document.getElementById('onboarding-overlay').style.display = 'flex';
+        }
+
         function installApp() {
-            try { localStorage.setItem('gmax_records', JSON.stringify(records)); } catch (e) {}
+            // أول شيء: إنشاء مستند البيانات في Firestore ببيانات فارغة
+            cloudSet('records', JSON.stringify(records));
             isFirstRun = false;
             onboardingStep = 'odo';
-            document.getElementById('welcome-page').style.display = 'flex';
+            document.getElementById('startBtn').style.display = 'none';
+            askInitialOdo();
+        }
+
+        function askInitialOdo() {
             showOnboardingMsg(
                 'مرحباً بك',
-                'اضغط على <b>خانة عداد السيارة</b> في الأعلى، ثم أدخل رقم العداد الحالي.',
-                'حسناً',
-                function() { document.getElementById('welcome-odo-display').classList.add('odo-attention'); }
+                'أدخل رقم العداد الحالي لسيارتك لنبدأ.',
+                'إدخال العداد',
+                function() { openOdoDialog('welcome'); }
             );
         }
 
@@ -1962,36 +1951,65 @@
             onboardingStep = 'indicators';
             showOnboardingMsg(
                 'تم حفظ العداد ✓',
-                'اضغط هنا لإدخال المؤشرات الخاصة بك.',
-                'إدخال المؤشرات',
-                function() { openGlobalActivatorPage(); }
+                'اختر أي بطاقة (الوثائق، الزيت، الأحزمة، الصيانة)، ثم اضغط على المؤشر الذي تريد متابعته وفعّله بالمفتاح في أعلى صفحته.',
+                'حسناً',
+                function() { finishOnboarding(); }
             );
         }
 
         function finishOnboarding() {
             onboardingStep = null;
-            appStarted = true;
-            navigateAlertsPage();
+            startApp();
         }
 
+        // الصفحة الأولى: تُفتح بالضغط على شعار التطبيق من أي صفحة
         function goHome() {
-            hideAllPages();
+            hideAllPages(appStarted ? 'home' : undefined);
             document.getElementById('welcome-page').style.display = 'flex';
+            if (!onboardingStep && !isFirstRun) document.getElementById('startBtn').style.display = '';
         }
 
-        function navigateSettingsPage() {
-            currentModule = null;
-            hideAllPages('nav-settings-btn');
-            document.getElementById('settings-page-container').style.display = 'block';
+        // قائمة الثلاثة خطوط (أعلى اليمين): شرح الصفحة، شرح التطبيق، النسخة الاحتياطية، الملاحظات، إعادة الضبط
+        let menuBack = 'alerts';
+        function openAppMenu() {
+            const r = document.getElementById('grp-menu-btn').getBoundingClientRect();
+            const pn = document.getElementById('app-menu');
+            pn.style.top = (r.bottom + 4) + 'px';
+            pn.style.right = Math.max(8, window.innerWidth - r.right) + 'px';
+            pn.innerHTML = [['page', 'شرح هذه الصفحة'], ['app', 'شرح التطبيق'], ['backup', 'النسخة الاحتياطية'], ['notes', 'ملاحظات'], ['signout', 'تسجيل الخروج'], ['reset', 'إعادة ضبط المصنع']]
+                .map(x => `<button class="am-item${x[0] === 'reset' ? ' danger' : ''}" onclick="appMenuAct('${x[0]}')">${x[1]}${x[0] === 'signout' && currentUser && (currentUser.email || currentUser.displayName) ? `<small>${escapeHtml(currentUser.email || currentUser.displayName)}</small>` : ''}</button>`).join('');
+            document.getElementById('app-menu-overlay').style.display = 'block';
+        }
+        function closeAppMenu() { document.getElementById('app-menu-overlay').style.display = 'none'; }
+        function appMenuAct(a) {
+            closeAppMenu();
+            if (a === 'backup' || a === 'notes') menuBack = (currentModule && currentModule !== 'none') ? currentModule : 'alerts';
+            if (a === 'page') {
+                if (currentModule === 'expenses') showExpensesHelp();
+                else if (MODULE_ORDER.indexOf(currentModule) !== -1) showGroupPageHelp();
+                else showAlertsPageHelp();
+            }
+            else if (a === 'app') showWelcomeHelp();
+            else if (a === 'backup') openBackupPage();
+            else if (a === 'notes') openNotesPage();
+            else if (a === 'signout') confirmSignOut();
+            else if (a === 'reset') openFactoryResetModal();
+        }
+        function returnFromMenuPage() {
+            if (menuBack === 'expenses') navigateExpensesPage(); else navigateToModule(menuBack || 'alerts');
         }
 
-        const NOTES_KEY = 'gmax_notes_v1';
-        const NOTES_DRAFT_KEY = 'gmax_notes_draft_v1';
+        // ===== الملاحظات الحرة: تُحفظ في Firestore (المستند notes). المسودة المؤقتة فقط تبقى على الجهاز =====
         let notesSaved = '';
         let notesDraftTimer = null;
 
-        function notesRead(key) {
-            try { let v = localStorage.getItem(key); return (typeof v === 'string') ? v : null; } catch (e) { return null; }
+        function notesDraftKey() { return 'gmax_notes_draft_v1_' + (currentUser ? currentUser.uid : ''); }
+        function notesReadSaved() {
+            let v = cloudGet('notes');
+            return (typeof v === 'string') ? v : null;
+        }
+        function notesReadDraft() {
+            try { let v = localStorage.getItem(notesDraftKey()); return (typeof v === 'string') ? v : null; } catch (e) { return null; }
         }
         function notesSetStatus(text, color) {
             let el = document.getElementById('notes-status');
@@ -2007,9 +2025,10 @@
         }
 
         function openNotesPage() {
-            notesSaved = notesRead(NOTES_KEY) || '';
-            let draft = notesRead(NOTES_DRAFT_KEY);
+            notesSaved = notesReadSaved() || '';
+            let draft = notesReadDraft();
             let box = document.getElementById('notes-textarea');
+            // إن بقيت مسودة لم تُحفظ (خرجتَ قبل الضغط على حفظ) فهي الأحدث، فنعرضها
             box.value = (draft !== null) ? draft : notesSaved;
             hideAllPages();
             document.getElementById('notes-page-container').style.display = 'block';
@@ -2017,9 +2036,10 @@
         }
 
         function onNotesInput() {
+            // حفظ تلقائي للمسودة فقط (لا يُعدّ حفظاً نهائياً) حتى لا يضيع ما كتبتَه إن خرجتَ فجأة
             clearTimeout(notesDraftTimer);
             notesDraftTimer = setTimeout(function () {
-                try { localStorage.setItem(NOTES_DRAFT_KEY, document.getElementById('notes-textarea').value); } catch (e) {}
+                try { localStorage.setItem(notesDraftKey(), document.getElementById('notes-textarea').value); } catch (e) {}
             }, 400);
             notesRefreshStatus();
         }
@@ -2027,13 +2047,12 @@
         function saveNotes() {
             let text = document.getElementById('notes-textarea').value;
             clearTimeout(notesDraftTimer);
-            try {
-                localStorage.setItem(NOTES_KEY, text);
-                try { localStorage.removeItem(NOTES_DRAFT_KEY); } catch (e) {}
+            if (cloudSet('notes', text)) {
+                try { localStorage.removeItem(notesDraftKey()); } catch (e) {}
                 notesSaved = text;
                 notesSetStatus('تم الحفظ ✓', '#76ff03');
-            } catch (e) {
-                notesSetStatus('تعذّر الحفظ.', '#f44336');
+            } else {
+                notesSetStatus('تعذّر الحفظ في السحابة. انسخ ملاحظاتك بزر «نسخ» واحتفظ بها.', '#f44336');
             }
         }
 
@@ -2041,16 +2060,31 @@
             let box = document.getElementById('notes-textarea');
             let text = box.value;
             if (!text) { notesSetStatus('لا توجد ملاحظات لنسخها.', '#ff9800'); return; }
+            function fallbackCopy() {
+                try {
+                    box.focus();
+                    box.select();
+                    let ok = document.execCommand('copy');
+                    box.setSelectionRange(0, 0);
+                    notesSetStatus(ok ? 'تم النسخ. ألصقها في واتساب ✓' : 'تعذّر النسخ. حدّد النص وانسخه يدوياً.', ok ? '#76ff03' : '#f44336');
+                } catch (e) {
+                    notesSetStatus('تعذّر النسخ. حدّد النص وانسخه يدوياً.', '#f44336');
+                }
+            }
             if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text).then(() => notesSetStatus('تم النسخ ✓', '#76ff03'));
+                navigator.clipboard.writeText(text).then(function () {
+                    notesSetStatus('تم النسخ. ألصقها في واتساب ✓', '#76ff03');
+                }).catch(fallbackCopy);
+            } else {
+                fallbackCopy();
             }
         }
 
         function closeNotesPage() {
             if (notesIsDirty()) {
-                if (confirm('تعديلات غير محفوظة. حفظ والخروج؟')) saveNotes();
+                if (confirm('في الملاحظات تعديلات غير محفوظة.\nموافق = حفظ ثم خروج، إلغاء = خروج دون حفظ (تبقى مسودة عند فتحها مجددًا).')) saveNotes();
             }
-            navigateSettingsPage();
+            returnFromMenuPage();
         }
 
         function openBackupPage() {
@@ -2062,7 +2096,7 @@
         }
 
         function closeBackupPageModal() {
-            navigateSettingsPage();
+            returnFromMenuPage();
         }
 
         function downloadBackupJson() {
@@ -2097,10 +2131,10 @@
                         document.getElementById('backup-error-msg').innerText = "";
                         document.getElementById('backup-confirm-overlay').style.display = 'flex';
                     } else {
-                        alert('ملف غير صالح.');
+                        alert('ملف JSON غير صالح أو لا يحتوي على بنية بيانات GMax.');
                     }
                 } catch(err) {
-                    alert('خطأ في قراءة الملف.');
+                    alert('خطأ في قراءة ملف JSON.');
                 }
                 event.target.value = ""; 
             };
@@ -2108,18 +2142,17 @@
         }
 
         function hasPrevBackup() {
-            try { return localStorage.getItem('gmax_records_prev') !== null; } catch (e) { return false; }
+            return cloudGet('records_prev') !== null;
         }
         function undoLastImport() {
-            let raw = null;
-            try { raw = localStorage.getItem('gmax_records_prev'); } catch (e) {}
+            let raw = cloudGet('records_prev');
             if (!raw) return;
-            if (!confirm('التراجع عن الاسترجاع الأخير؟')) return;
-            try { records = mergeSavedRecords(JSON.parse(raw)); } catch (e) { return; }
+            if (!confirm('هل تريد التراجع عن آخر استرجاع وإعادة بياناتك السابقة؟')) return;
+            try { records = mergeSavedRecords(JSON.parse(raw)); } catch (e) { alert('تعذّر قراءة النسخة السابقة.'); return; }
             saveAppData();
-            try { localStorage.removeItem('gmax_records_prev'); } catch (e) {}
+            cloudRemove('records_prev');
             refreshDaily();
-            alert('تمت الاستعادة بنجاح.');
+            alert('تمت إعادة بياناتك السابقة.');
             openBackupPage();
         }
 
@@ -2130,14 +2163,14 @@
 
         function executeBackupImport() {
             if (!pendingImportData) return;
-            try { localStorage.setItem('gmax_records_prev', JSON.stringify(records)); } catch (e) {}
+            cloudSet('records_prev', JSON.stringify(records));
             records = mergeSavedRecords(pendingImportData);
             saveAppData();
             updateEstimatedOdometerDaily();
             document.getElementById('welcome-odo-display').innerText = formatNumberWithSpace(records.car.odometer.currentEstimatedOdo);
             closeBackupConfirmModal();
             closeBackupPageModal();
-            alert('تم استبدال البيانات بنجاح!');
+            alert('تم استبدال البيانات بنجاح وتحديث التطبيق!');
             navigateAlertsPage();
         }
 
@@ -2147,119 +2180,69 @@
             document.getElementById('date-info-overlay').style.display = 'flex';
         }
         function showWelcomeHelp() {
-            showInfo('عن التطبيق', 'جي ماكس أوتو يُذكّرك بمواعيد صيانة سيارتك.');
+            showInfo('عن التطبيق', '<b style="color:#b8860b;">فكرة التطبيق</b><br>جي ماكس أوتو يُذكّرك بمواعيد صيانة سيارتك ووثائقها قبل أن تفوتك، وتنبيهاته مبنية على المعلومات التي سجّلتَها فيه.<br><br><b style="color:#b8860b;">الضوء</b><br>يتغيّر لونه بحسب الحالة: أحمر إن كان هناك ما حان موعده، وبرتقالي إن كان هناك ما اقترب، وأخضر إن كانت كل المؤشرات بخير.<br><br><b style="color:#b8860b;">العداد</b><br>رقم يزيد كل يوم بحسب معدل سيرك المعتاد. هذه الخانة للعرض فقط. ولتصحيحه اضغط «Start» ثم بطاقة «العداد التقديري»، واكتب قراءة عدّاد سيارتك الحقيقية من حين لآخر.<br><br><b style="color:#b8860b;">زر Start</b><br>اضغط عليه للدخول إلى صفحة التنبيهات. وللعودة إلى هذه الصفحة اضغط على شعار التطبيق في أعلى أي صفحة.');
         }
         function showAlertsPageHelp() {
-            showInfo('التنبيهات', 'تجمع هذه الصفحة كل ما يستحق انتباهك.');
-        }
-        function showSettingsPageHelp() {
-            showInfo('الإعدادات', 'خيارات النسخ الاحتياطي والمزيد.');
-        }
-        function showSheetHelp() {
-            showInfo('لوحة التعديل', 'استعمل الاقتراحات أو أدخل القيم بدقة.');
-        }
-        function showDetailPageHelp() {
-            showInfo('تفاصيل المؤشر', 'هنا تجد تفاصيل ومواعيد الصيانة.');
+            showInfo('عن هذه الصفحة', '<b style="color:#b8860b;">العداد التقديري</b><br>أول بطاقة في الصفحة تعرض عدّاد سيارتك التقديري. اضغط عليها لتصحيحه بقراءة العداد الحقيقية. ويُحسب معدل سيرك الشهري تلقائيًا من قراءاتك.<br><br><b style="color:#b8860b;">البطاقات الأربع</b><br>لكل بطاقة اسمها وضوء يبيّن حالتها: أخضر بخير، برتقالي اقترب موعد شيء فيها، أحمر حان موعده. اضغط على البطاقة لترى مؤشراتها وتحدّثها.<br><br><b style="color:#b8860b;">المفتاح</b><br>عند فتح أي مؤشر تجد في أعلى صفحته مفتاحًا لتفعيله أو تعطيله. المؤشر المعطَّل ضوؤه أبيض ولا يظهر له رقم.<br><br><b style="color:#b8860b;">شريط التنقّل</b><br>يرافقك الشريط السفلي في كل الصفحات. يكفي أن تضغط على أحد أزراره لتنتقل مباشرة من قسم إلى آخر.<br><br><b style="color:#b8860b;">القائمة</b><br>الخطوط الثلاثة في أعلى يمين كل صفحة تفتح قائمة فيها: شرح الصفحة، وشرح التطبيق، والنسخة الاحتياطية، والملاحظات، وإعادة ضبط المصنع.');
         }
         function showGroupPageHelp() {
-            showInfo('المجموعات', 'استعرض المؤشرات بكل قسم.');
+            showInfo('عن هذه الصفحة', '<b style="color:#b8860b;">المؤشرات</b><br>اضغط على أي مؤشر لتحديث موعده القادم أو لتفعيله وتعطيله. في المؤشرات الزمنية (كالتأمين) تظهر نافذة فيها مفتاح التفعيل والتقويم: اختر التاريخ الجديد ثم أكّد. وفي مؤشرات الكيلومتر تظهر نافذة فيها العداد الحالي والعداد عند التغيير القادم، وبجانب كل منهما زر «تعديل». في تعديل العداد القادم اكتب الرقم، أو اضغط على اقتراح جاهز (مثل +10 000) ليُضاف إلى العداد الحالي. الرقم يبيّن ما بقي بالكيلومتر أو بالأيام، والضوء يبيّن الحالة.<br><br><b style="color:#b8860b;">المؤشرات المعطَّلة</b><br>تظهر تحت الجدول دائرة صفراء فيها علامة +. اضغط عليها لتُظهر المؤشرات المعطَّلة، ثم على علامة − لتُخفيها.<br><br><b style="color:#b8860b;">التنقل</b><br>الأزرار الأربعة في أسفل الصفحة تنقلك مباشرة بين الوثائق والزيت والأحزمة والصيانة. وزر «المواعيد» في الشريط السفلي يعيدك إلى البطاقات.');
         }
         function showDateInfo() {
-            showInfo('تاريخ اليوم', 'التاريخ مأخوذ من هاتفك.');
+            showInfo('تاريخ اليوم', 'هذا التاريخ مأخوذ من ساعة هاتفك ولا يمكن تعديله من هنا.<br>إن وجدته غير صحيح، فصحّحه من إعدادات الهاتف (التاريخ والوقت)، ثم عُد إلى التطبيق.');
         }
         function openFactoryResetModal() {
             document.getElementById('factory-reset-overlay').style.display = 'flex';
         }
+
         function closeFactoryResetModal() {
             document.getElementById('factory-reset-overlay').style.display = 'none';
         }
+
         function executeFactoryReset() {
-            try { localStorage.removeItem('gmax_records'); localStorage.removeItem('gmax_records_prev'); } catch (e) {}
+            cloudRemove('records');
+            cloudRemove('records_prev');
             records = makeEmptyRecords();
             isFirstRun = true;
             onboardingStep = null;
+            document.getElementById('startBtn').innerText = 'تنزيل التطبيق';
+            document.getElementById('welcome-odo-display').innerText = formatNumberWithSpace(records.car.odometer.currentEstimatedOdo);
+            updateGlobalLight();
             closeFactoryResetModal();
-            alert('تم تفريغ البيانات بنجاح.');
+            alert('تم تفريغ الذاكرة وإعادة ضبط المصنع بنجاح!');
             appStarted = false;
+            document.getElementById('startBtn').style.display = '';
             goHome();
-        }
-
-        const CARD_ICONS = { docs: ico('docs', 22), oil: ico('oil', 22), belts: ico('belts', 22), general: ico('general', 22) };
-        function getTabStatus(key) {
-            if (key !== 'alerts') return getModuleStatus(key);
-            let sts = MODULE_ORDER.map(getModuleStatus);
-            if (sts.every(x => x === 'none')) return 'none';
-            if (sts.includes('red')) return 'red';
-            if (sts.includes('yellow')) return 'yellow';
-            return 'green';
-        }
-
-        function tripSentenceHtml() {
-            return `<div class="trip-line">هل تخطط لرحلة طويلة؟</div>`;
-        }
-        function getAllClearHtml() {
-            return `<div class="alerts-empty"><div class="alerts-empty-check">${ico('check', 34)}</div><div class="alerts-empty-text">لا توجد مواعيد تستدعي الانتباه حاليًا.</div></div>`;
-        }
-        function helpBtnHtml(fn) {
-            return `<div class="group-help-wrap"><div class="odo-why-btn" style="margin:0;" onclick="${fn}()">؟</div></div>`;
         }
 
         const FORM_EL = () => document.getElementById('editor-form-container');
 
-        function renderTabsBar(show) {
-            if (show === false) { document.getElementById('categories-filter-bar-container').innerHTML = ''; return; }
-            const pills = [['docs', 'الوثائق'], ['oil', 'الزيت'], ['belts', 'الأحزمة'], ['general', 'الصيانة']];
-            document.getElementById('categories-filter-bar-container').innerHTML = `
-                <div class="seg-tabs">
-                    <div class="seg-row">
-                        ${pills.map(p => {
-                            const st = getTabStatus(p[0]);
-                            return `<button class="seg-tab ${currentModule === p[0] ? 'active' : ''}" onclick="navigateToModule('${p[0]}')">${p[1]}${['red','yellow'].includes(st) ? `<span class="seg-dot status-light status-${st}"></span>` : ''}</button>`;
-                        }).join('')}
-                    </div>
-                    <button class="seg-tab seg-wide ${currentModule === 'alerts' ? 'active' : ''}" onclick="navigateAlertsPage()">ملخص التنبيهات والتحذيرات</button>
-                </div>`;
-        }
-
-        function collectItems(mods, onlyAlerts) {
-            let totalActive = 0, items = [];
-            mods.forEach(mKey => {
-                const dataRec = records[mKey], metaList = metadata[mKey];
-                if (!dataRec || !metaList) return;
-                metaList.forEach(item => {
-                    const obj = dataRec[item.key];
-                    if (!obj || obj.active === false) return;
-                    totalActive++;
-                    const st = getIndicatorStatus(mKey, item.key, dataRec);
-                    if (onlyAlerts && st !== 'red' && st !== 'yellow') return;
-                    const isT = isTimeItem(mKey, item.key);
-                    const vDiff = isT ? null : getLinkDiff(mKey, item.key, obj);
-                    items.push({
-                        vLabel: vDiff !== null ? getLinkLabel(item.link, vDiff) : null,
-                        modKey: mKey, key: item.key, label: item.label,
-                        rem: isT ? calculateRemainingDays(obj.expiryDate) : obj.max - records.car.odometer.currentEstimatedOdo,
-                        status: st, isDoc: isT
-                    });
-                });
-            });
-            const pr = { red: 1, yellow: 2, green: 3 };
-            items.sort((a, b) => pr[a.status] - pr[b.status]);
-            return { items, totalActive };
-        }
-
-        const FUEL_KEY = 'gmax_fuel_v1';
+        // ===== سجل المصاريف: يُحفظ في المستند fuel (قائمة JSON). لكل مصروف: التاريخ d والمبلغ a والمجموعة c وملاحظة اختيارية n =====
+        // التعبئات القديمة بلا حقل c تُعدّ وقودًا تلقائيًا
+        const EXP_CATS = [
+            { k: 'fuel', label: 'الوقود' },
+            { k: 'maint', label: 'الزيت والصيانة' },
+            { k: 'docs', label: 'الوثائق والرسوم' },
+            { k: 'emerg', label: 'الطوارئ' },
+            { k: 'other', label: 'مصاريف أخرى' }
+        ];
+        const expCatLabel = k => (EXP_CATS.find(c => c.k === k) || EXP_CATS[0]).label;
         let fuelAmountStr = '';
         let fuelMsg = '';
+        let expCat = 'fuel';
 
         function fuelLoad() {
             try {
-                let a = JSON.parse(localStorage.getItem(FUEL_KEY) || '[]');
+                let a = JSON.parse(cloudGet('fuel') || '[]');
                 if (!Array.isArray(a)) return [];
-                return a.filter(x => x && typeof x.d === 'string' && Number(x.a) > 0);
+                return a.filter(x => x && typeof x.d === 'string' && Number(x.a) > 0).map(x => {
+                    if (!EXP_CATS.some(c => c.k === x.c)) x.c = 'fuel';
+                    return x;
+                });
             } catch (e) { return []; }
         }
         function fuelStore(arr) {
-            try { localStorage.setItem(FUEL_KEY, JSON.stringify(arr)); return true; } catch (e) { return false; }
+            return cloudSet('fuel', JSON.stringify(arr));
         }
         function fuelSorted(arr) {
             return arr.slice().sort((x, y) => (x.d < y.d ? 1 : x.d > y.d ? -1 : (y.id || 0) - (x.id || 0)));
@@ -2268,20 +2251,41 @@
             let p = String(d).split('-');
             return p.length === 3 ? `${p[2]}/${p[1]}/${p[0]}` : d;
         }
+        const expSum = list => list.reduce((t, x) => t + Number(x.a), 0);
+        const expMoney = n => `<span class="num-ltr">${formatNumberWithSpace(n)}</span> دج`;
+
+        let expView = 'home';
+        function expGo(v) { expView = v; renderExpensesPage(); window.scrollTo(0, 0); }
+        const EXP_BACK_ARROW = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+        const expSubHead = title => `<div class="exp-subhead"><button class="exp-back" onclick="expGo('home')" aria-label="رجوع">${EXP_BACK_ARROW}</button><span>${title}</span></div>`;
 
         function renderExpensesPage() {
-            document.getElementById('editor-title').innerText = "المصاريف";
-            renderTabsBar(false);
-            const list = fuelSorted(fuelLoad());
-            const total = list.reduce((t, x) => t + Number(x.a), 0);
-            const rows = list.length === 0
-                ? `<div class="fuel-empty">لا توجد تعبئات مسجّلة بعد.</div>`
-                : list.map(x => `<div class="fuel-row"><span class="fuel-d">${fuelDateLabel(x.d)}</span><span class="fuel-a"><span class="num-ltr">${formatNumberWithSpace(x.a)}</span> دج</span><button class="fuel-del" onclick="fuelDelete(${Number(x.id) || 0}, '${escapeHtml(x.d)}', ${Number(x.a)})">✕</button></div>`).join('');
+            if (expView === 'stats') return renderStatsPage();
+            if (expView === 'list') return renderExpListPage();
+            const all = fuelLoad();
+            const today = getTodayDateString();
+            const monthTotal = expSum(all.filter(x => x.d.slice(0, 7) === today.slice(0, 7)));
+            const yearTotal = expSum(all.filter(x => x.d.slice(0, 4) === today.slice(0, 4)));
             FORM_EL().innerHTML =
-                `<div style="padding-top: 10px;"><button class="fuel-add-btn" onclick="fuelOpen()">+ تعبئة وقود</button>
-                <div class="fuel-total"><div class="fuel-total-label">مجموع الوقود</div><div class="fuel-total-val"><span class="num-ltr">${formatNumberWithSpace(total)}</span> دج</div></div>
+                `<div style="padding-top: 10px;">
+                <div class="exp-sum"><div class="fuel-total"><div class="fuel-total-label">هذا الشهر</div><div class="fuel-total-val">${expMoney(monthTotal)}</div></div><div class="fuel-total"><div class="fuel-total-label">هذه السنة</div><div class="fuel-total-val">${expMoney(yearTotal)}</div></div></div>
+                <button class="fuel-add-btn" onclick="fuelOpen()">+ مصروف</button>
+                <button class="exp-big-btn list" onclick="expGo('list')">قائمة المصاريف</button>
+                <button class="exp-big-btn stats" onclick="expGo('stats')">الإحصائيات</button>
+                </div>`;
+            fuelMsg = '';
+        }
+
+        function renderExpListPage() {
+            const list = fuelSorted(fuelLoad());
+            const rows = list.length === 0
+                ? `<div class="fuel-empty">لا توجد مصاريف مسجّلة بعد.<br>اضغط «+ مصروف» بعد كل دفعة.</div>`
+                : list.map(x => `<div class="fuel-row"><span class="fuel-d">${fuelDateLabel(x.d)}</span><span class="exp-mid">${expCatLabel(x.c)}${x.n ? `<small>${escapeHtml(x.n)}</small>` : ''}</span><span class="fuel-a">${expMoney(x.a)}</span><button class="fuel-del" onclick="fuelDelete(${Number(x.id) || 0}, '${escapeHtml(x.d)}', ${Number(x.a)})">✕</button></div>`).join('');
+            FORM_EL().innerHTML =
+                `<div style="padding-top: 6px;">${expSubHead('قائمة المصاريف')}
                 ${rows}
-                <div class="fuel-status" id="fuel-status">${fuelMsg}</div></div>` + helpBtnHtml('showExpensesHelp');
+                ${list.length ? `<button class="fuel-copy" onclick="fuelCopy()">نسخ القائمة (للواتساب)</button>` : ''}
+                <div class="fuel-status" id="fuel-status">${fuelMsg}</div></div>`;
             fuelMsg = '';
         }
 
@@ -2290,11 +2294,26 @@
             if (!fuelAmountStr) { el.className = 'fuel-amount-box empty'; el.innerText = 'اكتب المبلغ'; }
             else { el.className = 'fuel-amount-box'; el.innerText = formatNumberWithSpace(fuelAmountStr); }
         }
-        function fuelOpen() {
+        function expShowStep1() {
+            document.getElementById('exp-cats').innerHTML = EXP_CATS.map(c => `<button class="exp-cat-btn" onclick="expPick('${c.k}')">${c.label}</button>`).join('');
+            document.getElementById('exp-step1').style.display = '';
+            document.getElementById('exp-step2').style.display = 'none';
+        }
+        function expPick(k) {
+            expCat = k;
             fuelAmountStr = '';
+            document.getElementById('exp-title').innerText = expCatLabel(k) + ': المبلغ المدفوع (دج)';
+            document.getElementById('fuel-chips').style.display = k === 'fuel' ? '' : 'none';
+            document.getElementById('exp-note').style.display = k === 'fuel' ? 'none' : '';
+            document.getElementById('exp-note').value = '';
             document.getElementById('fuel-date').value = getTodayDateString();
             document.getElementById('fuel-err').innerText = '';
             fuelRefreshAmount();
+            document.getElementById('exp-step1').style.display = 'none';
+            document.getElementById('exp-step2').style.display = '';
+        }
+        function fuelOpen() {
+            expShowStep1();
             document.getElementById('fuel-overlay').style.display = 'flex';
         }
         function fuelClose() { document.getElementById('fuel-overlay').style.display = 'none'; }
@@ -2314,373 +2333,440 @@
             let amount = parseInt(fuelAmountStr, 10);
             let d = document.getElementById('fuel-date').value;
             if (!amount || amount <= 0) { err.innerText = 'اكتب المبلغ المدفوع أولًا.'; return; }
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) { err.innerText = 'التاريخ غير صحيح.'; return; }
+            let entry = { id: Date.now(), d: d, a: amount, c: expCat };
+            let note = expCat === 'fuel' ? '' : document.getElementById('exp-note').value.trim().slice(0, 40);
+            if (note) entry.n = note;
             let arr = fuelLoad();
-            arr.push({ id: Date.now(), d: d, a: amount });
-            fuelStore(arr);
+            arr.push(entry);
+            if (!fuelStore(arr)) { err.innerText = 'تعذّر الحفظ.'; return; }
             fuelClose();
             renderExpensesPage();
         }
         function fuelDelete(id, d, a) {
-            if (!confirm('حذف التعبئة؟')) return;
+            if (!confirm('حذف مصروف ' + fuelDateLabel(d) + ' بمبلغ ' + formatNumberWithSpace(a) + ' دج؟')) return;
             let arr = fuelLoad();
             let i = arr.findIndex(x => (Number(x.id) || 0) === id && x.d === d && Number(x.a) === a);
-            if (i !== -1) arr.splice(i, 1);
-            fuelStore(arr);
+            if (i === -1) return;
+            arr.splice(i, 1);
+            if (!fuelStore(arr)) { fuelMsg = 'تعذّر الحذف.'; }
             renderExpensesPage();
         }
-
-        function renderNoGroupPage() {
-            document.getElementById('editor-title').innerText = "المؤشرات";
-            renderTabsBar(true);
-            FORM_EL().innerHTML = `<div class="guide-line">اضغط على أيقونة مجموعة في الأعلى لعرض مؤشراتها.</div>` + helpBtnHtml('showGroupPageHelp');
+        function fuelText() {
+            const list = fuelSorted(fuelLoad());
+            return 'مصاريف السيارة\n'
+                + list.map(x => `${fuelDateLabel(x.d)} - ${expCatLabel(x.c)}${x.n ? ' (' + x.n + ')' : ''}: ${formatNumberWithSpace(x.a)} دج`).join('\n')
+                + `\nالمجموع: ${formatNumberWithSpace(expSum(list))} دج`;
         }
-
-        function renderAlertsPage() {
-            document.getElementById('editor-title').innerText = "المؤشرات";
-            renderTabsBar();
-            const { items, totalActive } = collectItems(MODULE_ORDER, true);
-            if (items.length === 0) {
-                FORM_EL().innerHTML = (totalActive === 0
-                    ? `<div class="alerts-empty"><div class="alerts-empty-text" style="color:#aaa;">لم تُفعَّل مؤشرات بعد</div></div>`
-                    : getAllClearHtml()) + tripSentenceHtml() + helpBtnHtml('showAlertsPageHelp');
-                return;
+        function fuelCopy() {
+            let text = fuelText();
+            function done(ok) {
+                let el = document.getElementById('fuel-status');
+                if (el) { el.style.color = ok ? '#76ff03' : '#f44336'; el.innerText = ok ? 'تم النسخ. ألصقها في واتساب ✓' : 'تعذّر النسخ.'; }
             }
-            const sentence = it => {
-                if (it.vLabel) return `${it.label}: ${it.vLabel}`;
-                const an = Math.abs(it.rem);
-                const n = `<span class="num-ltr">${formatNumberWithSpace(an)}</span>`;
-                const u = !it.isDoc ? 'كم' : 'يومًا';
-                if (it.rem > 0) return `${it.label}: بقي ${n} ${u}`;
-                if (it.rem === 0) return `${it.label}: حان الموعد اليوم`;
-                return `${it.label}: تجاوز الموعد بـ ${n} ${u}`;
-            };
-            const sect = (st, title) => {
-                const list = items.filter(x => x.status === st);
-                if (!list.length) return '';
-                return `<div class="alert-section"><div class="alert-section-title ${st}">${title}</div>${list.map(it => `<div class="alert-line" onclick="openDetailModalFromAll('${it.modKey}', '${it.key}', 'alerts')"><span>${sentence(it)}</span><div class="status-light status-${st}"></div></div>`).join('')}</div>`;
-            };
-            FORM_EL().innerHTML = sect('red', 'تحذيرات') + sect('yellow', 'تنبيهات') + tripSentenceHtml() + helpBtnHtml('showAlertsPageHelp');
+            function fallback() {
+                try {
+                    let ta = document.createElement('textarea');
+                    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+                    document.body.appendChild(ta); ta.focus(); ta.select();
+                    let ok = document.execCommand('copy');
+                    document.body.removeChild(ta);
+                    done(ok);
+                } catch (e) { done(false); }
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { done(true); }).catch(fallback);
+            else fallback();
         }
+
+        // ===== الإحصائيات: أسئلة يطرحها السائق، وجوابها بالمعدل السنوي (يتفادى تقلّب الطريق والسرعة والحمولة) =====
+        // خمس سنوات: تبدأ من أول سنة سجّلتَ فيها مصاريف والباقي سنوات قادمة، فإن زادت عن خمس فآخر خمس سنوات
+        function statsYears() {
+            const cy = parseInt(getTodayDateString().slice(0, 4), 10);
+            const ys = fuelLoad().map(x => parseInt(x.d.slice(0, 4), 10)).filter(Number.isFinite);
+            const first = ys.length ? Math.min(cy, Math.min.apply(null, ys)) : cy;
+            const start = (cy - first + 1 <= 5) ? first : cy - 4;
+            return [0, 1, 2, 3, 4].map(i => start + i);
+        }
+        function odoPoints() {
+            const log = (records.car.odoLog || []).filter(p => p && typeof p.date === 'string' && Number.isFinite(p.odo))
+                .map(p => ({ d: p.date, odo: p.odo }))
+                .sort((a, b) => (a.d < b.d ? -1 : a.d > b.d ? 1 : a.odo - b.odo));
+            const today = getTodayDateString(), est = records.car.odometer.currentEstimatedOdo;
+            if (log.length && est > log[log.length - 1].odo && log[log.length - 1].d < today) log.push({ d: today, odo: est });
+            return log;
+        }
+        function odoAtDay(pts, day) {
+            if (pts.length < 2 || day < pts[0].d || day > pts[pts.length - 1].d) return null;
+            for (let i = 0; i < pts.length - 1; i++) {
+                if (day <= pts[i + 1].d) {
+                    const span = daysBetweenDates(pts[i].d, pts[i + 1].d);
+                    if (span <= 0) return pts[i + 1].odo;
+                    return pts[i].odo + (daysBetweenDates(pts[i].d, day) / span) * (pts[i + 1].odo - pts[i].odo);
+                }
+            }
+            return null;
+        }
+        // تكلفة 100 كم في سنة: المصاريف والكيلومترات تُحسب في المدة نفسها (من أول تسجيل لهذا النوع، ومن أول قراءة عداد)
+        function costPer100(year, pred) {
+            const all = fuelLoad().filter(pred);
+            const pts = odoPoints();
+            if (!all.length || pts.length < 2) return null;
+            const today = getTodayDateString();
+            const first = all.map(x => x.d).sort()[0];
+            const s = [year + '-01-01', pts[0].d, first].sort().pop();
+            const e = [year + '-12-31', today, pts[pts.length - 1].d].sort()[0];
+            if (s >= e || daysBetweenDates(s, e) < 30) return null;
+            const o1 = odoAtDay(pts, s), o2 = odoAtDay(pts, e);
+            if (o1 == null || o2 == null || o2 - o1 < 100) return null;
+            return Math.round(expSum(all.filter(x => x.d >= s && x.d <= e)) * 100 / (o2 - o1));
+        }
+        function yearTotalOf(year) {
+            const l = fuelLoad().filter(x => x.d.slice(0, 4) === String(year));
+            return l.length ? expSum(l) : null;
+        }
+        function trendHtml(vals, years) {
+            const idx = vals.map((v, i) => v != null ? i : -1).filter(i => i >= 0);
+            if (idx.length < 2) return `<div class="st-trend neutral">هذه أول سنة لك في التسجيل. مع مرور السنوات يظهر هنا تطوّر تكلفتك.</div>`;
+            const a = vals[idx[idx.length - 2]], b = vals[idx[idx.length - 1]];
+            const pct = a ? Math.round((b - a) / a * 100) : 0;
+            const yr = years[idx[idx.length - 2]];
+            if (pct > 3) return `<div class="st-trend up">في تزايد: ارتفعت بنحو <span class="num-ltr">${pct}%</span> عن ${yr}</div>`;
+            if (pct < -3) return `<div class="st-trend down">في تناقص: انخفضت بنحو <span class="num-ltr">${-pct}%</span> عن ${yr}</div>`;
+            return `<div class="st-trend neutral">ثابتة تقريبًا مقارنةً بسنة ${yr}</div>`;
+        }
+        function barsSvg(vals, years, sel, clickable) {
+            const max = Math.max.apply(null, vals.map(v => v || 0)) || 1;
+            const W = 300, H = 150, bw = 38, gap = (W - bw * 5) / 6;
+            const cy = parseInt(getTodayDateString().slice(0, 4), 10);
+            let out = '';
+            vals.forEach((v, i) => {
+                const x = gap + (4 - i) * (bw + gap);   // اتجاه عربي: أول سنة على اليمين والسنوات التالية نحو اليسار
+                const h = v != null ? Math.max(6, Math.round(v / max * 100)) : 0;
+                const hi = sel != null ? years[i] === sel : years[i] === cy;
+                if (v != null) {
+                    out += `<rect x="${x}" y="${120 - h}" width="${bw}" height="${h}" rx="6" fill="${hi ? '#ffd54a' : '#b8860b'}" opacity="${hi ? 1 : 0.7}"/>`;
+                    out += `<text x="${x + bw / 2}" y="${114 - h}" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">${formatNumberWithSpace(v)}</text>`;
+                    if (clickable) out += `<rect x="${x - gap / 2}" y="0" width="${bw + gap}" height="${H}" fill="transparent" style="cursor:pointer" onclick="event.stopPropagation();pickStatYear(${years[i]})"/>`;
+                } else {
+                    out += `<rect x="${x}" y="114" width="${bw}" height="6" rx="3" fill="#ffffff" opacity="0.12"/>`;
+                }
+                out += `<text x="${x + bw / 2}" y="140" text-anchor="middle" font-size="11" fill="${hi ? '#ffd54a' : '#9a9a9a'}">${years[i]}</text>`;
+            });
+            return `<svg viewBox="0 0 ${W} ${H}" class="st-chart" direction="ltr">${out}</svg>`;
+        }
+        const STAT_QS = [
+            { k: 'fuel100', q: 'معدل تكلفة الوقود لكل 100 كم' },
+            { k: 'total100', q: 'معدل تكلفة السيارة لكل 100 كم' },
+            { k: 'yearly', q: 'مجموع تكلفة السيارة السنوي' }
+        ];
+        let statYear = null;
+        function pickStatYear(y) { statYear = y; renderStory(); }
+        // تفاصيل سنة: حصة كل مجموعة من مصاريفها
+        function yearDetailsHtml(year) {
+            const list = fuelLoad().filter(x => x.d.slice(0, 4) === String(year));
+            const total = expSum(list);
+            if (!total) return '';
+            const colors = { fuel: '#ffd54a', maint: '#4aa3ff', docs: '#66bb6a', emerg: '#ef5350', other: '#9e9e9e' };
+            const rows = EXP_CATS.map(c => ({ c, v: expSum(list.filter(x => x.c === c.k)) })).filter(r => r.v > 0).sort((a, b) => b.v - a.v)
+                .map(r => { const p = Math.round(r.v / total * 100); return `<div class="st-cat"><div class="st-cat-top"><span>${r.c.label}</span><span><span class="num-ltr">${p}%</span> · ${expMoney(r.v)}</span></div><div class="st-cat-bar"><div style="width:${Math.max(3, p)}%;background:${colors[r.c.k]};"></div></div></div>`; }).join('');
+            return `<div class="st-year-title">تفاصيل ${year}</div><div class="st-cats">${rows}</div>`;
+        }
+        function statSlide(k) {
+            const years = statsYears(), cy = parseInt(getTodayDateString().slice(0, 4), 10);
+            const noData = (msg) => ({ big: '—', unit: '', body: `<div class="st-empty">${msg}</div>` });
+            if (k === 'fuel100' || k === 'total100') {
+                const pred = k === 'fuel100' ? (x => x.c === 'fuel') : (() => true);
+                const vals = years.map(y => costPer100(y, pred));
+                const li = vals.map((v, i) => v != null ? i : -1).filter(i => i >= 0).pop();
+                if (li === undefined) return noData('لا تكفي البيانات بعد. سجّل مصاريفك، وحدّث العداد بقراءتين بينهما شهر على الأقل.');
+                return { big: formatNumberWithSpace(vals[li]), unit: 'دج لكل 100 كم', cap: years[li] === cy ? `المعدل في ${cy} حتى اليوم` : `المعدل في ${years[li]}`, body: barsSvg(vals, years) + trendHtml(vals, years) };
+            }
+            const vals = years.map(yearTotalOf);
+            const li = vals.map((v, i) => v != null ? i : -1).filter(i => i >= 0).pop();
+            if (li === undefined) return noData('لا توجد مصاريف مسجّلة بعد.');
+            const sel = (statYear != null && years.indexOf(statYear) >= 0 && vals[years.indexOf(statYear)] != null) ? statYear : years[li];
+            return { big: formatNumberWithSpace(vals[years.indexOf(sel)]), unit: 'دج', cap: sel === cy ? `مجموع ${cy} حتى اليوم` : `مجموع ${sel}`, body: barsSvg(vals, years, sel, true) + `<div class="st-pick">اضغط على سنة لعرض تفاصيلها</div>` + trendHtml(vals.map((v, i) => years[i] <= sel ? v : null), years) + yearDetailsHtml(sel) };
+        }
+        function renderStatsPage() {
+            FORM_EL().innerHTML = `<div style="padding-top: 6px;">${expSubHead('الإحصائيات')}
+                <div class="st-hint">اختر ما تريد معرفته</div>
+                ${STAT_QS.map((q, i) => `<button class="st-q" onclick="openStory(${i})">${q.q}</button>`).join('')}
+                <div class="st-foot">الأرقام تقريبية، وتعتمد على مصاريفك وقراءات العداد التي سجّلتها.</div></div>`;
+        }
+        let storyIdx = 0;
+        function openStory(i) { storyIdx = i; statYear = null; renderStory(); document.getElementById('story-overlay').style.display = 'flex'; }
+        function closeStory() { document.getElementById('story-overlay').style.display = 'none'; }
+        function storyTap(ev) {
+            const card = document.getElementById('story-card');
+            const r = card.getBoundingClientRect();
+            const forward = (ev.clientX - r.left) < r.width / 2;   // الجهة اليسرى = التالي (اتجاه عربي)
+            const n = storyIdx + (forward ? 1 : -1);
+            if (n < 0 || n >= STAT_QS.length) return;
+            storyIdx = n; renderStory();
+        }
+        function renderStory() {
+            const q = STAT_QS[storyIdx], s = statSlide(q.k);
+            document.getElementById('story-card').innerHTML =
+                `<div class="st-prog">${STAT_QS.map((_, i) => `<span class="${i <= storyIdx ? 'on' : ''}"></span>`).join('')}</div>
+                 <button class="st-close" onclick="event.stopPropagation();closeStory()" aria-label="إغلاق">✕</button>
+                 <div class="st-q-title">${q.q}</div>
+                 <div class="st-big"><span class="num-ltr">${s.big}</span></div>
+                 <div class="st-unit">${s.unit || ''}</div>
+                 <div class="st-cap">${s.cap || ''}</div>
+                 <div class="st-body">${s.body}</div>
+                 <div class="st-nav">اضغط على جانبي الشاشة للتنقل بين الأسئلة</div>`;
+        }
+
+        // الصفحة الثانية: أربع بطاقات، لكل بطاقة اسمها وضوء حالتها؛ الضغط على البطاقة يفتح مؤشراتها الفرعية
+        function renderCardsPage() {
+            groupShowOff = false;
+            const names = { docs: 'الوثائق', oil: 'الزيت', belts: 'الأحزمة', general: 'الصيانة' };
+            const cards = MODULE_ORDER.map(k => {
+                const st = getModuleStatus(k);
+                return `<div class="home-card" onclick="navigateToModule('${k}')">
+                    <span class="home-card-title">${names[k]}</span>
+                    <div class="status-light status-${st}"></div>
+                </div>`;
+            }).join('');
+            const odoCard = `<div class="home-card odo-card" id="odo-card" onclick="openOdoDialog('cards')">
+                    <span class="home-card-title">العداد التقديري</span>
+                    <div class="odo-card-val"><span class="num-ltr">${formatNumberWithSpace(records.car.odometer.currentEstimatedOdo)}</span> كم</div>
+                </div>`;
+            FORM_EL().innerHTML = `<div class="cards-container" style="margin-top:10px;">${odoCard}${cards}</div>`;
+        }
+
+        let groupShowOff = false;
+        function toggleGroupOff() { groupShowOff = !groupShowOff; renderGroupPage(currentModule); }
 
         function renderGroupPage(mod) {
-            document.getElementById('editor-title').innerText = "المؤشرات";
-            renderTabsBar();
-            const { items } = collectItems([mod], false);
-            const rows = items.length === 0
-                ? `<tr><td colspan="3" style="text-align:center; color:#888; padding:20px;">لا توجد مؤشرات مفعلة</td></tr>`
-                : items.map(it => `
-                    <tr onclick="openDetailModalFromAll('${it.modKey}', '${it.key}')">
-                        <td class="col-indicator"><span>${it.label}</span></td>
-                        <td class="col-remaining">${it.vLabel ? `<span style="font-size:11px;">${it.vLabel}</span>` : `<span class="num-ltr">${formatNumberWithSpace(it.rem)}</span> ${it.isDoc ? 'يوم' : ''}`}</td>
-                        <td class="col-toggle"><div class="status-light status-${it.status}"></div></td>
-                    </tr>`).join('');
+            const gNames = { docs: 'الوثائق', oil: 'الزيت', belts: 'الأحزمة', general: 'الصيانة' };
+            const odo = records.car.odometer.currentEstimatedOdo;
+            const isOnItem = it => { const o = records[mod][it.key]; return !!o && o.active !== false; };
+            const activeItems = metadata[mod].filter(isOnItem);
+            const offItems = metadata[mod].filter(it => !isOnItem(it));
+            const list = groupShowOff ? activeItems.concat(offItems) : activeItems;
+            let rows = list.map(item => {
+                const obj = records[mod][item.key];
+                const on = !!obj && obj.active !== false;
+                const isT = item.type === 'time';
+                let cellRem = '', st = 'none';
+                if (on) {
+                    st = getIndicatorStatus(mod, item.key, records[mod]);
+                    const rem = isT ? calculateRemainingDays(obj.expiryDate) : obj.max - odo;
+                    cellRem = `<span class="num-ltr">${formatNumberWithSpace(rem)}</span>${isT ? ' يوم' : ' كم'}`;
+                }
+                return `<tr class="${on ? '' : 'row-off'}" onclick="openDetailModalFromAll('${mod}', '${item.key}')">
+                    <td class="col-indicator"><span class="chev"></span><span>${item.label}</span></td>
+                    <td class="col-remaining">${cellRem}</td>
+                    <td class="col-toggle"><div class="status-light status-${st}"></div></td>
+                </tr>`;
+            }).join('');
+            if (!rows) rows = `<tr><td colspan="3" style="text-align:center;color:#888;padding:18px;font-size:12px;">لا توجد مؤشرات مفعَّلة</td></tr>`;
+            const midBtn = offItems.length
+                ? `<div class="grp-more"><button class="more-circle" onclick="toggleGroupOff()" aria-label="المؤشرات المعطَّلة">${groupShowOff ? '−' : '+'}</button></div>`
+                : '';
+            const pills = MODULE_ORDER.map(k => `<button class="seg-tab ${k === mod ? 'active' : ''}" onclick="navigateToModule('${k}')">${gNames[k]}</button>`).join('');
             FORM_EL().innerHTML = `
-                <div class="table-col-titles"><span>المؤشر</span><span>الباقي</span><span>الحالة</span></div>
-                <table class="indicators-table"><tbody>${rows}</tbody></table>
-                <div class="group-help-wrap"><div class="odo-why-btn" style="margin:0;" onclick="showGroupPageHelp()">؟</div></div>`;
+                <div class="grp-pills"><div class="seg-row">${pills}</div></div>
+                <div class="table-col-titles grp-cols"><span></span><span>الباقي</span><span></span></div>
+                <div class="grp-frame">
+                    <table class="indicators-table"><tbody>${rows}</tbody></table>
+                </div>
+                ${midBtn}`;
         }
 
         function renderForm(mod) {
-            let cb = document.getElementById('cfg-btn'), ex = mod === 'expenses';
-            cb.disabled = ex; cb.style.pointerEvents = ex ? 'none' : '';
+            { document.querySelector('#main-app-container .page-header').classList.add('compact'); }
             if (mod === 'expenses') return renderExpensesPage();
-            if (mod === 'alerts') return renderAlertsPage();
-            if (mod === 'none') return renderNoGroupPage();
+            if (mod === 'alerts') return renderCardsPage();
             return renderGroupPage(mod);
         }
 
-        function openDetailModalFromAll(modKey, key, origin) {
-            detailOrigin = origin === 'alerts' ? 'alerts' : 'group';
-            detailActiveModule = modKey;
-            openDetailModal(key);
+        function openDetailModalFromAll(modKey, key) {
+            openTimePop(modKey, key);
         }
 
-        function specRowHtml(itemObj, dataObj) {
-            if (!itemObj.spec || !dataObj.spec) return '';
-            return `<div class="detail-row"><span class="detail-label">${itemObj.spec.label}:</span><span class="detail-val">${escapeHtml(dataObj.spec)}</span></div>`;
-        }
+        function specNorm(v) { return (v || '').trim().toLowerCase().replace(/\s+/g, ' '); }
 
-        function openDetailModal(key, activating) {
-            currentDetailKey = key;
-            if (!detailActiveModule) detailActiveModule = MODULE_ORDER.indexOf(currentModule) !== -1 ? currentModule : 'oil';
-
-            let itemObj = metadata[detailActiveModule].find(i => i.key === key);
-            let dataObj = records[detailActiveModule][key];
-            if (!itemObj || !dataObj) return;
-            let isTime = isTimeItem(detailActiveModule, key);
-
-            hideAllPages();
-            document.getElementById('detail-page-title').innerText = (activating ? 'تفعيل ' : '') + itemObj.label;
-            let contentArea = document.getElementById('detail-page-content-area');
-            let actionContainer = document.getElementById('detail-page-action-container');
-
-            const backBtn = `<button class="detail-back-btn" onclick="backFromDetail()">${activating ? 'إلغاء' : 'العودة إلى المؤشرات'}</button>`;
-            const actionsHtml = (isTime
-                ? `<div class="detail-actions-row"><button class="detail-act-btn detail-act-update" onclick="startDocUpdate()">${activating ? 'تحديد تاريخ الانتهاء' : 'تحديث'}</button></div>`
-                : `<div class="up-seg"><button class="up-seg-btn" onclick="startKmUpdate('change')">تغيير القطعة</button><button class="up-seg-btn" onclick="startKmUpdate('extend')">تمديد صلاحية</button></div>`) + backBtn;
-            
-            if (activating) {
-                contentArea.style.display = 'none';
-                actionContainer.innerHTML = actionsHtml;
-            } else {
-                contentArea.style.display = '';
-                if (isTime) {
-                    let remainingDays = calculateRemainingDays(dataObj.expiryDate);
-                    contentArea.innerHTML = `
-                        <div class="detail-row"><span class="detail-label">انتهاء الصلاحية:</span><span class="detail-val">${convertDateToReadableArabic(dataObj.expiryDate)}</span></div>
-                        <div class="detail-row"><span class="detail-label">الأيام المتبقية:</span><span class="detail-val"><span class="num-ltr">${remainingDays}</span> يوم</span></div>
-                        ${specRowHtml(itemObj, dataObj)}
-                    `;
-                } else {
-                    let usageKm = Math.max(0, records.car.odometer.currentEstimatedOdo - (dataObj.lastOdo || records.car.odometer.currentEstimatedOdo));
-                    let remainingKm = dataObj.max - records.car.odometer.currentEstimatedOdo;
-                    contentArea.innerHTML = `
-                        <div class="detail-row"><span class="detail-label">تاريخ آخر تحديث:</span><span class="detail-val">${convertDateToReadableArabic(dataObj.lastDate || 'غير محدد')}</span></div>
-                        <div class="detail-row"><span class="detail-label">العداد عند التحديث:</span><span class="detail-val"><span class="num-ltr">${formatNumberWithSpace(dataObj.lastOdo || 0)}</span> كم</span></div>
-                        <div class="detail-row"><span class="detail-label">الاستعمال الحالي:</span><span class="detail-val"><span class="num-ltr">${formatNumberWithSpace(usageKm)}</span> كم</span></div>
-                        <div class="detail-row"><span class="detail-label">المسافة المتبقية:</span><span class="detail-val"><span class="num-ltr">${formatNumberWithSpace(remainingKm)}</span> كم</span></div>
-                        ${specRowHtml(itemObj, dataObj)}
-                    `;
-                }
-                actionContainer.innerHTML = actionsHtml;
-            }
-
-            document.getElementById('detail-page-container').style.display = 'block';
-            window.scrollTo(0, 0);
-            if (activating && isTime) openSingleUpdateModalDoc(true);
-        }
-
-        let updateOrigin = 'details';
-        let activationCallback = null;
-
-        function backFromDetail() {
-            if (activationCallback) { leaveUpdatePage(false); return; }
-            navigateToModule(detailOrigin === 'alerts' ? 'alerts' : (detailActiveModule || lastVisitedGroup || 'docs'));
-        }
-        function startKmUpdate(mode) {
-            openSingleUpdateModalKm(updateOrigin === 'global' && !!activationCallback, mode);
-        }
-        function startDocUpdate() {
-            openSingleUpdateModalDoc(updateOrigin === 'global' && !!activationCallback);
-        }
-
-        function closeUpdatePanel() {
-            singleUpdateState = null;
-            document.getElementById('up-sheet-overlay').style.display = 'none';
-            document.getElementById('detail-page-container').classList.remove('up-locked');
-        }
-
-        function leaveUpdatePage(ok) {
-            let cb = activationCallback;
-            activationCallback = null;
-            singleUpdateState = null;
-            if (updateOrigin === 'global') {
-                hideAllPages();
-                document.getElementById('global-activator-page-container').style.display = 'block';
-            } else {
-                openDetailModal(currentDetailKey);
-            }
-            if (cb) cb(ok);
-        }
-
-        function finishUpdateFlow() {
-            if (activationCallback) { leaveUpdatePage(true); return; }
-            openDetailModal(currentDetailKey);
-        }
-
-        function openSingleUpdateModalKm(activating, mode) {
-            let itemObj = getItemMeta(detailActiveModule, currentDetailKey);
-            if (!itemObj) return;
-            singleUpdateState = {
-                type: 'km',
-                mode: mode,
-                odoAtAction: records.car.odometer.currentEstimatedOdo.toString(),
-                remaining: (itemObj.defaultMax || '10000').toString(),
-                basis: 'km',
-                sheetMode: 'presets',
-                sheetOpen: true,
-                activating: activating === true,
-                spec: records[detailActiveModule][currentDetailKey].spec || '',
-                field: 'main', warn: false, warnOk: false
-            };
-            renderUpdatePage();
-        }
-
-        function openSingleUpdateModalDoc(activating) {
-            let itemObj = getItemMeta(detailActiveModule, currentDetailKey);
-            if (!itemObj) return;
-            let now = new Date();
-            singleUpdateState = {
-                type: 'doc',
-                today: getTodayDateString(),
-                date: '',
-                sheetMode: 'presets',
-                sheetOpen: true,
-                activating: activating === true,
-                spec: records[detailActiveModule][currentDetailKey].spec || '',
-                field: 'main', warn: false, warnOk: false
-            };
-            renderUpdatePage();
-        }
-
-        function requestActivation(modKey, itemKey, cb) {
-            let glob = document.getElementById('global-activator-page-container');
-            updateOrigin = glob.style.display === 'block' ? 'global' : 'details';
-            detailActiveModule = modKey;
-            currentDetailKey = itemKey;
-            openDetailModal(itemKey, true);
-            activationCallback = cb || null;
-        }
-
-        function renderUpdatePage() {
-            let st = singleUpdateState;
-            if (!st) return;
-            let itemObj = getItemMeta(detailActiveModule, currentDetailKey);
-            if (!itemObj) return;
-            
-            let sheet = '', sheetTitle = '';
-            if (st.type === 'km') {
-                sheetTitle = st.mode === 'extend' ? 'المتبقّي للقطعة' : 'مدة الصلاحية';
-                let steps = itemObj.presets || [3000, 5000, 10000];
-                sheet = `<div class="suggestions-row" style="grid-template-columns: repeat(${steps.length}, 1fr);">
-                    ${steps.map((v, idx) => `<button class="suggestion-chip-btn" onclick="upApplySuggestion(${v})">${formatNumberWithSpace(v)}</button>`).join('')}
-                </div>`;
-            } else {
-                sheetTitle = 'تاريخ انتهاء الصلاحية';
-                let presets = itemObj.presets || [3, 6, 12];
-                sheet = `<div class="suggestions-row" style="grid-template-columns: repeat(${presets.length}, 1fr);">
-                    ${presets.map(m => `<button class="suggestion-chip-btn" onclick="applyDocPresetMonths(${m})">${m} أشهر</button>`).join('')}
-                </div>`;
-            }
-
-            let ov = document.getElementById('up-sheet-overlay');
+        // ===== نافذة تحديث المؤشر الزمني (تفتح مباشرة من الجدول) =====
+        let tp = null;
+        function tpPad(n) { return String(n).padStart(2, '0'); }
+        function openTimePop(mod, key) {
+            const m = getItemMeta(mod, key), obj = records[mod] && records[mod][key];
+            if (!m || !obj) return;
+            const on = obj.active !== false;
+            const date = isValidDateStr(obj.expiryDate) ? obj.expiryDate : '';
+            const base = date || getTodayDateString();
+            tp = { mod: mod, key: key, kind: isTimeItem(mod, key) ? 'time' : 'km', next: '', mode: null, presetIdx: null, keypad: false, wasActive: on, enabled: on, date: date,
+                   calYear: parseInt(base.slice(0, 4)), calMonth: parseInt(base.slice(5, 7)) - 1,
+                   spec: obj.spec || '', specPrev: obj.spec || '', specUnknown: false, warn: false, warnOk: false };
+            const ov = document.getElementById('time-pop-overlay');
             ov.style.display = 'block';
-            document.getElementById('up-sheet-title').innerText = sheetTitle;
-            document.getElementById('up-sheet-body').innerHTML = sheet;
+            window.scrollTo(0, 0);
+            const head = document.querySelector('#main-app-container .page-header');
+            const top = (head ? head.getBoundingClientRect().bottom : 60) + 10;
+            const sh = document.getElementById('tp-sheet');
+            sh.style.top = top + 'px';
+            sh.style.maxHeight = Math.max(320, window.innerHeight - top - 14) + 'px';
+            tpRender();
         }
-
-        function upApplySuggestion(val) {
-            singleUpdateState.remaining = val.toString();
-            confirmSingleUpdateKm();
+        function tpClose() {
+            document.getElementById('time-pop-overlay').style.display = 'none';
+            document.getElementById('spec-pop-overlay').style.display = 'none';
+            tp = null;
         }
-
-        function applyDocPresetMonths(mCount) {
-            let now = new Date();
-            now.setMonth(now.getMonth() + mCount);
-            singleUpdateState.date = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-            confirmSingleUpdateDoc();
+        function tpToggle() {
+            if (!tp || tp.warn) return;
+            tp.enabled = !tp.enabled;
+            tpRender();
         }
-
-        function upSheetOk() {
-            if (singleUpdateState.type === 'km') confirmSingleUpdateKm(); else confirmSingleUpdateDoc();
+        function tpDaysIn(y, mo) { return new Date(y, mo + 1, 0).getDate(); }
+        function tpFollowDate() {
+            // أي تغيير في التقويم يتبعه تغيير في التاريخ: نُبقي رقم اليوم في الشهر الجديد (ضمن عدد أيامه)
+            if (!tp.date) return;
+            const d = Math.min(parseInt(tp.date.slice(8, 10)), tpDaysIn(tp.calYear, tp.calMonth));
+            tp.date = `${tp.calYear}-${tpPad(tp.calMonth + 1)}-${tpPad(d)}`;
         }
-        function upSheetCancel() {
-            closeUpdatePanel();
+        function tpNavYear(diff) { tp.calYear += diff; tpFollowDate(); tpRender(); }
+        function tpNavMonth(diff) {
+            tp.calMonth += diff;
+            if (tp.calMonth > 11) { tp.calMonth = 0; tp.calYear++; }
+            else if (tp.calMonth < 0) { tp.calMonth = 11; tp.calYear--; }
+            tpFollowDate(); tpRender();
         }
-
-        function confirmSingleUpdateDoc() {
-            let dataRec = records[detailActiveModule][currentDetailKey];
-            if (!singleUpdateState.date) singleUpdateState.date = getTodayDateString();
-            dataRec.expiryDate = singleUpdateState.date;
-            if (singleUpdateState.activating) dataRec.active = true;
-            saveAppData();
-            finishUpdateFlow();
+        function tpPickDay(d) {
+            tp.date = `${tp.calYear}-${tpPad(tp.calMonth + 1)}-${tpPad(d)}`;
+            tpRender();
         }
-
-        function confirmSingleUpdateKm() {
-            let itemData = records[detailActiveModule][currentDetailKey];
-            let carOdo = records.car.odometer.currentEstimatedOdo;
-            let rem = parseInt(singleUpdateState.remaining) || 10000;
-
-            itemData.max = carOdo + rem;
-            itemData.lastDate = getTodayDateString();
-            itemData.lastOdo = carOdo;
-            if (singleUpdateState.activating) itemData.active = true;
-            
-            saveAppData();
-            finishUpdateFlow();
-        }
-
-        function openGlobalActivatorPage() {
-            tempGlobalSettingsState = {};
-            globalActivatorGroup = null;
-            MODULE_ORDER.forEach(modKey => {
-                tempGlobalSettingsState[modKey] = {};
-                metadata[modKey].forEach(item => {
-                    let obj = records[modKey][item.key];
-                    tempGlobalSettingsState[modKey][item.key] = obj ? obj.active !== false : true;
-                });
-            });
-
-            renderGlobalActivatorModalContent();
-            hideAllPages();
-            document.getElementById('global-activator-page-container').style.display = 'block';
-        }
-
-        let globalActivatorGroup = null;
-        function selectGlobalGroup(modKey) {
-            globalActivatorGroup = modKey;
-            renderGlobalActivatorModalContent();
-        }
-
-        function renderGlobalActivatorModalContent() {
-            let container = document.getElementById('global-settings-list-container');
-            let htmlContent = '';
-            const labels = { docs: 'الوثائق', oil: 'الزيت', belts: 'الأحزمة', general: 'الصيانة' };
-            document.getElementById('global-tabs-container').innerHTML = `
-                <div class="nav-tabs" style="margin-bottom: 12px;">
-                    ${MODULE_ORDER.map(k => `
-                        <div class="nav-tab ${globalActivatorGroup === k ? 'active' : ''}" onclick="selectGlobalGroup('${k}')">
-                            <div class="home-card-icon-box tab-icon-box">${CARD_ICONS[k]}</div>
-                            <span class="nav-tab-label">${labels[k]}</span>
-                        </div>`).join('')}
-                </div>
-                <div class="global-tabs-hint">اختر القسم لتفعيل أو تعطيل مؤشراته.</div>`;
-
-            MODULE_ORDER.forEach(modKey => {
-                if (modKey !== globalActivatorGroup) return;
-                metadata[modKey].forEach(item => {
-                    let isChecked = tempGlobalSettingsState[modKey][item.key];
-                    htmlContent += `
-                        <div class="checklist-item ${isChecked ? 'checked' : ''}" onclick="toggleGlobalSettingsItem('${modKey}', '${item.key}')">
-                            <span>${item.label}</span>
-                            <div class="checklist-checkbox">${isChecked ? ico('check', 11) : ''}</div>
-                        </div>
-                    `;
-                });
-            });
-            container.innerHTML = htmlContent;
-        }
-
-        function toggleGlobalSettingsItem(modKey, itemKey) {
-            let obj = records[modKey][itemKey];
-            if (!tempGlobalSettingsState[modKey][itemKey] && obj && obj.active === false) {
-                requestActivation(modKey, itemKey, ok => {
-                    if (ok) tempGlobalSettingsState[modKey][itemKey] = true;
-                    renderGlobalActivatorModalContent();
-                });
-                return;
+        function tpCalendarHtml() {
+            const first = new Date(tp.calYear, tp.calMonth, 1).getDay();
+            const total = tpDaysIn(tp.calYear, tp.calMonth);
+            let cells = '<div></div>'.repeat(first);
+            for (let d = 1; d <= total; d++) {
+                const full = `${tp.calYear}-${tpPad(tp.calMonth + 1)}-${tpPad(d)}`;
+                cells += `<div class="cal-day-cell ${tp.date === full ? 'selected' : ''}" onclick="tpPickDay(${d})">${d}</div>`;
             }
-            tempGlobalSettingsState[modKey][itemKey] = !tempGlobalSettingsState[modKey][itemKey];
-            renderGlobalActivatorModalContent();
+            return `<div class="wizard-calendar-box">
+                <div class="cal-nav-row" style="padding: 2px 6px;"><button class="cal-nav-btn" onclick="tpNavYear(-1)">&#10095;</button><span class="cal-nav-label">${tp.calYear}</span><button class="cal-nav-btn" onclick="tpNavYear(1)">&#10094;</button></div>
+                <div class="cal-nav-row" style="padding: 2px 6px;"><button class="cal-nav-btn" onclick="tpNavMonth(-1)">&#10095;</button><span class="cal-nav-label">${monthsAlgeria[tp.calMonth]}</span><button class="cal-nav-btn" onclick="tpNavMonth(1)">&#10094;</button></div>
+                <div class="cal-weekdays" style="margin-top: 2px;">${arabicFullWeekdays.map(d => `<div><span class="cal-weekday-badge">${d}</span></div>`).join('')}</div>
+                <div class="cal-days-grid">${cells}</div>
+            </div>`;
         }
+        function tpRender() {
+            const m = getItemMeta(tp.mod, tp.key);
+            document.getElementById('tp-title').innerText = m.label;
+            document.getElementById('tp-sw').classList.toggle('on', tp.enabled);
+            document.getElementById('tp-err').innerText = '';
+            let body = '', actions = '';
+            if (tp.warn) {
+                body = `<div class="up-warn-text">غيّرتَ ${m.spec.label} من «${escapeHtml(tp.specPrev)}» إلى «${escapeHtml(tp.spec.trim())}».<br>${m.spec.warn}<br>تأكّد من دليل سيارتك أو من الميكانيكي قبل المتابعة.</div>`;
+                actions = `<button class="up-sheet-x" onclick="tpWarnBack()">رجوع</button><button class="up-sheet-ok" onclick="tpWarnYes()">نعم، أنا متأكد</button>`;
+            } else {
+                if (!tp.enabled) {
+                    body = `<div class="tp-off-msg">هذا المؤشر معطَّل ولا يُتابَع.<br>فعّله بالمفتاح في الأعلى ليبدأ التطبيق بتنبيهك.</div>`;
+                } else if (tp.kind === 'km') {
+                    body = kpBodyHtml(m);
+                } else {
+                    body = `<div class="tp-date-line">تاريخ انتهاء الصلاحية: <b>${tp.date ? convertDateToReadableArabic(tp.date) : '—'}</b></div>` + tpCalendarHtml() +
+                        (m.spec ? tpSpecRowHtml(m) : '');
+                }
+                actions = `<button class="up-sheet-x" onclick="tpClose()">إلغاء</button><button class="up-sheet-ok" onclick="tpConfirm()">تأكيد</button>`;
+            }
+            const bodyEl = document.getElementById('tp-body');
+            const keepScroll = bodyEl.scrollTop;
+            bodyEl.innerHTML = body;
+            bodyEl.scrollTop = keepScroll;
+            document.getElementById('tp-actions').innerHTML = actions;
+        }
+        // ===== مؤشرات الكيلومتر داخل النافذة نفسها =====
+        function kpSteps(m) { return m.presets || [5000, 10000, 15000, 20000]; }
+        function kpNext() {
+            if (!tp) return 0;
+            if (tp.mode === 'preset') return records.car.odometer.currentEstimatedOdo + kpSteps(getItemMeta(tp.mod, tp.key))[tp.presetIdx];
+            return parseInt(tp.next) || 0;
+        }
+        function kpBodyHtml(m) {
+            const odo = records.car.odometer.currentEstimatedOdo;
+            const nxt = kpNext();
+            return `<div class="kp-row"><span class="kp-label">العداد الحالي للسيارة: <b><span class="num-ltr">${formatNumberWithSpace(odo)}</span> كم</b></span><button class="kp-edit" onclick="kpEditOdo()">تعديل</button></div>
+                <div class="kp-row"><span class="kp-label">العداد عند التغيير القادم:${nxt ? ` <b><span class="num-ltr">${formatNumberWithSpace(nxt)}</span> كم</b>` : ''}</span><button class="kp-edit" onclick="kpEditNext()">تعديل</button></div>
+                ${m.spec ? tpSpecRowHtml(m) : ''}`;
+        }
+        function kpEditNext() { openOdoDialog('popupNext'); }
+        function nextSuggestHtml() {
+            const m = getItemMeta(tp.mod, tp.key);
+            const steps = kpSteps(m);
+            return `<div class="up-label" style="margin-top:10px;">أو أضِف إلى العداد الحالي:</div>
+                <div class="suggestions-row" style="grid-template-columns: repeat(${steps.length}, 1fr);">${steps.map((v, i) => `<button class="suggestion-chip-btn" onclick="odoDlgSuggest(${i})">+${formatNumberWithSpace(v)}</button>`).join('')}</div>`;
+        }
+        function odoDlgSuggest(i) {
+            if (tp) { tp.mode = 'preset'; tp.presetIdx = i; tp.next = ''; }
+            closeOdoDialog();
+            if (tp) tpRender();
+        }
+        function kpEditOdo() { openOdoDialog('popup'); }
 
-        function saveGlobalSettingsChanges() {
-            MODULE_ORDER.forEach(modKey => {
-                let dataRec = records[modKey];
-                metadata[modKey].forEach(item => {
-                    let obj = dataRec[item.key];
-                    if (!obj) return;
-                    if (tempGlobalSettingsState[modKey][item.key] === false) obj.active = false;
-                });
-            });
-            saveAppData();
-            tempGlobalSettingsState = {};
-            if (onboardingStep === 'indicators') { finishOnboarding(); return; }
-            navigateToModule(lastIndicatorsView || 'alerts');
+        function tpSpecRowHtml(m) {
+            const val = tp.spec ? ` <b dir="auto" style="unicode-bidi:isolate;">${escapeHtml(tp.spec)}</b>` : (tp.specUnknown ? ' <b>غير معروف</b>' : '');
+            return `<div class="kp-row"><span class="kp-label">${m.spec.label}:${val}</span><button class="kp-edit" onclick="tpSpecOpen()">تعديل</button></div>`;
+        }
+        function tpSpecUnknown() {
+            document.getElementById('spec-pop-overlay').style.display = 'none';
+            tp.spec = ''; tp.specUnknown = true;
+            tpRender();
+        }
+        function tpSpecOpen() {
+            const m = getItemMeta(tp.mod, tp.key);
+            if (!m || !m.spec) return;
+            document.getElementById('spec-pop-box').innerHTML =
+                `<div class="spec-pop-title">${m.spec.label}</div>` +
+                m.spec.presets.map((v, i) => `<button class="spec-pop-opt ${tp.spec === v ? 'on' : ''}" style="unicode-bidi:plaintext;" onclick="tpSpecChoose(${i})">${escapeHtml(v)}</button>`).join('') +
+                `<button class="spec-pop-opt ${tp.specUnknown ? 'on' : ''}" onclick="tpSpecUnknown()">غير معروف</button>` +
+                `<button class="spec-pop-cancel" onclick="document.getElementById('spec-pop-overlay').style.display='none'">إلغاء</button>`;
+            document.getElementById('spec-pop-overlay').style.display = 'flex';
+        }
+        function tpSpecChoose(i) {
+            const m = getItemMeta(tp.mod, tp.key);
+            document.getElementById('spec-pop-overlay').style.display = 'none';
+            tp.spec = m.spec.presets[i]; tp.specUnknown = false;
+            tpRender();
+        }
+        function tpWarnBack() { tp.warn = false; tpRender(); }
+        function tpWarnYes() { tp.warnOk = true; tp.warn = false; tpConfirm(); }
+        function tpConfirm() {
+            const m = getItemMeta(tp.mod, tp.key), obj = records[tp.mod][tp.key];
+            if (!tp.enabled) {
+                if (tp.wasActive) { obj.active = false; saveAppData(); }
+            } else {
+                if (tp.kind === 'km') {
+                    const odoNow = records.car.odometer.currentEstimatedOdo;
+                    const nxt = kpNext();
+                    if (!nxt) { document.getElementById('tp-err').innerText = 'حدّد العداد عند التغيير القادم.'; return; }
+                    if (nxt <= odoNow) { document.getElementById('tp-err').innerText = 'يجب أن يكون أكبر من العداد الحالي (' + formatNumberWithSpace(odoNow) + ' كم).'; return; }
+                    if (m.spec && !tp.warnOk && specNorm(tp.spec) && specNorm(tp.specPrev) && specNorm(tp.spec) !== specNorm(tp.specPrev)) { tp.warn = true; tpRender(); return; }
+                    obj.max = nxt;
+                    delete obj.linkTarget;
+                    obj.active = true;
+                    if (m.spec) { const v = (tp.spec || '').trim().slice(0, 40); if (v) obj.spec = v; else delete obj.spec; }
+                    saveAppData();
+                    tpClose();
+                    if (document.getElementById('main-app-container').style.display === 'block') renderForm(currentModule);
+                    return;
+                }
+                if (!tp.date) { document.getElementById('tp-err').innerText = 'اختر تاريخ انتهاء الصلاحية من التقويم.'; return; }
+                if (m.spec && !tp.warnOk && specNorm(tp.spec) && specNorm(tp.specPrev) && specNorm(tp.spec) !== specNorm(tp.specPrev)) { tp.warn = true; tpRender(); return; }
+                obj.expiryDate = tp.date;
+                obj.active = true;
+                if (m.spec) { const v = (tp.spec || '').trim().slice(0, 40); if (v) obj.spec = v; else delete obj.spec; }
+                saveAppData();
+            }
+            tpClose();
+            if (document.getElementById('main-app-container').style.display === 'block') renderForm(currentModule);
         }
 
         hydrateIcons();
-    </script>
+        initFirebase();
+</script>
 </body>
 </html>
