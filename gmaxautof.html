@@ -1,0 +1,2772 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GMX AUTO - مساعدك الذكي للصيانة</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        .container, .main-container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .main-container {
+            padding: 20px;
+            min-height: calc(100vh - 70px);
+        }
+
+        .content-wrap {
+            flex: 1;
+            width: 100%;
+        }
+
+        #welcome-page {
+            width: 100%;
+            max-width: 500px;
+            height: calc(100vh - 65px);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding-top: 6vh;
+            align-items: center;
+            padding-left: 20px;
+            padding-right: 20px;
+            box-sizing: border-box;
+            background-color: #121212;
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999;
+            overflow-y: auto;
+            padding-bottom: 30px;
+        }
+
+        .gmax-brand {
+            font-size: 70px;
+            font-weight: 900;
+            letter-spacing: -2px;
+            line-height: 1;
+            display: flex;
+            direction: ltr;
+        }
+        .gmax-white { color: #ffffff; }
+        .gmax-gold { color: #b8860b; }
+
+        .auto-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #3a86c8;
+            text-transform: uppercase;
+            letter-spacing: 12px;
+            margin: 0 0 12px 12px;
+            direction: ltr;
+        }
+
+        .logo-lockup { display: flex; flex-direction: column; align-items: center; margin-bottom: 26px; }
+        .logo-lockup .gmax-brand { font-family: 'Avenir Next', Futura, 'Century Gothic', 'Trebuchet MS', 'Segoe UI', sans-serif; font-size: 66px; font-weight: 800; letter-spacing: -1px; }
+        .auto-row { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; margin-top: 6px; direction: ltr; }
+        .auto-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, #b8860b); }
+        .auto-line:last-child { background: linear-gradient(to left, transparent, #b8860b); }
+        .logo-lockup .auto-text { font-family: 'Avenir Next', Futura, 'Century Gothic', 'Trebuchet MS', sans-serif; font-size: 19px; font-weight: 600; letter-spacing: 6px; margin: 0 0 0 6px; }
+        .main-subtitle {
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            margin-top: 8px;
+            font-weight: 300;
+            letter-spacing: 0.3px;
+        }
+
+        .single-global-light {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-bottom: 25px;
+            background-color: #4caf50;
+            box-shadow: 0 0 16px #4caf50;
+        }
+
+        .welcome-odometer-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 25px;
+            width: 100%;
+        }
+        .odo-why-btn { position: relative; width: 20px; height: 20px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.45); font-size: 12px; line-height: 18px; text-align: center; margin-top: 6px; cursor: pointer; user-select: none; }
+        .odo-why-btn::after { content: ''; position: absolute; inset: -12px; }
+        .odo-why-btn:active { border-color: #b8860b; color: #b8860b; }
+
+        .welcome-odometer-text {
+            background-color: #1a1a1a;
+            border: 1px solid #333333;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 18px;
+            font-weight: bold;
+            padding: 8px 10px;
+            border-radius: 10px;
+            text-align: center;
+            width: 130px;
+            direction: ltr;
+            user-select: none;
+            cursor: pointer;
+        }
+
+        .start-app-btn {
+            background-color: #b8860b;
+            color: #000000;
+            border: none;
+            padding: 15px 55px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(184, 134, 11, 0.3);
+        }
+        .start-app-btn:active { transform: scale(0.95); }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #2d2d2d;
+            padding-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .title-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .page-title { 
+            font-size: 16px; 
+            font-weight: bold; 
+            color: #b8860b; 
+        }
+        .seg-row { display: flex; gap: 4px; }
+        .seg-tab { position: relative; flex: 1; min-width: 0; padding: 9px 2px; background: none; border: none; border-radius: 10px; color: #8a8a8a; font-family: inherit; font-size: 13px; font-weight: bold; cursor: pointer; white-space: nowrap; transition: background .15s, color .15s; -webkit-tap-highlight-color: transparent; }
+        .seg-tab.active { color: #d4a017; background: #2c2c2c; box-shadow: 0 1px 3px rgba(0,0,0,0.45); }
+        .seg-tab:not(.active):active { background: #232323; }
+        .indicators-table td.col-indicator { white-space: normal; line-height: 1.4; }
+
+        /* شعار مصغر في صفحة البطاقات الرئيسية أعلى اليسار */
+        .header-mini-brand { display: flex; flex-direction: column; align-items: flex-start; cursor: pointer; user-select: none; }
+        .mini-brand-row { font-size: 15px; font-weight: 900; letter-spacing: -0.5px; line-height: 1; display: flex; direction: ltr; }
+        .mini-brand-sub { font-size: 9.5px; color: #888888; margin-top: 2px; letter-spacing: 0; white-space: nowrap; }
+
+        .unified-close-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.8);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .unified-close-btn:active {
+            background-color: rgba(255, 255, 255, 0.25);
+            color: #fff;
+        }
+
+        .num-ltr {
+            direction: ltr;
+            unicode-bidi: embed;
+            display: inline-block;
+        }
+
+        .indicators-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 5px;
+            background-color: #181818;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #2d2d2d;
+            table-layout: fixed;
+        }
+
+        .indicators-table th, 
+        .indicators-table td {
+            padding: 12px 8px;
+            font-size: 12px;
+            border-bottom: 1px solid #282828;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+
+        .table-col-titles { display: flex; font-size: 11px; color: rgba(255,255,255,0.6); padding: 0 1px 5px; margin-top: 0; }
+        .table-col-titles span:nth-child(1) { width: 45%; text-align: right; padding-right: 10px; box-sizing: border-box; }
+        .table-col-titles span:nth-child(2) { width: 40%; text-align: center; }
+        .table-col-titles span:nth-child(3) { width: 15%; text-align: center; }
+        .indicators-table th {
+            background-color: #1e1e1e;
+            color: #b8860b;
+            font-weight: bold;
+        }
+
+        .indicators-table tr {
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .indicators-table tr:hover {
+            background-color: rgba(184, 134, 11, 0.08);
+        }
+        .indicators-table tr:last-child td { border-bottom: none; }
+
+        .col-indicator { width: 45%; text-align: right; color: #b8860b; font-weight: bold; padding-right: 10px; }
+        .col-remaining { width: 40%; text-align: center; color: #ffffff; font-weight: bold; }
+        .col-toggle { width: 15%; text-align: center; }
+
+        .status-light {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            margin: 0 auto;
+            box-shadow: 0 0 8px rgba(0,0,0,0.5);
+        }
+        .status-green { background-color: #4caf50; box-shadow: 0 0 8px #4caf50; }
+        .status-yellow { background-color: #ff9800; box-shadow: 0 0 8px #ff9800; }
+        .status-red { background-color: #f44336; box-shadow: 0 0 8px #f44336; }
+        .status-none { background-color: rgba(255, 255, 255, 0.22); box-shadow: none; }
+        @keyframes odoPulse { 0%,100% { text-shadow: 0 0 0 rgba(184,134,11,0); } 50% { text-shadow: 0 0 14px rgba(184,134,11,0.9); } }
+        .odo-attention { animation: odoPulse 1.3s infinite; }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 30px;
+            width: 100%;
+        }
+
+        .home-card {
+            background-color: #1e1e1e;
+            border: 1px solid #2d2d2d;
+            border-radius: 12px;
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            width: 100%;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        .home-card:active { border-color: #b8860b; }
+        .home-card-title { font-size: 16px; font-weight: bold; color: #fff; }
+        .home-card .status-light { margin: 0; flex: none; }
+
+        .bottom-nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 500px;
+            height: 65px;
+            background-color: #181818;
+            border-top: 1px solid #2d2d2d;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 10000;
+            box-sizing: border-box;
+            padding: 0 5px;
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            height: 100%;
+            cursor: pointer;
+            color: rgba(255,255,255,0.55);
+            transition: color 0.2s;
+            user-select: none;
+            background: none;
+            border: none;
+            position: relative;
+        }
+
+        .bottom-nav-item.active {
+            color: #b8860b;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 6px;
+            box-shadow: 0 0 4px rgba(255, 255, 255, 0.1);
+        }
+
+        .bottom-nav-item:active {
+            color: #b8860b;
+        }
+
+        .bottom-nav-icon {
+            display: flex; align-items: center; justify-content: center;
+            height: 24px; margin-bottom: 3px;
+        }
+        .ico { display: block; flex-shrink: 0; }
+        .up-sheet-x, .up-sheet-ok { display: inline-flex; align-items: center; justify-content: center; padding: 0; }
+        .home-card > span:last-child { display: flex; align-items: center; color: #b8860b; }
+
+        .bottom-nav-label {
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .wizard-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 35000;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+        .wizard-container {
+            background-color: #1e1e1e;
+            color: #ffffff;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 390px;
+            height: 600px;
+            max-height: 95vh;
+            padding: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-sizing: border-box;
+            border: 2px solid #b8860b;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: stretch;
+        }
+
+        .wizard-header-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #b8860b;
+            text-align: right;
+            margin-bottom: 4px;
+            flex-shrink: 0;
+        }
+
+        .wizard-display-box {
+            background-color: #121212;
+            border: 2px solid #444;
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 18px;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            direction: rtl;
+            flex-shrink: 0;
+        }
+
+        .wizard-number-part { direction: ltr; unicode-bidi: embed; color: rgba(255, 255, 255, 0.6); }
+        .wizard-unit-part { color: rgba(255, 255, 255, 0.6); font-size: 14px; font-weight: normal; }
+
+        .numpad-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 4px;
+            margin-bottom: 8px;
+            flex-shrink: 0;
+        }
+        .numpad-btn {
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 6px;
+            padding: 6px 0;
+            font-size: 13px;
+            font-weight: bold;
+            color: #ffffff;
+            cursor: pointer;
+            user-select: none;
+            text-align: center;
+        }
+        .numpad-btn:active { background-color: #444; }
+        .numpad-btn-del { background-color: #3a1a1a; color: #ff8888; border-color: #552222; font-size: 11px; }
+
+        .numpad-actions-row {
+            display: flex;
+            gap: 10px;
+            margin-top: auto;
+            flex-shrink: 0;
+            padding-top: 5px;
+        }
+        .numpad-action-btn { flex: 1; padding: 12px; border-radius: 8px; border: none; font-size: 14px; font-weight: bold; cursor: pointer; }
+        .numpad-cancel-btn { background-color: #333; color: #ccc; }
+        .numpad-confirm-btn { background-color: #b8860b; color: #000; }
+
+        .wizard-calendar-box {
+            background-color: #121212;
+            border: 1px solid #444;
+            border-radius: 10px;
+            padding: 8px;
+            margin-bottom: 8px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .cal-nav-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #181818;
+            padding: 3px 6px;
+            border-radius: 6px;
+            margin-bottom: 3px;
+        }
+        .cal-nav-btn { background: none; border: 1px solid #444; color: #b8860b; font-weight: bold; padding: 2px 6px; border-radius: 4px; cursor: pointer; }
+        .cal-nav-label { font-size: 12px; font-weight: bold; color: #fff; direction: rtl; }
+
+        .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; margin-bottom: 4px; }
+        .cal-weekday-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 22px;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .cal-days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; overflow-y: auto; }
+        .cal-day-cell {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            border-radius: 4px;
+            background-color: #252525;
+            color: #fff;
+            cursor: pointer;
+            user-select: none;
+        }
+        .cal-day-cell.selected { background-color: #b8860b !important; color: #000 !important; font-weight: bold; }
+
+        .date-display-box {
+            background-color: #262626;
+            border: 1px solid #444;
+            color: rgba(255, 255, 255, 0.6);
+            padding: 8px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .date-display-box.editable { color: #fff; cursor: pointer; }
+        .date-display-box { border-color: rgba(255,255,255,0.25) !important; }
+        .date-display-box.touched { border-color: #b8860b !important; }
+        .date-display-box.editable:active { background-color: rgba(184,134,11,0.15); }
+        .tap-hint { font-size: 11px; color: rgba(255,255,255,0.5); text-align: left; direction: rtl; margin: -2px 0 6px 0; }
+        .field-row-inline {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+            flex-shrink: 0;
+        }
+
+        .field-label-text {
+            font-size: 12px;
+            color: #b8860b;
+            font-weight: bold;
+            width: 85px;
+            flex-shrink: 0;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #2d2d2d;
+            font-size: 13px;
+        }
+        .detail-row:last-child { border-bottom: none; }
+        .detail-label { color: rgba(255, 255, 255, 0.6); }
+        .detail-val { font-weight: bold; color: #fff; }
+        .up-sheet .date-display-box.on { border: 2px solid #2f6fb5 !important; background: #fff; }
+        .up-warn-text { font-size: 14px; line-height: 2; text-align: center; color: #1d3d66; margin-top: 14px; }
+        .cfg-btn { display: inline-flex; align-items: center; gap: 5px; height: 40px; margin: 0; padding: 0 2px 0 8px; background: none; border: none; color: #b8860b; font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+        .cfg-btn svg { stroke-width: 2.6; }
+        .cfg-btn:active { opacity: 0.6; }
+        .up-sheet { position: absolute; left: 50%; transform: translateX(-50%); width: calc(100% - 24px); max-width: 476px; box-sizing: border-box; background: #1e1e1e; border: 1px solid rgba(255,255,255,0.3); border-radius: 14px; padding: 12px 14px 14px; box-shadow: 0 6px 22px rgba(0,0,0,0.6); pointer-events: auto; display: flex; flex-direction: column; }
+        .up-sheet-actions { display: flex; gap: 8px; margin-top: 10px; flex-shrink: 0; }
+        .up-sheet-ok { flex: 1; background: #b8860b; color: #000; border: none; border-radius: 10px; height: 52px; font-size: 14px; font-weight: bold; cursor: pointer; }
+        .up-sheet-x { flex: 1; background: #333; color: #ccc; border: none; border-radius: 10px; height: 52px; font-size: 13px; font-weight: bold; cursor: pointer; }
+        .up-label { font-size: 11px; color: #b8860b; margin: 0 0 4px 0; font-weight: bold; }
+        .suggestions-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+            margin-bottom: 8px;
+            flex-shrink: 0;
+        }
+        .suggestion-chip-btn {
+            background-color: #1f2937;
+            border: 1px solid #b8860b;
+            color: #ffda75;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 6px 2px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+            direction: ltr;
+        }
+        .suggestion-chip-btn:active {
+            background-color: #b8860b;
+            color: #000;
+        }
+
+        .error-inline-msg {
+            color: #f44336;
+            font-size: 11px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 6px;
+            min-height: 16px;
+        }
+
+        /* ===== نوافذ القرار (إدخال المستخدم): سطح كريمي مختلف عن صفحات القراءة السوداء ===== */
+        /* ===== سجل الوقود ===== */
+        #fuel-overlay { position: fixed; inset: 0; z-index: 36600; display: none; align-items: flex-end; justify-content: center; background: none; }
+        .fuel-sheet { width: calc(100% - 24px); max-width: 476px; box-sizing: border-box; margin-bottom: 12px; background: #e3e3df; border: 1.5px solid #2f6fb5; border-radius: 14px; padding: 12px 14px 14px; box-shadow: 0 8px 28px rgba(0,0,0,0.7); color: #1d3d66; animation: decideIn 0.16s ease-out; }
+        .fuel-title { font-size: 14px; font-weight: bold; color: #245a98; margin-bottom: 8px; }
+        .fuel-amount-box { direction: ltr; text-align: center; background: #f4f4f1; border: 2px solid #2f6fb5; border-radius: 10px; padding: 10px; font-size: 26px; font-weight: bold; color: #1d3d66; min-height: 34px; }
+        .fuel-amount-box.empty { color: #9aa6b6; font-size: 16px; line-height: 34px; padding: 10px; }
+        .fuel-chips { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin: 8px 0; direction: ltr; }
+        .fuel-chip { background: #f4f4f1; border: 1px solid #2f6fb5; color: #1f4f8a; border-radius: 8px; padding: 10px 0; font-size: 13px; font-weight: bold; font-family: inherit; cursor: pointer; }
+        .fuel-chip:active { background: #2f6fb5; color: #fff; }
+        .fuel-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; direction: ltr; }
+        .fuel-key { background: #f4f4f1; border: 1px solid #b8bec7; color: #222; border-radius: 8px; padding: 12px 0; font-size: 17px; font-family: inherit; cursor: pointer; }
+        .fuel-key:active { background: #d3dbe6; }
+        .fuel-key.del { background: #f6dcd6; border-color: #e3b5ab; color: #b3261e; }
+        .fuel-date-row { display: flex; align-items: center; justify-content: space-between; margin: 10px 0 0; font-size: 13px; color: #3d5a80; }
+        .fuel-date-row input { font-family: inherit; font-size: 14px; color: #1d3d66; background: #f4f4f1; border: 1px solid #aeb6c2; border-radius: 8px; padding: 6px 8px; }
+        .fuel-err { color: #b3261e; font-size: 12px; min-height: 16px; margin-top: 6px; }
+        .fuel-actions { display: flex; gap: 8px; margin-top: 8px; }
+        .fuel-ok { flex: 2; background: #2f6fb5; color: #fff; border: none; border-radius: 10px; height: 52px; font-size: 14px; font-weight: bold; font-family: inherit; cursor: pointer; }
+        .fuel-x { flex: 1; background: #c9ccd1; color: #333; border: none; border-radius: 10px; height: 52px; font-size: 13px; font-weight: bold; font-family: inherit; cursor: pointer; }
+        .fuel-add-btn { width: 100%; background: #2f6fb5; color: #fff; border: none; border-radius: 12px; height: 54px; font-size: 16px; font-weight: bold; font-family: inherit; cursor: pointer; margin: 6px 0 12px; }
+        .fuel-total { text-align: center; padding: 10px 6px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.25); border-radius: 12px; }
+        .fuel-total-label { font-size: 12px; color: rgba(255,255,255,0.6); }
+        .fuel-total-val { font-size: 24px; font-weight: bold; color: #ffda75; margin-top: 2px; }
+        .fuel-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 6px; border-bottom: 1px solid rgba(255,255,255,0.12); font-size: 15px; }
+        .fuel-row .fuel-d { color: rgba(255,255,255,0.75); direction: ltr; }
+        .fuel-row .fuel-a { color: #fff; font-weight: bold; }
+        .fuel-del { background: none; border: none; color: #e57373; font-size: 18px; padding: 4px 10px; cursor: pointer; font-family: inherit; }
+        .fuel-empty { text-align: center; color: #888; font-size: 13px; padding: 24px 10px; }
+        .fuel-copy { width: 100%; margin-top: 14px; background: #1a1a1a; border: 1px solid #b8860b; color: #ffda75; border-radius: 8px; padding: 12px; font-weight: bold; font-size: 13px; font-family: inherit; cursor: pointer; }
+        .fuel-status { text-align: center; font-size: 12px; min-height: 16px; margin-top: 6px; color: #76ff03; }
+        .fuel-sheet { max-height: calc(100vh - 24px); overflow-y: auto; }
+        .exp-cat-btn { display: block; width: 100%; background: #f4f4f1; border: 1px solid #2f6fb5; color: #1f4f8a; border-radius: 10px; height: 50px; margin-bottom: 8px; font-size: 15px; font-weight: bold; font-family: inherit; cursor: pointer; }
+        .exp-cat-btn:active { background: #2f6fb5; color: #fff; }
+        .exp-title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+        .exp-change { background: none; border: none; color: #2f6fb5; font-size: 13px; font-weight: bold; font-family: inherit; cursor: pointer; padding: 4px 6px; }
+        .exp-note { width: 100%; box-sizing: border-box; margin-top: 8px; padding: 9px 10px; border: 1px solid #aeb6c2; border-radius: 8px; background: #f4f4f1; color: #1d3d66; font-family: inherit; font-size: 13px; }
+        .exp-sum { display: flex; gap: 8px; }
+        .exp-sum .fuel-total { flex: 1; }
+        .exp-sum .fuel-total-val { font-size: 19px; }
+        .exp-mid { flex: 1; padding: 0 10px; font-size: 12px; color: rgba(255,255,255,0.7); text-align: right; }
+        .exp-mid small { display: block; font-size: 11px; color: rgba(255,255,255,0.45); }
+        .exp-big-btn { width: 100%; border-radius: 12px; height: 54px; font-size: 16px; font-weight: bold; font-family: inherit; cursor: pointer; margin: 0 0 12px; }
+        .exp-big-btn.stats { background: #b8860b; color: #fff; border: none; }
+        .exp-big-btn.stats:active { background: #9a7009; }
+        .exp-big-btn.list { background: #4b5f78; color: #fff; border: none; }
+        .exp-big-btn.list:active { background: #3d4e63; }
+        .exp-subhead { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; font-size: 16px; font-weight: bold; color: #b8860b; }
+        .exp-back { background: #1e1e1e; border: 1px solid #2d2d2d; color: #b8860b; width: 38px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; }
+        .st-hint { font-size: 13px; color: rgba(255,255,255,0.55); margin: 0 0 10px; }
+        .st-q { display: block; width: 100%; text-align: right; background: #1e1e1e; border: 1px solid #2d2d2d; border-right: 4px solid #b8860b; border-radius: 12px; padding: 18px 16px; margin-bottom: 10px; color: #fff; font-size: 15px; font-weight: bold; font-family: inherit; cursor: pointer; }
+        .st-q:active { border-color: #b8860b; }
+        .st-foot { font-size: 11px; color: rgba(255,255,255,0.4); text-align: center; margin-top: 14px; }
+        #story-overlay { position: fixed; inset: 0; z-index: 36700; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.86); }
+        #story-card { position: relative; width: calc(100% - 24px); max-width: 440px; height: calc(100% - 40px); max-height: 720px; box-sizing: border-box; border-radius: 22px; padding: 22px 20px 16px; background: linear-gradient(165deg, #1b1a2e 0%, #2b2410 62%, #141414 100%); border: 1px solid rgba(255,213,74,0.25); display: flex; flex-direction: column; text-align: center; color: #fff; overflow: hidden; }
+        .st-prog { display: flex; gap: 5px; direction: ltr; margin-bottom: 14px; }
+        .st-prog span { flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,0.22); }
+        .st-prog span.on { background: #ffd54a; }
+        .st-close { position: absolute; top: 28px; left: 14px; background: none; border: none; color: rgba(255,255,255,0.7); font-size: 18px; cursor: pointer; padding: 6px 10px; font-family: inherit; }
+        .st-q-title { font-size: 16px; font-weight: bold; margin: 14px 26px 18px; line-height: 1.6; color: rgba(255,255,255,0.9); }
+        .st-big { font-size: 52px; font-weight: bold; color: #ffd54a; line-height: 1.1; }
+        .st-unit { font-size: 15px; color: #fff; margin-top: 4px; }
+        .st-cap { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; min-height: 16px; }
+        .st-body { flex: 1; min-height: 0; margin-top: 16px; display: flex; flex-direction: column; align-items: center; overflow-y: auto; }
+        .st-body::before, .st-body::after { content: ''; margin: auto; }
+        .st-pick { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 4px; }
+        .st-year-title { font-size: 13px; font-weight: bold; color: #ffd54a; margin: 16px 0 10px; align-self: flex-start; }
+        .st-chart { width: 100%; max-width: 330px; height: auto; direction: ltr; }
+        .st-trend { margin-top: 14px; padding: 9px 16px; border-radius: 20px; font-size: 13px; font-weight: bold; }
+        .st-trend.up { background: rgba(239,83,80,0.18); color: #ff8a80; }
+        .st-trend.down { background: rgba(102,187,106,0.18); color: #a5d6a7; }
+        .st-trend.neutral { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); line-height: 1.7; }
+        .st-empty { font-size: 14px; line-height: 2; color: rgba(255,255,255,0.7); padding: 0 12px; }
+        .st-cats { width: 100%; text-align: right; }
+        .st-cat { margin-bottom: 14px; }
+        .st-cat-top { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px; }
+        .st-cat-bar { height: 9px; border-radius: 5px; background: rgba(255,255,255,0.1); overflow: hidden; }
+        .st-cat-bar > div { height: 100%; border-radius: 5px; margin-right: 0; margin-left: auto; }
+        .st-nav { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 10px; }
+        #welcome-odo-overlay { background-color: transparent; }
+        @keyframes decideIn { from { opacity: 0; margin-top: 8px; } to { opacity: 1; margin-top: 0; } }
+        .up-sheet, #welcome-odo-overlay .wizard-container { animation: decideIn 0.16s ease-out; }
+
+        .up-sheet { background: #e3e3df; border: 1.5px solid #2f6fb5; color: #1d3d66; box-shadow: 0 8px 28px rgba(0,0,0,0.7); }
+        .up-sheet .up-label,
+        .up-sheet .wizard-header-title { color: #245a98; }
+        .up-sheet .numpad-btn { background: #f4f4f1; border: 1px solid #b8bec7; color: #222; }
+        .up-sheet .numpad-btn:active { background: #d3dbe6; }
+        .up-sheet .numpad-btn-del { background: #f6dcd6; border-color: #e3b5ab; color: #b3261e !important; }
+        .up-sheet .suggestion-chip-btn { background: #f4f4f1; border: 1px solid #2f6fb5; color: #1f4f8a; }
+        .up-sheet .up-sheet-ok, .up-sheet .numpad-confirm-btn { background: #2f6fb5; color: #fff; }
+        .up-sheet .up-sheet-x, .up-sheet .numpad-cancel-btn { background: #c9ccd1; color: #333; }
+        .up-sheet .odo-why-btn { color: #3d5a80; border-color: #8091a8; }
+        .up-sheet .wizard-display-box { background: #f4f4f1; border: 2px solid #b8bec7; }
+        .up-sheet .wizard-number-part, .up-sheet .wizard-unit-part { color: #1d3d66; }
+        .up-sheet .date-display-box { background: #f4f4f1; color: #3d5a80; border-color: #aeb6c2 !important; }
+        .up-sheet .date-display-box.editable { color: #1d3d66; }
+        .up-sheet .date-display-box.touched { border-color: #2f6fb5 !important; }
+        .up-sheet .field-label-text { color: #3d5a80; }
+        .up-sheet .tap-hint { color: #5d7391; }
+        .up-sheet .error-inline-msg { color: #b3261e; }
+        .up-sheet .wizard-calendar-box { background: #ececE8; border-color: #b8bec7; }
+        .up-sheet .cal-nav-row { background: #d5d8dc; }
+        .up-sheet .cal-nav-btn { color: #245a98; border-color: #a9b4c4; }
+        .up-sheet .cal-nav-label { color: #1d3d66; }
+        .up-sheet .cal-weekday-badge { color: rgba(29,61,102,0.65); }
+        .up-sheet .cal-day-cell { background: #f4f4f1; color: #1d3d66; }
+        .up-sheet .cal-day-cell.selected { background: #2f6fb5 !important; color: #fff !important; }
+        .up-sheet [style*="rgba(255,255,255"] { color: #2b4a73 !important; }
+        .up-sheet [style*="#ff9800"] { color: #b45f00 !important; }
+
+        #welcome-odo-overlay .wizard-container { background: #e3e3df; border: 1.5px solid #2f6fb5; color: #1d3d66; box-shadow: 0 8px 28px rgba(0,0,0,0.7); }
+        #welcome-odo-overlay .wizard-container .up-label,
+        #welcome-odo-overlay .wizard-container .wizard-header-title { color: #245a98; }
+        #welcome-odo-overlay .wizard-container .numpad-btn { background: #f4f4f1; border: 1px solid #b8bec7; color: #222; }
+        #welcome-odo-overlay .wizard-container .numpad-btn:active { background: #d3dbe6; }
+        #welcome-odo-overlay .wizard-container .numpad-btn-del { background: #f6dcd6; border-color: #e3b5ab; color: #b3261e !important; }
+        #welcome-odo-overlay .wizard-container .suggestion-chip-btn { background: #f4f4f1; border: 1px solid #2f6fb5; color: #1f4f8a; }
+        #welcome-odo-overlay .wizard-container .up-sheet-ok, #welcome-odo-overlay .wizard-container .numpad-confirm-btn { background: #2f6fb5; color: #fff; }
+        #welcome-odo-overlay .wizard-container .up-sheet-x, #welcome-odo-overlay .wizard-container .numpad-cancel-btn { background: #c9ccd1; color: #333; }
+        #welcome-odo-overlay .wizard-container .odo-why-btn { color: #3d5a80; border-color: #8091a8; }
+        #welcome-odo-overlay .wizard-container .wizard-display-box { background: #f4f4f1; border: 2px solid #b8bec7; }
+        #welcome-odo-overlay .wizard-container .wizard-number-part, #welcome-odo-overlay .wizard-container .wizard-unit-part { color: #1d3d66; }
+        #welcome-odo-overlay .wizard-container .date-display-box { background: #f4f4f1; color: #3d5a80; border-color: #aeb6c2 !important; }
+        #welcome-odo-overlay .wizard-container .date-display-box.editable { color: #1d3d66; }
+        #welcome-odo-overlay .wizard-container .date-display-box.touched { border-color: #2f6fb5 !important; }
+        #welcome-odo-overlay .wizard-container .field-label-text { color: #3d5a80; }
+        #welcome-odo-overlay .wizard-container .tap-hint { color: #5d7391; }
+        #welcome-odo-overlay .wizard-container .error-inline-msg { color: #b3261e; }
+        #welcome-odo-overlay .wizard-container .wizard-calendar-box { background: #ececE8; border-color: #b8bec7; }
+        #welcome-odo-overlay .wizard-container .cal-nav-row { background: #d5d8dc; }
+        #welcome-odo-overlay .wizard-container .cal-nav-btn { color: #245a98; border-color: #a9b4c4; }
+        #welcome-odo-overlay .wizard-container .cal-nav-label { color: #1d3d66; }
+        #welcome-odo-overlay .wizard-container .cal-weekday-badge { color: rgba(29,61,102,0.65); }
+        #welcome-odo-overlay .wizard-container .cal-day-cell { background: #f4f4f1; color: #1d3d66; }
+        #welcome-odo-overlay .wizard-container .cal-day-cell.selected { background: #2f6fb5 !important; color: #fff !important; }
+        #welcome-odo-overlay .wizard-container [style*="rgba(255,255,255"] { color: #2b4a73 !important; }
+        #welcome-odo-overlay .wizard-container [style*="#ff9800"] { color: #b45f00 !important; }
+
+        /* شكل البطاقة: شريط أزرق عريض على الحافة اليمنى (بداية القراءة بالعربية) بدل الظل */
+        .up-sheet, #welcome-odo-overlay .wizard-container {
+            border: 1px solid #b8bec7;
+            border-right: 7px solid #2f6fb5;
+        }
+
+        /* ===== صفحة تسجيل الدخول (Google) ===== */
+        #login-page { display: flex; position: fixed; inset: 0; z-index: 50000; background: #121212; flex-direction: column; align-items: center; justify-content: flex-start; padding: 12vh 24px 30px; box-sizing: border-box; overflow-y: auto; }
+        .google-btn { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; max-width: 320px; background: #ffffff; color: #3c4043; border: none; border-radius: 12px; padding: 14px 18px; font-size: 16px; font-weight: bold; font-family: inherit; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.4); margin-top: 10px; box-sizing: border-box; }
+        .google-btn:active { background: #e8eaed; }
+        .login-link-btn { width: 100%; max-width: 320px; margin-top: 10px; padding: 12px; border-radius: 12px; background: none; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.75); font-size: 14px; font-weight: bold; font-family: inherit; cursor: pointer; box-sizing: border-box; }
+        .login-link-btn:active { background: #1c1c1c; }
+        #login-msg { font-size: 13px; line-height: 1.9; text-align: center; color: rgba(255,255,255,0.7); min-height: 24px; margin: 6px 0 14px; max-width: 320px; }
+        #login-msg.err { color: #f44336; }
+        .login-note { font-size: 11px; color: rgba(255,255,255,0.4); text-align: center; line-height: 1.8; margin-top: 18px; max-width: 320px; }
+        .row-off .col-indicator { color: rgba(255,255,255,0.4); }
+
+        .welcome-odometer-text { cursor: default; }
+        .odo-card { padding-top: 32px; padding-bottom: 32px; margin-bottom: 10px; }
+        .odo-card-val { color: #fff; font-size: 19px; font-weight: bold; white-space: nowrap; }
+        #spec-pop-overlay { display: none; position: fixed; inset: 0; z-index: 37800; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; }
+        #spec-pop-box { width: 100%; max-width: 340px; background: #e3e3df; border: 1px solid #b8bec7; border-right: 7px solid #2f6fb5; border-radius: 14px; padding: 14px; box-sizing: border-box; box-shadow: 0 8px 28px rgba(0,0,0,0.7); display: flex; flex-direction: column; gap: 8px; max-height: 85vh; overflow-y: auto; }
+        .spec-pop-title { font-size: 14px; font-weight: bold; color: #245a98; margin-bottom: 2px; }
+        .spec-pop-opt { background: #f4f4f1; border: 1px solid #b8bec7; color: #1d3d66; border-radius: 8px; padding: 13px 8px; font-size: 15px; font-weight: bold; font-family: inherit; cursor: pointer; text-align: center; }
+        .spec-pop-opt.on { background: #2f6fb5; border-color: #2f6fb5; color: #fff; }
+        .spec-pop-opt:active { background: #d3dbe6; }
+        .spec-pop-cancel { background: #c9ccd1; color: #333; border: none; border-radius: 8px; padding: 12px; font-size: 13px; font-weight: bold; font-family: inherit; cursor: pointer; margin-top: 2px; }
+
+        .numpad-grid { direction: ltr; gap: 3px; }
+        #odo-dlg-content .numpad-btn { padding: 15px 0; font-size: 18px; }
+
+        #odo-dlg-title { text-align: center; font-size: 15px; margin-bottom: 8px; }
+
+        @keyframes odoFade { from { opacity: 0; } to { opacity: 1; } }
+        #welcome-odo-overlay .wizard-container { animation: odoFade 0.12s ease-out; }
+
+        .table-col-titles { background: #2b2410; border: 1px solid rgba(255,213,74,0.35); border-bottom: none; border-radius: 10px 10px 0 0; padding: 10px 1px; margin-top: 4px; color: #ffd54a; font-weight: bold; font-size: 12px; }
+        .table-col-titles + .indicators-table { margin-top: 0; border-radius: 0 0 10px 10px; }
+        .indicators-table .col-indicator { color: #e0b030; }
+        .indicators-table .row-off .col-indicator { color: rgba(224,176,48,0.4); }
+        .indicators-table .col-remaining { color: #fff; font-weight: normal; }
+        .more-circle { width: 42px; height: 42px; border-radius: 50%; border: none; background: #e0a800; color: #fff; font-size: 28px; font-weight: bold; line-height: 1; font-family: inherit; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0 0 3px; box-shadow: 0 2px 8px rgba(224,168,0,0.3); -webkit-tap-highlight-color: transparent; }
+        .more-circle:active { background: #c99700; }
+
+        #time-pop-overlay { display: none; position: fixed; inset: 0; z-index: 36500; background: rgba(0,0,0,0.35); }
+        #tp-sheet { overflow: hidden; }
+        .tp-head { display: flex; align-items: center; gap: 12px; background: #2f6fb5; color: #fff; margin: -12px -14px 12px; padding: 12px 14px; font-size: 15px; font-weight: bold; flex-shrink: 0; }
+        .tp-sw { position: relative; width: 46px; height: 26px; border-radius: 13px; background: rgba(255,255,255,0.35); cursor: pointer; flex-shrink: 0; transition: background .15s; }
+        .tp-sw::after { content: ''; position: absolute; top: 3px; right: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: right .15s; }
+        .tp-sw.on { background: #4caf50; }
+        .tp-sw.on::after { right: 23px; }
+        #tp-body { flex: 1; min-height: 0; overflow-y: auto; }
+        .tp-date-line { font-size: 15px; color: #1d3d66; text-align: center; margin: 2px 0 10px; }
+        .tp-date-line b { font-weight: bold; }
+        .tp-off-msg { font-size: 14px; line-height: 2; text-align: center; color: #1d3d66; padding: 26px 8px; }
+
+        .more-circle { background: #b8860b; }
+        .more-circle:active { background: #9a7009; }
+        .more-circle.q { font-size: 22px; padding: 0; }
+        .grp-frame { margin-top: 0; border: 1px solid #2c2c2c; border-radius: 12px; overflow: hidden; background: #181818; }
+        .page-header.compact { margin-bottom: 8px; padding-bottom: 4px; }
+        .page-header.compact .cfg-btn { height: 30px; }
+        #main-app-container .main-container:has(.page-header.compact) { padding-top: 10px; }
+        .grp-more .more-circle { width: 34px; height: 34px; font-size: 22px; background: #1d1d1d; color: #aaa; border: 1px solid #444; box-shadow: none; padding: 0 0 2px; }
+        .grp-more .more-circle:active { background: #2a2a2a; }
+        #app-menu-overlay { display: none; position: fixed; inset: 0; z-index: 36000; background: rgba(0,0,0,0.35); }
+        #app-menu { position: absolute; width: 230px; background: #1e1e1e; border: 1px solid rgba(184,134,11,0.5); border-radius: 12px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,0.5); }
+        .am-item { display: block; width: 100%; background: none; border: none; border-bottom: 1px solid #2d2d2d; color: #fff; padding: 14px 16px; text-align: right; font-size: 14px; font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+        .am-item:last-child { border-bottom: none; }
+        .am-item:active { background: #2b2410; }
+        .am-item.danger { color: #f44336; }
+        .am-item small { display: block; margin-top: 3px; font-size: 11px; color: rgba(255,255,255,0.45); direction: ltr; text-align: right; }
+        .grp-menu { color: rgba(255,255,255,0.55); gap: 7px; padding: 0; }
+        .hdr-left { display: flex; align-items: center; gap: 12px; }
+        .hdr-home { background: none; border: none; padding: 0; color: rgba(255,255,255,0.55); display: flex; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+        .hdr-home:active { opacity: 0.6; }
+        .grp-tag { font-size: 14px; font-weight: normal; color: rgba(255,255,255,0.55); }
+        .table-col-titles.grp-cols { background: none; color: rgba(255,255,255,0.5); font-weight: normal; border: none; border-radius: 0; margin: 2px 0 4px; padding: 0 1px; font-size: 12px; }
+        .grp-frame .indicators-table { margin: 0; border: none; border-radius: 0; }
+        .grp-frame .indicators-table td { border-bottom: 1px solid #2a2a2a; }
+        .grp-frame .indicators-table tr:last-child td { border-bottom: none; }
+        .chev { display: inline-block; width: 0; height: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-right: 7px solid #6f6f6f; margin-left: 9px; vertical-align: middle; }
+        .row-off .chev { opacity: 0.5; }
+        .grp-more { display: flex; justify-content: center; margin-top: 16px; }
+        .grp-pills { margin-bottom: 24px; padding: 4px; border-radius: 14px; background: #1a1a1a; }
+        .kp-edit { margin-right: 8px; background: #2f6fb5; color: #fff; border: none; border-radius: 6px; padding: 4px 12px; font-size: 12px; font-weight: bold; font-family: inherit; cursor: pointer; }
+        .kp-edit:active { background: #245a98; }
+        #tp-body .numpad-btn { padding: 12px 0; font-size: 16px; }
+
+        .kp-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 8px 0 14px; }
+        .kp-label { font-size: 15px; color: #1d3d66; line-height: 1.8; }
+</style>
+</head>
+<body>
+
+    <!-- صفحة تسجيل الدخول: تغطي كل شيء حتى يتم الدخول وتحميل البيانات -->
+    <div id="login-page">
+        <div class="logo-lockup">
+            <div class="gmax-brand">
+                <span class="gmax-white">G</span><span class="gmax-gold">MAX</span>
+            </div>
+            <div class="auto-row"><span class="auto-line"></span><span class="auto-text">AUTO</span><span class="auto-line"></span></div>
+            <div class="main-subtitle">مساعدك الذكي للصيانة</div>
+        </div>
+        <div id="login-msg">جارٍ التحقق من الجلسة…</div>
+        <button class="google-btn" id="login-google-btn" style="display:none;" onclick="signInWithGoogle()">
+            <svg width="22" height="22" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+            <span>المتابعة باستخدام Google</span>
+        </button>
+        <button class="google-btn" id="login-retry-btn" style="display:none;" onclick="retryLoad()">إعادة المحاولة</button>
+        <button class="login-link-btn" id="login-out-btn" style="display:none;" onclick="doSignOut()">تسجيل الخروج</button>
+        <div class="login-note" id="login-note" style="display:none;">تُحفظ بياناتك في حسابك على السحابة، فتجدها على أي هاتف تدخل منه بالحساب نفسه.</div>
+    </div>
+
+    <div class="container">
+        <!-- شاشة الترحيب (ظاهرة افتراضياً) -->
+        <div id="welcome-page">
+            <div class="logo-lockup">
+                <div class="gmax-brand">
+                    <span class="gmax-white">G</span><span class="gmax-gold">MAX</span>
+                </div>
+                <div class="auto-row"><span class="auto-line"></span><span class="auto-text">AUTO</span><span class="auto-line"></span></div>
+                <div class="main-subtitle">مساعدك الذكي للصيانة</div>
+            </div>
+            <div class="single-global-light"></div>
+
+            <div class="welcome-odometer-section">
+                <div class="welcome-odometer-text" id="welcome-odo-display">120 000</div>
+            </div>
+
+            <button class="start-app-btn" id="startBtn" onclick="startApp()">Start</button>
+            <div class="odo-why-btn" style="position: fixed; top: 16px; left: 16px; margin: 0; z-index: 5;" onclick="showWelcomeHelp()">؟</div>
+        </div>
+
+        <!-- التطبيق الرئيسي (صفحة المؤشرات الشاملة والجزئية) -->
+        <div id="main-app-container" style="display: none; width: 100%; min-height: 100vh;">
+            <div class="main-container">
+                <div class="content-wrap">
+                    <div class="page-header">
+                        <div class="title-area">
+                            <button class="cfg-btn grp-menu" id="grp-menu-btn" onclick="openAppMenu()" aria-label="القائمة"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 6.5h16M4 12h16M4 17.5h16"/></svg><span class="grp-tag">مساعدك الذكي للصيانة</span></button>
+                        </div>
+                        <div class="hdr-left">
+                            <div class="header-mini-brand" onclick="goHome()">
+                                <div class="mini-brand-row"><span style="color:#ffffff;">G</span><span style="color:#b8860b;">MAX</span><span style="color:#3a86c8;">AUTO</span></div>
+                            </div>
+                            <button class="hdr-home" onclick="goHome()" aria-label="الرئيسية"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-7 8 7"/><path d="M6 10v9a1 1 0 001 1h3.5v-5h3v5H17a1 1 0 001-1v-9"/></svg></button>
+                        </div>
+                    </div>
+
+                    <!-- حاوية عرض جدول المؤشرات وزر المؤشرات الإضافية تحته -->
+                    <div id="editor-form-container"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة الإعدادات العامة الكاملة -->
+
+                <!-- صفحة الملاحظات الحرة -->
+        <div id="notes-page-container" style="display: none; width: 100%; min-height: 100vh; box-sizing: border-box;">
+            <div class="main-container">
+                <div class="content-wrap" style="display: flex; flex-direction: column;">
+                    <div class="page-header">
+                        <div class="title-area">
+                            <span class="page-title">ملاحظات</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:14px;"><button class="unified-close-btn" onclick="closeNotesPage()">غلق</button><div class="header-mini-brand" onclick="goHome()"><div class="mini-brand-row"><span style="color:#ffffff;">G</span><span style="color:#b8860b;">MAX</span><span style="color:#3a86c8;">AUTO</span></div><div class="mini-brand-sub">مساعدك الذكي للصيانة</div></div></div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; flex-grow: 1; margin-bottom: 20px;">
+                        <textarea id="notes-textarea" dir="auto" spellcheck="false" autocomplete="off" placeholder="اكتب ملاحظاتك هنا..." oninput="onNotesInput()" style="width: 100%; min-height: 55vh; background-color: #181818; color: #ffffff; border: 1px solid #333; border-radius: 10px; padding: 12px; font-size: 16px; line-height: 1.7; box-sizing: border-box; resize: vertical; font-family: inherit;"></textarea>
+                        <div id="notes-status" style="font-size: 12px; min-height: 16px; color: rgba(255,255,255,0.55);"></div>
+                        <div style="display: flex; gap: 8px;">
+                            <button onclick="saveNotes()" style="flex: 2; background-color: #b8860b; color: #000; border: none; padding: 14px; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 14px; font-family: inherit;">حفظ</button>
+                            <button onclick="copyNotes()" style="flex: 1; background-color: #1a1a1a; border: 1px solid #b8860b; color: #ffda75; padding: 14px; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 14px; font-family: inherit;">نسخ</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة تفعيل المؤشرات (من زر التفعيل في صفحة المؤشرات) -->
+
+        <!-- صفحة النسخة الاحتياطية الكاملة -->
+        <div id="backup-page-container" style="display: none; width: 100%; min-height: 100vh; box-sizing: border-box;">
+            <div class="main-container">
+                <div class="content-wrap" style="display: flex; flex-direction: column;">
+                    <div class="page-header">
+                        <div class="title-area">
+                            <span class="page-title">النسخة الاحتياطية</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:14px;"><button class="unified-close-btn" onclick="closeBackupPageModal()">غلق</button><div class="header-mini-brand" onclick="goHome()"><div class="mini-brand-row"><span style="color:#ffffff;">G</span><span style="color:#b8860b;">MAX</span><span style="color:#3a86c8;">AUTO</span></div><div class="mini-brand-sub">مساعدك الذكي للصيانة</div></div></div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; flex-grow: 1; margin-bottom: 20px;">
+                        <div style="font-size: 12px; color: #b8860b; font-weight: bold;">معلومات التخزين السحابي (JSON):</div>
+                        <textarea id="backup-textarea-content" readonly style="width: 100%; flex-grow: 1; min-height: 350px; background-color: #181818; color: #76ff03; border: 1px solid #333; border-radius: 8px; padding: 10px; font-size: 11px; box-sizing: border-box; resize: none; font-family: monospace;" dir="ltr"></textarea>
+
+                        <div style="display: flex; gap: 8px; margin-top: 10px;">
+                            <button onclick="downloadBackupJson()" style="flex: 1; background-color: #b8860b; color: #000; border: none; padding: 12px; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 12px;">تنزيل ملف JSON</button>
+                            <button onclick="triggerUploadJson()" style="flex: 1; background-color: #1a1a1a; border: 1px solid #b8860b; color: #ffda75; padding: 12px; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 12px;">تحميل ملف JSON</button>
+                            <input type="file" id="json-file-input" style="display: none;" accept=".json" onchange="handleFileSelected(event)">
+                        </div>
+                        <div id="undo-import-row" style="display: none;">
+                            <button onclick="undoLastImport()" style="width: 100%; background: none; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.7); padding: 10px; border-radius: 8px; cursor: pointer; font-size: 12px;"><span data-ico="undo" data-s="15" style="display:inline-flex;vertical-align:middle;margin-left:6px;"></span>التراجع عن آخر استرجاع</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة المؤشر الفرعي: التفاصيل في الأعلى، وتحتها زر التحديث الذي يفتح قسم التحديث في الصفحة نفسها -->
+    </div>
+
+    <div id="app-menu-overlay" onclick="closeAppMenu()"><div id="app-menu" onclick="event.stopPropagation()"></div></div>
+
+    <div id="story-overlay"><div id="story-card" onclick="storyTap(event)"></div></div>
+
+    <!-- شريط التنقل السفلي -->
+    <div class="bottom-nav-bar" id="bottom-nav-bar">
+        <button class="bottom-nav-item" id="nav-indicators-btn" onclick="navigateAlertsPage()">
+            <span class="bottom-nav-icon" data-ico="calendar" data-s="24"></span>
+            <span class="bottom-nav-label">المواعيد</span>
+        </button>
+        <button class="bottom-nav-item" id="nav-expenses-btn" onclick="navigateExpensesPage()">
+            <span class="bottom-nav-icon" data-ico="wallet" data-s="24"></span>
+            <span class="bottom-nav-label">المصاريف</span>
+        </button>
+    </div>
+
+    <!-- نافذة تسجيل مصروف: الخطوة 1 اختيار المجموعة، الخطوة 2 المبلغ -->
+    <div id="fuel-overlay">
+        <div class="fuel-sheet">
+            <div id="exp-step1">
+                <div class="fuel-title">نوع المصروف</div>
+                <div id="exp-cats"></div>
+                <div class="fuel-actions"><button class="fuel-x" onclick="fuelClose()">إلغاء</button></div>
+            </div>
+            <div id="exp-step2" style="display:none;">
+                <div class="exp-title-row"><div class="fuel-title" id="exp-title" style="margin:0;"></div><button class="exp-change" onclick="expShowStep1()">تغيير</button></div>
+                <div id="fuel-amount" class="fuel-amount-box empty">اكتب المبلغ</div>
+                <div class="fuel-chips" id="fuel-chips">
+                    <button class="fuel-chip" onclick="fuelSetAmount(1000)">1000</button>
+                    <button class="fuel-chip" onclick="fuelSetAmount(1500)">1500</button>
+                    <button class="fuel-chip" onclick="fuelSetAmount(2000)">2000</button>
+                    <button class="fuel-chip" onclick="fuelSetAmount(2500)">2500</button>
+                    <button class="fuel-chip" onclick="fuelSetAmount(3000)">3000</button>
+                </div>
+                <div class="fuel-pad" style="margin-top:8px;">
+                    <button class="fuel-key" onclick="fuelKey('1')">1</button><button class="fuel-key" onclick="fuelKey('2')">2</button><button class="fuel-key" onclick="fuelKey('3')">3</button>
+                    <button class="fuel-key" onclick="fuelKey('4')">4</button><button class="fuel-key" onclick="fuelKey('5')">5</button><button class="fuel-key" onclick="fuelKey('6')">6</button>
+                    <button class="fuel-key" onclick="fuelKey('7')">7</button><button class="fuel-key" onclick="fuelKey('8')">8</button><button class="fuel-key" onclick="fuelKey('9')">9</button>
+                    <button class="fuel-key" onclick="fuelKey('00')">00</button><button class="fuel-key" onclick="fuelKey('0')">0</button><button class="fuel-key del" onclick="fuelKey('del')">⌫</button>
+                </div>
+                <input type="text" id="exp-note" class="exp-note" maxlength="40" placeholder="ملاحظة (اختيارية): مثل بطارية أو غرامة سرعة">
+                <div class="fuel-date-row"><span>التاريخ</span><input type="date" id="fuel-date"></div>
+                <div id="fuel-err" class="fuel-err"></div>
+                <div class="fuel-actions">
+                    <button class="fuel-x" onclick="fuelClose()">إلغاء</button>
+                    <button class="fuel-ok" onclick="fuelSave()">حفظ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة الكتابة المنبثقة (لوحة الأرقام / الاقتراحات / التقويم) -->
+
+    <!-- نافذة تحديث المؤشرات الزمنية: تفتح مباشرة عند الضغط على المؤشر -->
+    <div id="time-pop-overlay">
+        <div class="up-sheet" id="tp-sheet">
+            <div class="tp-head"><span class="tp-sw" id="tp-sw" onclick="tpToggle()"></span><span id="tp-title"></span></div>
+            <div id="tp-body"></div>
+            <div id="tp-err" class="error-inline-msg"></div>
+            <div class="up-sheet-actions" id="tp-actions"></div>
+        </div>
+    </div>
+
+    <div id="spec-pop-overlay"><div id="spec-pop-box"></div></div>
+
+    <!-- رسائل الإعداد الأولي -->
+    <div id="onboarding-overlay" class="wizard-overlay" style="z-index: 38000;">
+        <div class="wizard-container" style="height: auto !important; max-height: 95vh !important;">
+            <div class="wizard-header-title" id="ob-title"></div>
+            <div id="ob-text" style="font-size: 14px; line-height: 1.9; text-align: center; margin: 16px 0; color: rgba(255,255,255,0.85);"></div>
+            <div class="numpad-actions-row">
+                <button class="numpad-action-btn numpad-confirm-btn" id="ob-btn"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة العداد ومعدل السير الشهري (تُستدعى من صفحة الاستقبال ومن تحديث المؤشرات) -->
+    <div id="welcome-odo-overlay" class="wizard-overlay" style="z-index: 37000;">
+        <div class="wizard-container" style="height: auto !important; max-height: 95vh !important;">
+            <div class="wizard-header-title" id="odo-dlg-title"></div>
+            <div id="odo-dlg-content"></div>
+            <div class="numpad-actions-row" id="odo-dlg-actions"></div>
+        </div>
+    </div>
+
+    <!-- نافذة تأكيد استيراد ملف JSON -->
+    <div id="backup-confirm-overlay" class="wizard-overlay">
+        <div class="wizard-container" style="height: auto !important; max-height: 90vh !important;">
+            <div class="wizard-header-title">تأكيد استيراد البيانات</div>
+            <div style="padding: 6px 2px; margin: 8px 0; font-size: 13px; line-height: 1.6;">
+                <p style="color: #ff9800; margin: 0 0 8px 0; font-weight: bold;">تحذير: سيتم استبدال جميع البيانات الحالية للسيارة والمؤشرات بالبيانات الموجودة في الملف المختار.</p>
+                <div class="detail-row"><span class="detail-label">اسم الملف:</span><span class="detail-val" id="confirm-filename">-</span></div>
+                <div class="detail-row"><span class="detail-label">عداد السيارة المسجل:</span><span class="detail-val"><span class="num-ltr" id="confirm-odo">-</span> كم</span></div>
+            </div>
+            <div id="backup-error-msg" class="error-inline-msg"></div>
+            <div class="numpad-actions-row" style="margin-top: 15px;">
+                <button class="numpad-action-btn numpad-cancel-btn" onclick="closeBackupConfirmModal()">إلغاء</button>
+                <button class="numpad-action-btn numpad-confirm-btn" onclick="executeBackupImport()">تأكيد الاستبدال</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة توضيح تاريخ اليوم -->
+    <div id="date-info-overlay" class="wizard-overlay" style="z-index: 39000;">
+        <div class="wizard-container" style="height: auto !important; max-height: 90vh !important;">
+            <div class="wizard-header-title" id="info-title">تاريخ اليوم</div>
+            <div id="info-body" style="padding: 6px 2px; margin: 8px 0; font-size: 13px; line-height: 1.8; color: #ddd;"></div>
+            <div class="numpad-actions-row" style="margin-top: 15px;">
+                <button class="numpad-action-btn numpad-confirm-btn" onclick="document.getElementById('date-info-overlay').style.display='none'">حسنًا</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تأكيد إعادة ضبط المصنع -->
+    <div id="factory-reset-overlay" class="wizard-overlay">
+        <div class="wizard-container" style="height: auto !important; max-height: 90vh !important;">
+            <div class="wizard-header-title" style="color: #f44336;">تأكيد إعادة ضبط المصنع</div>
+            <div style="padding: 6px 2px; margin: 8px 0; font-size: 13px; line-height: 1.6;">
+                <p style="color: #f44336; margin: 0 0 8px 0; font-weight: bold;">تحذير خطير: سيتم مسح بيانات السيارة والمؤشرات من حسابك في السحابة نهائياً وتفريغها للبدء من الصفر!</p>
+                <p style="color: #ccc; margin: 0; font-size: 12px;">هل أنت متأكد من رغبتك في المتابعة؟</p>
+            </div>
+            <div class="numpad-actions-row" style="margin-top: 15px;">
+                <button class="numpad-action-btn numpad-cancel-btn" onclick="closeFactoryResetModal()">إلغاء</button>
+                <button class="numpad-action-btn" onclick="executeFactoryReset()" style="background-color: #f44336; color: #fff;">تفريغ وحذف الكل</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- مكتبات Firebase (النسخة المتوافقة compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+    <script>
+        // ====================================================================
+        //  إعدادات Firebase: ضع هنا القيم من  Firebase Console ← Project settings ← Your apps ← Web app
+        // ====================================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDRKHdIzq2juXY5HaRXa6C-V9jAIhJIlSs",
+            authDomain: "gmaxauto.firebaseapp.com",
+            projectId: "gmaxauto",
+            appId: "1:635663618304:web:9cdde1b73006cbf6d723e5"
+        };
+
+        // ====================================================================
+        //  طبقة التخزين السحابي (Firestore)
+        //  المسار: users/{uid}/data/{name}  والقيمة في الحقل v (نص)
+        //  الأسماء: records (كل بيانات السيارة) | records_prev (نسخة قبل الاستيراد) | notes | fuel
+        //  القراءة فورية من الذاكرة (cloud)، والكتابة تُرسَل إلى Firestore (وتُخزَّن مؤقتاً وتُرسَل لاحقاً عند انقطاع الاتصال)
+        // ====================================================================
+        let fbAuth = null, fbDb = null, currentUser = null;
+        const cloud = { records: null, records_prev: null, notes: null, fuel: null };
+        let saveWarned = false;
+
+        function cloudRef(name) {
+            return fbDb.collection('users').doc(currentUser.uid).collection('data').doc(name);
+        }
+        function cloudGet(name) {
+            return Object.prototype.hasOwnProperty.call(cloud, name) ? cloud[name] : null;
+        }
+        function onCloudError(e) {
+            console.error(e);
+            if (saveWarned) return;
+            saveWarned = true;
+            showInfo('تعذّر الحفظ في السحابة', 'لم يستطع التطبيق حفظ بياناتك في حسابك على السحابة. تحقّق من اتصالك بالإنترنت ومن قواعد الأمان في Firebase.<br>ما سجّلتَه الآن قد لا يُحفظ، فخذ نسخة احتياطية من «المزيد».');
+        }
+        function cloudSet(name, str) {
+            cloud[name] = str;
+            if (!currentUser || !fbDb) return false;
+            cloudRef(name).set({ v: str, updatedAt: firebase.firestore.FieldValue.serverTimestamp() })
+                .then(function () { saveWarned = false; })
+                .catch(onCloudError);
+            return true;
+        }
+        function cloudRemove(name) {
+            cloud[name] = null;
+            if (!currentUser || !fbDb) return;
+            cloudRef(name).delete().catch(onCloudError);
+        }
+        function cloudLoadAll() {
+            const names = Object.keys(cloud);
+            names.forEach(function (n) { cloud[n] = null; });
+            return Promise.all(names.map(function (n) {
+                return cloudRef(n).get().then(function (snap) {
+                    const d = snap.exists ? snap.data() : null;
+                    cloud[n] = (d && typeof d.v === 'string') ? d.v : null;
+                });
+            })).then(migrateLocalIfNeeded);
+        }
+        // ترحيل لمرة واحدة: إن كانت على هذا الجهاز بيانات قديمة في localStorage ولا بيانات في السحابة، تُرفع إلى حساب Firestore
+        function migrateLocalIfNeeded() {
+            try {
+                if (localStorage.getItem('gmax_migrated_v1')) return;
+                const map = { records: 'gmax_records', notes: 'gmax_notes_v1', fuel: 'gmax_fuel_v1' };
+                Object.keys(map).forEach(function (n) {
+                    if (cloud[n] === null) {
+                        const v = localStorage.getItem(map[n]);
+                        if (typeof v === 'string') cloudSet(n, v);
+                    }
+                });
+                localStorage.setItem('gmax_migrated_v1', '1');
+            } catch (e) {}
+        }
+
+        // ===== تسجيل الدخول عبر Google =====
+        function setLoginState(state, msg) {
+            const $ = id => document.getElementById(id);
+            $('login-page').style.display = 'flex';
+            const m = $('login-msg');
+            m.innerText = msg || '';
+            m.className = (state === 'error' || state === 'loaderror') ? 'err' : '';
+            $('login-google-btn').style.display = state === 'signin' ? 'flex' : 'none';
+            $('login-note').style.display = state === 'signin' ? 'block' : 'none';
+            $('login-retry-btn').style.display = state === 'loaderror' ? 'flex' : 'none';
+            $('login-out-btn').style.display = state === 'loaderror' ? 'block' : 'none';
+        }
+        function hideLogin() { document.getElementById('login-page').style.display = 'none'; }
+
+        function signInWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            provider.setCustomParameters({ prompt: 'select_account' });
+            setLoginState('loading', 'جارٍ فتح نافذة Google…');
+            fbAuth.signInWithPopup(provider).catch(function (err) {
+                const code = (err && err.code) || '';
+                if (code === 'auth/popup-blocked' || code === 'auth/operation-not-supported-in-this-environment') {
+                    fbAuth.signInWithRedirect(provider);
+                    return;
+                }
+                if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') {
+                    setLoginState('signin', '');
+                    return;
+                }
+                if (code === 'auth/unauthorized-domain') {
+                    setLoginState('signin', 'هذا الدومين غير مصرَّح له في Firebase. أضفه من Authentication ← Settings ← Authorized domains.');
+                    return;
+                }
+                setLoginState('signin', 'تعذّر تسجيل الدخول' + (code ? ' (' + code + ')' : '') + '. حاول مرة أخرى.');
+            });
+        }
+
+        function startSession() {
+            setLoginState('loading', 'جارٍ تحميل بياناتك…');
+            cloudLoadAll().then(function () {
+                initUserData();
+                hideLogin();
+                goHome();
+            }).catch(function (err) {
+                console.error(err);
+                setLoginState('loaderror', 'تعذّر تحميل بياناتك من السحابة. تحقّق من اتصالك بالإنترنت ومن قواعد الأمان في Firebase، ثم أعد المحاولة.');
+            });
+        }
+        function retryLoad() { if (currentUser) startSession(); }
+        function doSignOut() {
+            if (!fbAuth) return;
+            fbAuth.signOut().then(function () { location.reload(); }, function () { location.reload(); });
+        }
+        function confirmSignOut() {
+            if (confirm('هل تريد تسجيل الخروج من حسابك؟\nبياناتك محفوظة في السحابة وستجدها عند الدخول مجدداً.')) doSignOut();
+        }
+
+        function initFirebase() {
+            if (typeof firebase === 'undefined') {
+                setLoginState('error', 'تعذّر تحميل مكتبات Firebase. تحقّق من اتصالك بالإنترنت ثم أعد فتح التطبيق.');
+                return;
+            }
+            if (/^YOUR_/.test(firebaseConfig.apiKey)) {
+                setLoginState('error', 'لم تُضبط إعدادات Firebase بعد. ضع قيم مشروعك في firebaseConfig أعلى السكربت.');
+                return;
+            }
+            firebase.initializeApp(firebaseConfig);
+            fbAuth = firebase.auth();
+            fbDb = firebase.firestore();
+            try { fbDb.enablePersistence({ synchronizeTabs: true }).catch(function () {}); } catch (e) {}
+            fbAuth.onAuthStateChanged(function (user) {
+                if (!user) {
+                    currentUser = null;
+                    setLoginState('signin', '');
+                    return;
+                }
+                if (currentUser && currentUser.uid === user.uid) return;
+                currentUser = user;
+                startSession();
+            });
+        }
+
+        const monthsAlgeria = ["جانفي", "فيفري", "مارس", "أفريل", "ماي", "جوان", "جويلية", "أوت", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+        const arabicFullWeekdays = ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+
+        let currentModule = 'none';
+        let appStarted = false;
+        let pendingImportData = null;
+
+        // ترتيب المجموعات: الوثائق ثم الزيت ثم الأحزمة ثم الصيانة (سلّة كل ما هو ثانوي)
+        const MODULE_ORDER = ['docs', 'oil', 'belts', 'general'];
+
+        // مؤشر مرتبط (link): يُحدَّد موعده بـ «التغيير القادم» أو «×2» للمؤشر الرئيسي (المرساة) بدل الكيلومتر.
+        // counter: اسم العدّاد داخل records، ويرتفع بواحد كلما غُيّرت المرساة (وضع «تغيير القطعة»).
+        // ===== الأيقونات: خطية أحادية اللون، ترث لون النص (currentColor) =====
+        const ICONS = {
+            home: '<path d="M4 11l8-7 8 7"/><path d="M6 10v9a1 1 0 001 1h3.5v-5h3v5H17a1 1 0 001-1v-9"/>',
+            gauge: '<path d="M3.5 17a9 9 0 1117 0"/><path d="M12 14l4-5"/><circle cx="12" cy="14" r="1.2"/>',
+            wallet: '<path d="M4 7a2 2 0 012-2h12v4"/><path d="M4 7v11a2 2 0 002 2h14V9H6a2 2 0 01-2-2z"/><circle cx="16.5" cy="14.5" r="1"/>',
+            menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
+            docs: '<path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/>',
+            oil: '<path d="M12 3s6 6.5 6 11a6 6 0 01-12 0c0-4.5 6-11 6-11z"/><path d="M9.5 14.5a2.7 2.7 0 002.5 2.5"/>',
+            belts: '<circle cx="7.5" cy="12" r="4.5"/><circle cx="18" cy="12" r="2.5"/><path d="M7.5 7.5L18 9.5M7.5 16.5L18 14.5" stroke-dasharray="2.2 1.6"/><circle cx="7.5" cy="12" r="1" fill="currentColor"/>',
+            general: '<path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>',
+            fuel: '<path d="M4 21V5a2 2 0 012-2h7a2 2 0 012 2v16"/><path d="M3 21h13"/><path d="M7 8h5"/><path d="M15 9h2a2 2 0 012 2v5a1.5 1.5 0 003 0V9l-3-3"/>',
+            misc: '<rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/>',
+            tune: '<path d="M4 6h8M16 6h4M4 12h3M11 12h9M4 18h9M17 18h3"/><circle cx="14" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="15" cy="18" r="2"/>',
+            backup: '<path d="M12 4v11"/><path d="M7.5 10.5L12 15l4.5-4.5"/><path d="M5 19h14"/>',
+            trash: '<path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v5M14 11v5"/>',
+            keyboard: '<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10h.01M11 10h.01M15 10h.01M7 14h10"/>',
+            calendar: '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/>',
+            check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+            undo: '<path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/>',
+            note: '<path d="M4 20h4L19 9a2.1 2.1 0 00-3-3L5 17z"/><path d="M14 7l3 3"/>',
+            logout: '<path d="M9 4H6a2 2 0 00-2 2v12a2 2 0 002 2h3"/><path d="M16 8l4 4-4 4"/><path d="M20 12H9"/>'
+        };
+        function ico(name, size) {
+            size = size || 20;
+            return `<svg class="ico" viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name] || ''}</svg>`;
+        }
+        function hydrateIcons() {
+            document.querySelectorAll('[data-ico]').forEach(el => { el.innerHTML = ico(el.dataset.ico, parseInt(el.dataset.s) || 20); });
+        }
+
+        // type: 'km' يعمل بالكيلومتر (الافتراضي) | 'time' يعمل بتاريخ انتهاء. presets: اقتراحات الأشهر لمؤشرات الوقت.
+        const metadata = {
+            docs: [
+                { key: 'insurance', label: 'التأمين', type: 'time', presets: [3, 6, 12] },
+                { key: 'techControl', label: 'المراقبة التقنية', type: 'time', presets: [12, 24, 36] },
+                { key: 'gplControl', label: 'مراقبة GPL', type: 'time', presets: [12, 24, 36] },
+                { key: 'extinguisherControl', label: 'مراقبة الطفاية', type: 'time', presets: [6, 12, 24] },
+                { key: 'drivingLicense', label: 'رخصة السياقة', type: 'time', presets: [36, 60, 120] },
+                { key: 'grayCard', label: 'البطاقة الرمادية', type: 'time', presets: [12, 24, 60] },
+                { key: 'vignette', label: 'القسيمة', type: 'time', presets: [12, 24, 36] },
+                { key: 'transitLicense', label: 'رخصة التنقل', type: 'time', presets: [6, 12, 24] }
+            ],
+            oil: [
+                { key: 'engineOilNextOdo', label: 'زيت المحرك', type: 'km', defaultMax: '10000', presets: [5000, 7500, 10000, 12000, 15000], spec: { label: 'نوع الزيت', presets: ['5W-30', '5W-40', '10W-40', '15W-40', '0W-30'], warn: 'درجة الزيت (اللزوجة) يحدّدها مصنّع محركك. استعمال درجة غير الموصى بها قد يضعف حماية المحرك أو يزيد استهلاك الوقود.' } },
+                { key: 'oilFilter', label: 'فلتر الزيت', type: 'km', defaultMax: '10000', presets: [5000, 7500, 10000, 12000, 15000] },
+                { key: 'airFilter', label: 'فلتر الهواء', type: 'km', defaultMax: '20000', presets: [10000, 15000, 20000, 25000, 30000] },
+                { key: 'fuelFilter', label: 'فلتر الوقود', type: 'km', defaultMax: '30000', presets: [10000, 15000, 20000, 30000, 40000] },
+                { key: 'acFilter', label: 'فلتر المكيف', type: 'km', defaultMax: '20000', presets: [10000, 15000, 20000, 25000, 30000] },
+                { key: 'gearOil', label: 'زيت علبة السرعة', type: 'km', defaultMax: '40000', presets: [40000, 60000, 80000, 100000, 120000], spec: { label: 'نوع زيت العلبة', presets: ['ATF', '75W-80', '75W-90', '80W-90', 'CVT'], warn: 'أنواع زيوت علب السرعة غير قابلة للتبادل: الأوتوماتيكية والـCVT واليدوية لكلٍّ زيتها، والخطأ فيها قد يتلف العلبة.' } }
+            ],
+            belts: [
+                { key: 'timingBelt', label: 'حزام التوزيع', type: 'km', defaultMax: '60000', presets: [60000, 80000, 100000, 120000, 150000] },
+                { key: 'tensioner', label: 'الشداد', type: 'km', defaultMax: '60000', presets: [60000, 80000, 100000, 120000, 150000] },
+                { key: 'accessoryBelts', label: 'أحزمة اللواحق', type: 'km', defaultMax: '40000', presets: [40000, 60000, 80000, 100000, 120000] },
+                { key: 'waterPump', label: 'مضخة الماء', type: 'km', defaultMax: '60000', presets: [60000, 80000, 100000, 120000, 150000] }
+            ],
+            general: [
+                { key: 'brakeFluid', label: 'سائل الفرامل', type: 'time', presets: [12, 24, 36], spec: { label: 'درجة سائل الفرامل', presets: ['DOT 3', 'DOT 4', 'DOT 4 LV', 'DOT 5.1', 'DOT 5'], warn: 'السائل السيليكوني DOT 5 لا يُخلط بغيره من الدرجات، وتختلف الدرجات في حرارة الغليان. استعمل ما يوصي به مصنّع سيارتك.' } },
+                { key: 'coolant', label: 'سائل التبريد', type: 'time', presets: [12, 24, 48], spec: { label: 'نوع سائل التبريد', presets: ['G11 أخضر', 'G12 أحمر', 'G12+ وردي', 'G12++ / G13 بنفسجي', 'جاهز مخلوط'], warn: 'أنواع سائل التبريد لا تُخلط، فقد تتجبّن وتسدّ مجاري التبريد. وإن كان في الدائرة نوع آخر فيجب تفريغها وغسلها.' } },
+                { key: 'powerSteering', label: 'زيت المقود', type: 'km', defaultMax: '50000', presets: [30000, 50000, 60000, 80000, 100000], spec: { label: 'نوع زيت المقود', presets: ['ATF', 'PSF', 'معدني', 'CHF', 'LHM'], warn: 'أنواع زيوت المقود لا تُخلط، والخطأ فيها قد يتلف الحشوات ومضخة المقود.' } },
+                { key: 'brakePadsFront', label: 'بلاكات أمامية', type: 'km', defaultMax: '40000', presets: [20000, 30000, 40000, 50000, 60000] },
+                { key: 'brakePadsRear', label: 'بلاكات خلفية', type: 'km', defaultMax: '80000', presets: [40000, 60000, 80000, 100000, 120000] },
+                { key: 'discsFront', label: 'أقراص أمامية', type: 'km', defaultMax: '80000', presets: [60000, 80000, 100000, 120000, 150000] },
+                { key: 'discsRear', label: 'أقراص خلفية', type: 'km', defaultMax: '100000', presets: [80000, 100000, 120000, 150000, 200000] },
+                { key: 'sparkPlugs', label: 'شمعات الاحتراق', type: 'km', defaultMax: '40000', presets: [20000, 30000, 40000, 60000, 100000], spec: { label: 'نوع الشمعات', presets: ['نحاس', 'بلاتين', 'إريديوم', 'مزدوجة', 'فضة'], warn: 'نوع الشمعة ومرجعها يحدّدهما مصنّع محركك، والخطأ فيهما قد يضعف الاحتراق أو يتلف المحرك.' } }
+            ]
+        };
+
+        function getItemMeta(modKey, itemKey) {
+            return (metadata[modKey] || []).find(i => i.key === itemKey) || null;
+        }
+        function isTimeItem(modKey, itemKey) {
+            let m = getItemMeta(modKey, itemKey);
+            return !!(m && m.type === 'time');
+        }
+
+        // بيانات فارغة: كل المؤشرات معطَّلة بلا قيم، والعداد 0 (تُستعمل عند أول تشغيل وعند إعادة ضبط المصنع)
+        function makeEmptyRecords() {
+            let rec = {
+                car: { odoLog: [], odometer: { lastManualOdo: 0, lastManualDate: getTodayDateString(), averageMileage: 2000, rateUserSet: false, currentEstimatedOdo: 0, lastManualTs: 0 } }
+            };
+            MODULE_ORDER.forEach(mod => {
+                rec[mod] = {};
+                metadata[mod].forEach(item => {
+                    rec[mod][item.key] = item.type === 'time'
+                        ? { expiryDate: '', active: false }
+                        : { max: 0, lastDate: '', lastOdo: 0, active: false };
+                });
+            });
+            return rec;
+        }
+
+        // أول تشغيل = لا توجد بيانات محفوظة لهذا الحساب في Firestore (تُحدَّد بعد تسجيل الدخول داخل initUserData)
+        let isFirstRun = true;
+        let onboardingStep = null;   // null | 'odo' | 'indicators'
+
+        let records = makeEmptyRecords();
+
+        // يبني سجلات سليمة من بيانات محفوظة أو مستوردة: يتجاهل كل ما ليس في التعريف، ويرحّل الصيغ القديمة
+        function mergeSavedRecords(saved) {
+            let rec = makeEmptyRecords();
+            if (!saved || typeof saved !== 'object') return rec;
+
+            if (saved.car && saved.car.odometer && typeof saved.car.odometer === 'object') {
+                let so = saved.car.odometer;
+                if (Number.isFinite(so.lastManualOdo) && so.lastManualOdo >= 0 && so.lastManualOdo <= 999999) rec.car.odometer.lastManualOdo = so.lastManualOdo;
+                if (isValidDateStr(so.lastManualDate)) rec.car.odometer.lastManualDate = so.lastManualDate;
+                if (Number.isFinite(so.lastManualTs) && so.lastManualTs > 0 && so.lastManualTs < 4102444800000) rec.car.odometer.lastManualTs = so.lastManualTs;
+                if (Number.isFinite(so.averageMileage) && so.averageMileage >= 100 && so.averageMileage <= 15000) rec.car.odometer.averageMileage = Math.round(so.averageMileage);
+                if (Number.isFinite(so.currentEstimatedOdo) && so.currentEstimatedOdo >= 0 && so.currentEstimatedOdo <= 999999) rec.car.odometer.currentEstimatedOdo = so.currentEstimatedOdo;
+                rec.car.odometer.rateUserSet = so.rateUserSet === true;
+                // المعدل القديم (1500) كان ثابتاً في الكود لا اختيار المستخدم: نعتمد 2000 حتى يؤكد المستخدم معدله
+                if (!rec.car.odometer.rateUserSet) rec.car.odometer.averageMileage = 2000;
+            }
+            if (saved.car && Array.isArray(saved.car.odoLog)) {
+                rec.car.odoLog = saved.car.odoLog
+                    .filter(e => e && Number.isFinite(e.odo) && e.odo >= 0 && e.odo <= 999999 && isValidDateStr(e.date))
+                    .map((e, i) => ({ seq: Number.isFinite(e.seq) ? e.seq : i + 1, date: e.date, odo: e.odo }));
+            } else {
+                rec.car.odoLog = undefined;   // نسخة قديمة بلا سجل: يُنشأ من آخر قراءة
+                ensureOdoLog(rec);
+            }
+
+            MODULE_ORDER.forEach(mod => {
+                metadata[mod].forEach(item => {
+                    let o = saved[mod] && saved[mod][item.key];
+                    // ترحيل: «زيت المقود» كان في مجموعة السوائل المحذوفة
+                    if (!o && item.key === 'powerSteering' && saved.fluids) o = saved.fluids.powerSteering;
+                    // ترحيل: البلاكات والأقراص كانت مؤشرًا واحدًا فصارت أمامية وخلفية
+                    if (!o && item.key === 'brakePadsFront' && saved[mod]) o = saved[mod].brakePads;
+                    if (!o && item.key === 'discsFront' && saved[mod]) o = saved[mod].brakeDiscs;
+                    if (!o || typeof o !== 'object') return;
+                    if (item.type === 'time') {
+                        if (!isValidDateStr(o.expiryDate)) return;   // تاريخ غير صالح: يبقى المؤشر معطّلاً بدل أن يظهر منتهيًا
+                        rec[mod][item.key] = { expiryDate: o.expiryDate, active: o.active !== false };
+                        if (item.spec && typeof o.spec === 'string' && o.spec.trim()) rec[mod][item.key].spec = o.spec.trim().slice(0, 40);
+                    } else {
+                        if (!Number.isFinite(o.max) || o.max < 0 || o.max > 99999999) return;
+                        if (o.linkTarget !== undefined || o.vidangeTarget !== undefined) return;   // كان مرتبطًا بغيره: يبقى معطّلًا حتى تحدّد له موعدًا بالكيلومتر
+                        let obj = {
+                            max: o.max,
+                            lastDate: isValidDateStr(o.lastDate) ? o.lastDate : '',
+                            lastOdo: (Number.isFinite(o.lastOdo) && o.lastOdo >= 0 && o.lastOdo <= 999999) ? o.lastOdo : 0,
+                            active: o.active !== false
+                        };
+                        if (item.spec && typeof o.spec === 'string' && o.spec.trim()) obj.spec = o.spec.trim().slice(0, 40);
+                        rec[mod][item.key] = obj;
+                    }
+                });
+            });
+            return rec;
+        }
+
+        // يُستدعى بعد تسجيل الدخول وتحميل البيانات من Firestore
+        function initUserData() {
+            isFirstRun = cloudGet('records') === null;
+            onboardingStep = null;
+            appStarted = false;
+            records = makeEmptyRecords();
+            if (!isFirstRun) {
+                try { records = mergeSavedRecords(JSON.parse(cloudGet('records'))); } catch (e) {}
+            }
+            updateEstimatedOdometerDaily();
+            let sb = document.getElementById('startBtn');
+            sb.innerText = isFirstRun ? 'تنزيل التطبيق' : 'Start';
+            sb.style.display = '';
+            document.getElementById('welcome-odo-display').innerText = formatNumberWithSpace(records.car.odometer.currentEstimatedOdo);
+            updateGlobalLight();
+            lastRefreshDay = getTodayDateString();
+        }
+
+        // ===== سجل قراءات العداد اليدوية =====
+        // records.car.odoLog = [{ seq, date, odo }, ...] : كل إدخال يدوي برقم تسلسلي. آخر إدخال هو المرجع في الحساب.
+        const MAX_ODO = 999999;
+
+        function parseDateStr(str) {
+            let p = str.split('-');
+            let d = new Date(parseInt(p[0]), parseInt(p[1]) - 1, parseInt(p[2]));
+            d.setHours(0, 0, 0, 0);
+            return d;
+        }
+        function daysBetweenDates(fromStr, toStr) {
+            return Math.round((parseDateStr(toStr) - parseDateStr(fromStr)) / 86400000);
+        }
+
+        // يضمن وجود السجل ويُنشئه من آخر قراءة قديمة إن كانت البيانات من نسخة سابقة
+        function ensureOdoLog(rec) {
+            if (!rec.car) rec.car = {};
+            if (!rec.car.odometer) rec.car.odometer = { lastManualOdo: 0, lastManualDate: getTodayDateString(), averageMileage: 2000, currentEstimatedOdo: 0 };
+            if (!Array.isArray(rec.car.odoLog)) {
+                let o = rec.car.odometer;
+                rec.car.odoLog = (o.lastManualDate && Number.isFinite(o.lastManualOdo) && o.lastManualOdo > 0)
+                    ? [{ seq: 1, date: o.lastManualDate, odo: o.lastManualOdo }] : [];
+            }
+        }
+
+        // يزامن حقول العداد المعروفة مع آخر إدخال في السجل
+        function syncOdoFromLog() {
+            let o = records.car.odometer;
+            let log = records.car.odoLog;
+            if (log.length) {
+                let last = log[log.length - 1];
+                o.lastManualOdo = last.odo;
+                o.lastManualDate = last.date;
+            } else {
+                o.lastManualOdo = 0;
+                o.lastManualDate = getTodayDateString();
+            }
+        }
+
+        // المعدل الشهري الشخصي: كل المقاطع بين القراءات المتتالية، بوزن يتناقص مع قِدَم المقطع (نصف الوزن كل 90 يوماً)
+        // فتكون الأولوية للأقرب ثم الأقرب، ولا يُهمل الأقدم. المعدل = 30 × (مجموع الكيلومترات الموزونة / مجموع الأيام الموزونة)
+        function computePersonalMonthlyRate() {
+            let log = records.car.odoLog || [];
+            if (log.length < 2) return null;
+            let today = getTodayDateString();
+            let num = 0, den = 0, totalDays = 0;
+            for (let i = 0; i < log.length - 1; i++) {
+                let days = daysBetweenDates(log[i].date, log[i + 1].date);
+                let km = log[i + 1].odo - log[i].odo;
+                if (days <= 0 || km < 0) continue;
+                let age = Math.max(0, daysBetweenDates(log[i + 1].date, today));
+                let w = Math.pow(0.5, age / 90);
+                num += km * w;
+                den += days * w;
+                totalDays += days;
+            }
+            if (den === 0 || totalDays < 14) return null;   // بيانات قليلة جداً: لا نقترح
+            let rate = Math.round((30 * num / den) / 10) * 10;
+            return Math.min(15000, Math.max(100, rate));
+        }
+
+        function updateEstimatedOdometerDaily() {
+            if (!records.car || !records.car.odometer) return;
+            ensureOdoLog(records);
+            syncOdoFromLog();
+            let odo = records.car.odometer;
+            let log = records.car.odoLog;
+            if (!log.length) { odo.currentEstimatedOdo = 0; return; }
+            let last = log[log.length - 1];
+            let diffDays = daysBetweenDates(last.date, getTodayDateString());
+            if (diffDays > 0) {
+                let monthlyRate = odo.averageMileage || 2000;
+                odo.currentEstimatedOdo = Math.min(MAX_ODO, Math.round(last.odo + diffDays * (monthlyRate / 30)));
+            } else {
+                odo.currentEstimatedOdo = last.odo;
+            }
+        }
+
+        // الحفظ في Firestore (القراءة من الذاكرة فورية، والكتابة تُرسَل للسحابة)
+        function saveAppData() {
+            updateGlobalLight();
+            return cloudSet('records', JSON.stringify(records));
+        }
+
+        // يجدّد ما يتغيّر بمرور الأيام: العداد التقديري والتاريخ والأضواء (يُستدعى عند كل انتقال وعند عودة التبويب)
+        let lastRefreshDay = '';
+        function refreshDaily() {
+            updateEstimatedOdometerDaily();
+            let el = document.getElementById('welcome-odo-display');
+            if (el) el.innerText = formatNumberWithSpace(records.car.odometer.currentEstimatedOdo);
+            updateGlobalLight();
+            lastRefreshDay = getTodayDateString();
+        }
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState !== 'visible' || appStarted === false || getTodayDateString() === lastRefreshDay) return;
+            refreshDaily();
+            if (document.getElementById('main-app-container').style.display === 'block' && currentModule) { renderForm(currentModule); }
+        });
+
+        function getTodayDateString() {
+            const now = new Date();
+            return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+        }
+
+        // ===== نافذة العداد الحالي + معدل السير الشهري =====
+        let odoDlg = null;
+
+        function openOdoDialog(origin) {
+            let o = records.car.odometer;
+            let personal = computePersonalMonthlyRate();
+            odoDlg = {
+                origin: origin,
+                view: 'pad',
+                field: 'odo',
+                odo: '',
+                odoEdited: false,
+                rate: String(personal !== null ? personal : (o.averageMileage || 2000)),
+                personal: personal,
+                prevVal: '',
+                rejectCount: 0,
+                pendingValue: null,
+                msg: ''
+            };
+            renderOdoDialog();
+            const ov = document.getElementById('welcome-odo-overlay');
+            const box = ov.querySelector('.wizard-container');
+            ov.style.display = 'flex';
+            // من صفحة البطاقات: تظهر النافذة مباشرة تحت بطاقة العداد، وفي غيرها تبقى في الوسط
+            const card = origin === 'cards' ? document.getElementById('odo-card') : null;
+            if (card) {
+                window.scrollTo(0, 0);
+                const bottom = card.getBoundingClientRect().bottom;
+                ov.style.alignItems = 'flex-start';
+                box.style.marginTop = Math.max(0, bottom + 8 - 15) + 'px';
+                box.style.setProperty('max-height', 'calc(100vh - ' + Math.round(bottom + 22) + 'px)', 'important');
+                box.style.overflowY = 'auto';
+            } else {
+                ov.style.alignItems = '';
+                box.style.marginTop = '';
+                box.style.setProperty('max-height', '95vh', 'important');
+                box.style.overflowY = '';
+            }
+        }
+
+        function odoDlgCancel() {
+            closeOdoDialog();
+            if (onboardingStep === 'odo') askInitialOdo();
+        }
+        function closeOdoDialog() {
+            document.getElementById('welcome-odo-overlay').style.display = 'none';
+            odoDlg = null;
+        }
+
+        // لوحة أرقام تشبه لوحة المفاتيح: 0-5 في السطر الأول، ثم مسح (يسار) و6-9 وحذف (يمين)
+        function padKeysHtml(dig, del, clr) {
+            const k = n => `<button class="numpad-btn" onclick="${dig}('${n}')">${n}</button>`;
+            return ['0','1','2','3','4','5'].map(k).join('') +
+                `<button class="numpad-btn numpad-btn-del" onclick="${clr}()">مسح</button>` +
+                ['6','7','8','9'].map(k).join('') +
+                `<button class="numpad-btn numpad-btn-del" onclick="${del}()">⌫</button>`;
+        }
+
+        function renderOdoDialog() {
+            let d = odoDlg;
+            let titleEl = document.getElementById('odo-dlg-title');
+            let contentEl = document.getElementById('odo-dlg-content');
+            let actionsEl = document.getElementById('odo-dlg-actions');
+            let warn = `<div style="font-size: 11px; color: #ff9800; text-align: center; margin-top: 8px; min-height: 16px; font-weight: bold; line-height: 1.7;">${d.msg || ''}</div>`;
+
+            if (d.view === 'replace') {
+                let log = records.car.odoLog;
+                let last = log[log.length - 1];
+                titleEl.innerText = 'تنبيه';
+                contentEl.innerHTML = `
+                    <div style="font-size: 13px; line-height: 1.9; text-align: center; margin: 14px 0; color: rgba(255,255,255,0.88);">
+                        هذا العدد (<span class="num-ltr">${formatNumberWithSpace(d.pendingValue)}</span> كم) أقل من آخر عدد مسجَّل
+                        (<span class="num-ltr">${formatNumberWithSpace(last.odo)}</span> كم بتاريخ ${convertDateToReadableArabic(last.date)}).<br>
+                        هل تريد استبدال العدد السابق بهذا العدد وبتاريخ اليوم؟
+                    </div>`;
+                actionsEl.innerHTML = `
+                    <button class="numpad-action-btn numpad-cancel-btn" onclick="odoDlg.view='pad'; odoDlg.pendingValue=null; renderOdoDialog();">لا</button>
+                    <button class="numpad-action-btn numpad-confirm-btn" onclick="odoDlgFinish('replace')">نعم، استبدل</button>`;
+                return;
+            }
+
+            if (d.view === 'jump') {
+                titleEl.innerText = 'تأكّد من الرقم';
+                contentEl.innerHTML = `
+                    <div style="font-size: 13px; line-height: 1.9; text-align: center; margin: 14px 0; color: rgba(255,255,255,0.88);">
+                        هذا العدد (<span class="num-ltr">${formatNumberWithSpace(d.pendingValue)}</span> كم) أكبر من آخر عدد مسجَّل بـ
+                        <span class="num-ltr">${formatNumberWithSpace(d.jumpKm)}</span> كم خلال <span class="num-ltr">${d.jumpDays}</span> يومًا، وهذا فارق كبير.<br>
+                        هل أنت متأكد من صحته؟
+                    </div>`;
+                actionsEl.innerHTML = `
+                    <button class="numpad-action-btn numpad-cancel-btn" onclick="odoDlg.view='pad'; odoDlg.pendingValue=null; renderOdoDialog();">راجع الرقم</button>
+                    <button class="numpad-action-btn numpad-confirm-btn" onclick="odoDlg.jumpOk=true; odoDlg.view='pad'; odoDlgSave();">نعم، صحيح</button>`;
+                return;
+            }
+
+            if (d.view === 'pad') {
+                let isOdo = d.field === 'odo';
+                titleEl.innerText = d.origin === 'popupNext' ? 'العداد عند التغيير القادم' : (isOdo ? 'العداد الحالي للسيارة' : 'تعديل معدل السير الشهري');
+                contentEl.innerHTML = `
+                    <div class="wizard-display-box" style="margin-top: 8px;">
+                        <span class="wizard-number-part">${formatNumberWithSpace(d[d.field]) || '0'}</span>
+                        <span class="wizard-unit-part">${isOdo ? 'كم' : 'كم / شهر'}</span>
+                    </div>
+                    <div class="numpad-grid" style="margin-top: 10px;">${padKeysHtml('odoDlgDigit', 'odoDlgDel', 'odoDlgClear')}</div>
+                    ${d.origin === 'popupNext' ? nextSuggestHtml() : ''}
+                    ${warn}`;
+                actionsEl.innerHTML = `
+                    <button class="numpad-action-btn numpad-cancel-btn" onclick="odoDlgCancel()">إلغاء</button>
+                    <button class="numpad-action-btn numpad-confirm-btn" onclick="odoDlgPadConfirm()">تأكيد</button>`;
+                return;
+            }
+
+            let o = records.car.odometer;
+            let rateNote;
+            if (d.personal !== null) {
+                rateNote = `معدلك الشخصي المحسوب من قراءاتك السابقة هو <b class="num-ltr">${formatNumberWithSpace(d.personal)}</b> كم/شهر. يمكنك إبقاؤه أو كتابة رقم آخر.`;
+            } else if (o.rateUserSet && o.averageMileage !== 2000) {
+                rateNote = 'هذا المعدل الذي اخترتَه. سيُحسب معدلك الشخصي تلقائياً بعد توفّر قراءات كافية.';
+            } else {
+                rateNote = '2 000 كم/شهر متوسط مناسب للبداية، عدّله متى عرفتَ معدلك الحقيقي.';
+            }
+            titleEl.innerText = 'العداد ومعدل السير';
+            contentEl.innerHTML = `
+                <div class="field-row-inline" style="margin-top:8px;">
+                    <span class="field-label-text">تاريخ اليوم:</span>
+                    <div class="date-display-box" onclick="showDateInfo()">${convertDateToReadableArabic(getTodayDateString())}</div>
+                </div>
+                <div class="field-row-inline">
+                    <span class="field-label-text">العداد الحالي:</span>
+                    <div class="date-display-box editable ${d.touchOdo ? 'touched' : ''}" onclick="odoDlg.touchOdo=true; odoDlgOpenPad('odo')"><span class="num-ltr">${formatNumberWithSpace(d.odo) || '—'}</span> كم</div>
+                </div>
+                <div class="field-row-inline">
+                    <span class="field-label-text">معدل السير الشهري:</span>
+                    <div class="date-display-box editable ${d.touchRate ? 'touched' : ''}" onclick="odoDlg.touchRate=true; odoDlgOpenPad('rate')"><span class="num-ltr">${formatNumberWithSpace(d.rate) || '—'}</span> كم</div>
+                </div>
+                <div class="tap-hint">اضغط للتعديل</div>
+                <div style="font-size: 11px; color: rgba(255,255,255,0.55); text-align: center; margin-top: 8px; line-height: 1.7;">${rateNote}</div>
+                ${warn}`;
+            actionsEl.innerHTML = `
+                <button class="numpad-action-btn numpad-cancel-btn" onclick="odoDlgCancel()">إلغاء</button>
+                <button class="numpad-action-btn numpad-confirm-btn" onclick="odoDlgSave()">تأكيد</button>`;
+        }
+
+        function odoDlgOpenPad(field) {
+            odoDlg.field = field;
+            odoDlg.prevVal = odoDlg[field];
+            odoDlg[field] = '';          // الكتابة تبدأ من خانة فارغة
+            odoDlg.view = 'pad';
+            odoDlg.msg = '';
+            renderOdoDialog();
+        }
+        function odoDlgDigit(dg) {
+            let maxLen = odoDlg.field === 'odo' ? 6 : 5;
+            let cur = odoDlg[odoDlg.field];
+            if (cur === '0') cur = '';            // لا أصفار زائدة في البداية
+            if (cur.length >= maxLen) return;
+            odoDlg[odoDlg.field] = cur + dg;
+            odoDlg.msg = '';
+            renderOdoDialog();
+        }
+        function odoDlgDel() {
+            odoDlg[odoDlg.field] = odoDlg[odoDlg.field].slice(0, -1);
+            odoDlg.msg = '';
+            renderOdoDialog();
+        }
+        function odoDlgClear() {
+            odoDlg[odoDlg.field] = '';
+            odoDlg.msg = '';
+            renderOdoDialog();
+        }
+        function odoDlgPadConfirm() {
+            let d = odoDlg;
+            if (d.origin === 'popupNext') {
+                const v = parseInt(d.odo, 10), cur = records.car.odometer.currentEstimatedOdo;
+                if (isNaN(v) || v <= 0) { d.msg = 'اكتب العداد عند التغيير القادم'; renderOdoDialog(); return; }
+                if (v <= cur) { d.msg = 'يجب أن يكون أكبر من العداد الحالي (' + formatNumberWithSpace(cur) + ' كم)'; renderOdoDialog(); return; }
+                if (tp) { tp.mode = null; tp.presetIdx = null; tp.next = String(v); }
+                closeOdoDialog();
+                if (tp) tpRender();
+                return;
+            }
+            let v = parseInt(d.odo, 10);
+            if (isNaN(v)) { d.msg = 'أدخل رقم العداد'; renderOdoDialog(); return; }
+            if (v < 0 || v > MAX_ODO) { d.msg = 'قيمة العداد غير مقبولة (من 0 إلى 999 999 كم)'; renderOdoDialog(); return; }
+            d.odo = String(v); d.odoEdited = true; d.jumpOk = false; d.msg = '';
+            odoDlgSave();
+        }
+
+        // الحفظ: نصنّف إدخال العداد قبل أي كتابة
+        function odoDlgSave() {
+            let d = odoDlg;
+            let odoVal = parseInt(d.odo, 10);
+            let rateVal = parseInt(d.rate, 10);
+            if (isNaN(odoVal) || isNaN(rateVal)) { d.msg = 'أكمل العداد والمعدل الشهري'; renderOdoDialog(); return; }
+
+            let log = records.car.odoLog;
+            if (onboardingStep === 'odo' && !d.odoEdited) { d.msg = 'أدخل رقم العداد الحالي لسيارتك'; renderOdoDialog(); return; }
+
+            if (!d.odoEdited) { odoDlgFinish('none'); return; }
+            if (log.length === 0) { odoDlgFinish('new'); return; }
+
+            let last = log[log.length - 1];
+            let prev = log.length >= 2 ? log[log.length - 2] : null;
+
+            if (odoVal > last.odo) {
+                let days = Math.max(1, daysBetweenDates(last.date, getTodayDateString()));
+                let expected = days * ((records.car.odometer.averageMileage || 2000) / 30);
+                let jump = odoVal - last.odo;
+                if (!d.jumpOk && jump > Math.max(10000, expected * 3)) {
+                    d.pendingValue = odoVal; d.jumpKm = jump; d.jumpDays = days;
+                    d.view = 'jump'; renderOdoDialog(); return;
+                }
+                odoDlgFinish('new'); return;
+            }
+
+            // العدد ليس أكبر من آخر عدد مسجَّل
+            if (prev && odoVal <= prev.odo) {
+                d.rejectCount++;
+                d.msg = d.rejectCount === 1
+                    ? 'هذا العدد أقل من أعداد مسجَّلة سابقاً، ولا يمكن قبوله. راجع رقم العداد.'
+                    : 'لا يمكن تصحيح الأعداد القديمة. إن كان الخطأ فيها فعلاً، فالحل الوحيد هو «إعادة ضبط المصنع» من «المزيد» ثم البدء من جديد.';
+                renderOdoDialog();
+                return;
+            }
+            // يقع بين العدد قبل الأخير وآخر عدد: تصحيح لآخر إدخال بعد تأكيد المستخدم
+            d.pendingValue = odoVal;
+            d.view = 'replace';
+            renderOdoDialog();
+        }
+
+        function odoDlgFinish(mode) {
+            let d = odoDlg;
+            let odoVal = parseInt(d.odo, 10);
+            let rateVal = parseInt(d.rate, 10);
+            let log = records.car.odoLog;
+            let today = getTodayDateString();
+
+            if (mode === 'new') {
+                log.push({ seq: log.length ? log[log.length - 1].seq + 1 : 1, date: today, odo: odoVal });
+            } else if (mode === 'replace') {
+                let last = log[log.length - 1];
+                last.date = today;      // الرقم التسلسلي يبقى نفسه
+                last.odo = odoVal;
+            }
+
+            let o = records.car.odometer;
+            if (mode !== 'none') o.lastManualTs = Date.now();
+            { const pr = computePersonalMonthlyRate(); o.averageMileage = (pr !== null) ? pr : rateVal; }
+            o.rateUserSet = true;
+            syncOdoFromLog();
+            o.currentEstimatedOdo = log.length ? log[log.length - 1].odo : 0;
+            if (mode === 'none') updateEstimatedOdometerDaily();
+
+            document.getElementById('welcome-odo-display').innerText = formatNumberWithSpace(o.currentEstimatedOdo);
+            saveAppData();
+            let origin = d.origin;
+            closeOdoDialog();
+            if (onboardingStep === 'odo' && origin === 'welcome') { onboardingAfterOdometer(); return; }
+            if (origin === 'cards' && currentModule === 'alerts') renderCardsPage();
+            if (origin === 'popup' && tp) tpRender();
+
+        }
+
+        function formatNumberWithSpace(num) {
+            if (isNaN(num) || num === "") return num;
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        }
+
+        function escapeHtml(v) {
+            return String(v === undefined || v === null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+
+        // تاريخ صالح بصيغة YYYY-MM-DD وقابل للوجود فعلاً (لا 2026-13-45)
+        function isValidDateStr(str) {
+            if (typeof str !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(str)) return false;
+            let p = str.split('-').map(Number);
+            let d = new Date(p[0], p[1] - 1, p[2]);
+            return d.getFullYear() === p[0] && d.getMonth() === p[1] - 1 && d.getDate() === p[2];
+        }
+
+        function convertDateToReadableArabic(dateStr) {
+            if (!dateStr || !isValidDateStr(dateStr)) return escapeHtml(dateStr);
+            let parts = dateStr.split('-');
+            let monthIdx = parseInt(parts[1], 10) - 1;
+            return (monthIdx >= 0 && monthIdx < 12) ? `<span dir="rtl" style="unicode-bidi: isolate;">${parseInt(parts[2], 10)} ${monthsAlgeria[monthIdx]} ${parts[0]}</span>` : dateStr;
+        }
+
+        function calculateRemainingDays(expiryDateStr) {
+            if (!expiryDateStr) return 0;
+            let parts = expiryDateStr.split('-');
+            let exp = new Date(Date.UTC(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]), 12, 0, 0));
+
+            let today = new Date();
+            let todayUtc = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), 12, 0, 0));
+
+            let diffTime = exp.getTime() - todayUtc.getTime();
+            return Math.round(diffTime / (1000 * 60 * 60 * 24));
+        }
+
+        function getIndicatorStatus(modKey, itemKey, dataRec) {
+            let obj = dataRec[itemKey];
+            if (!obj || obj.active === false) return 'green';
+            if (isTimeItem(modKey, itemKey)) {
+                if (!isValidDateStr(obj.expiryDate)) return 'green';   // مفعّل بلا تاريخ صالح: لا نُظهره منتهيًا
+                let rem = calculateRemainingDays(obj.expiryDate);
+                if (rem <= 0) return 'red';
+                if (rem <= 30) return 'yellow';
+                return 'green';
+            } else {
+                let rem = obj.max - records.car.odometer.currentEstimatedOdo;
+                if (rem <= 0) return 'red';
+                if (rem <= 2000) return 'yellow';
+                return 'green';
+            }
+        }
+
+        function getModuleStatus(modKey) {
+            let dataRec = records[modKey];
+            let metaList = metadata[modKey];
+            let hasRed = false;
+            let hasYellow = false;
+            let hasActive = false;
+            metaList.forEach(item => {
+                if (dataRec[item.key] && dataRec[item.key].active !== false) {
+                    hasActive = true;
+                    let st = getIndicatorStatus(modKey, item.key, dataRec);
+                    if (st === 'red') hasRed = true;
+                    if (st === 'yellow') hasYellow = true;
+                }
+            });
+            if (!hasActive) return 'none';   // لا مؤشر مفعّل: ضوء أبيض باهت لا أخضر
+            if (hasRed) return 'red';
+            if (hasYellow) return 'yellow';
+            return 'green';
+        }
+
+        function updateGlobalLight() {
+            let hasRed = false;
+            let hasYellow = false;
+            let allNone = true;
+            MODULE_ORDER.forEach(modKey => {
+                let st = getModuleStatus(modKey);
+                if (st !== 'none') allNone = false;
+                if (st === 'red') hasRed = true;
+                if (st === 'yellow') hasYellow = true;
+            });
+            let lightEl = document.querySelector('.single-global-light');
+            if (!lightEl) return;
+            lightEl.className = 'single-global-light';
+            if (allNone) {
+                lightEl.style.backgroundColor = 'rgba(255, 255, 255, 0.25)';
+                lightEl.style.boxShadow = 'none';
+            } else if (hasRed) {
+                lightEl.style.backgroundColor = '#f44336';
+                lightEl.style.boxShadow = '0 0 16px #f44336';
+            } else if (hasYellow) {
+                lightEl.style.backgroundColor = '#ff9800';
+                lightEl.style.boxShadow = '0 0 16px #ff9800';
+            } else {
+                lightEl.style.backgroundColor = '#4caf50';
+                lightEl.style.boxShadow = '0 0 16px #4caf50';
+            }
+        }
+
+        updateGlobalLight();
+        document.getElementById('bottom-nav-bar').style.display = 'none';
+
+        function setNavActive(btnId) {
+            document.querySelectorAll('.bottom-nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            let targetBtn = document.getElementById(btnId);
+            if (targetBtn) {
+                targetBtn.classList.add('active');
+            }
+        }
+
+        function hideAllPages(navId) {
+            refreshDaily();
+            document.getElementById('welcome-page').style.display = 'none';
+            document.getElementById('main-app-container').style.display = 'none';
+            document.getElementById('backup-page-container').style.display = 'none';
+            document.getElementById('notes-page-container').style.display = 'none';
+            // الشريط السفلي: يظهر فقط بعد البدء وفي الصفحات الرئيسية الثلاث، ويُضبط الزر النشط مع الصفحة دائماً
+            setNavActive(navId);
+            document.getElementById('bottom-nav-bar').style.display = (appStarted && navId) ? 'flex' : 'none';
+        }
+
+        function navigateToModule(mod) {
+            currentModule = mod;
+            let navId = 'nav-indicators-btn';
+            hideAllPages(navId);
+            document.getElementById('main-app-container').style.display = 'block';
+            renderForm(mod);
+            setNavActive(navId);
+        }
+
+        function navigateExpensesPage() {
+            currentModule = 'expenses';
+            expView = 'home';
+            hideAllPages('nav-expenses-btn');
+            document.getElementById('main-app-container').style.display = 'block';
+            renderForm('expenses');
+        }
+
+        function showExpensesHelp() {
+            showInfo('عن هذه الصفحة', '<b style="color:#b8860b;">الأرقام</b><br>في الأعلى مجموع هذا الشهر ومجموع هذه السنة.<br><br><b style="color:#b8860b;">+ مصروف</b><br>اختر نوع المصروف (الوقود، الزيت والصيانة، الوثائق والرسوم، الطوارئ، مصاريف أخرى)، ثم اكتب المبلغ واضغط حفظ. والتاريخ يكون اليوم تلقائيًا ويمكنك تغييره. وفي غير الوقود يمكنك كتابة ملاحظة قصيرة كبطارية أو غرامة.<br><br><b style="color:#b8860b;">الإحصائيات</b><br>ثلاثة أرقام يريد معرفتها معظم السائقين: معدل تكلفة الوقود لكل 100 كم، ومعدل تكلفة السيارة لكل 100 كم، ومجموع تكلفة السيارة السنوي. اختر أحدها فيظهر رسم بالسنوات الخمس، تبدأ بأول سنة سجّلتَ فيها مصاريف. وفي المجموع السنوي اضغط على سنة لترى تفاصيلها. وتُحسب الأرقام بالمعدل السنوي لتتفادى تقلّب الطريق والسرعة والحمولة. ولحساب التكلفة لكل 100 كم يلزم تسجيل المصاريف وتحديث العداد بقراءتين بينهما شهر على الأقل.<br><br><b style="color:#b8860b;">قائمة المصاريف</b><br>كل ما سجّلته مرتبًا بالتاريخ. راجعها متى شككت في إدخال ما، واحذف بزر ✕ ما كُتب خطأً ثم أعد كتابته. وزر «نسخ» يجهّز القائمة للواتساب. هذه البيانات لا تمسحها إعادة ضبط المصنع.');
+        }
+
+        function navigateAlertsPage() {
+            navigateToModule('alerts');
+        }
+
+        function startApp() {
+            if (isFirstRun) { installApp(); return; }
+            appStarted = true;
+            document.getElementById('startBtn').style.display = 'none';
+            navigateAlertsPage();
+        }
+
+        // ===== الإعداد الأولي (أول استعمال) =====
+        function showOnboardingMsg(title, text, btnText, onClick) {
+            document.getElementById('ob-title').innerText = title;
+            document.getElementById('ob-text').innerHTML = text;
+            let btn = document.getElementById('ob-btn');
+            btn.innerText = btnText;
+            btn.onclick = function() {
+                document.getElementById('onboarding-overlay').style.display = 'none';
+                if (onClick) onClick();
+            };
+            document.getElementById('onboarding-overlay').style.display = 'flex';
+        }
+
+        function installApp() {
+            // أول شيء: إنشاء مستند البيانات في Firestore ببيانات فارغة
+            cloudSet('records', JSON.stringify(records));
+            isFirstRun = false;
+            onboardingStep = 'odo';
+            document.getElementById('startBtn').style.display = 'none';
+            askInitialOdo();
+        }
+
+        function askInitialOdo() {
+            showOnboardingMsg(
+                'مرحباً بك',
+                'أدخل رقم العداد الحالي لسيارتك لنبدأ.',
+                'إدخال العداد',
+                function() { openOdoDialog('welcome'); }
+            );
+        }
+
+        function onboardingAfterOdometer() {
+            document.getElementById('welcome-odo-display').classList.remove('odo-attention');
+            onboardingStep = 'indicators';
+            showOnboardingMsg(
+                'تم حفظ العداد ✓',
+                'اختر أي بطاقة (الوثائق، الزيت، الأحزمة، الصيانة)، ثم اضغط على المؤشر الذي تريد متابعته وفعّله بالمفتاح في أعلى صفحته.',
+                'حسناً',
+                function() { finishOnboarding(); }
+            );
+        }
+
+        function finishOnboarding() {
+            onboardingStep = null;
+            startApp();
+        }
+
+        // الصفحة الأولى: تُفتح بالضغط على شعار التطبيق من أي صفحة
+        function goHome() {
+            hideAllPages(appStarted ? 'home' : undefined);
+            document.getElementById('welcome-page').style.display = 'flex';
+            if (!onboardingStep && !isFirstRun) document.getElementById('startBtn').style.display = '';
+        }
+
+        // قائمة الثلاثة خطوط (أعلى اليمين): شرح الصفحة، شرح التطبيق، النسخة الاحتياطية، الملاحظات، إعادة الضبط
+        let menuBack = 'alerts';
+        function openAppMenu() {
+            const r = document.getElementById('grp-menu-btn').getBoundingClientRect();
+            const pn = document.getElementById('app-menu');
+            pn.style.top = (r.bottom + 4) + 'px';
+            pn.style.right = Math.max(8, window.innerWidth - r.right) + 'px';
+            pn.innerHTML = [['page', 'شرح هذه الصفحة'], ['app', 'شرح التطبيق'], ['backup', 'النسخة الاحتياطية'], ['notes', 'ملاحظات'], ['signout', 'تسجيل الخروج'], ['reset', 'إعادة ضبط المصنع']]
+                .map(x => `<button class="am-item${x[0] === 'reset' ? ' danger' : ''}" onclick="appMenuAct('${x[0]}')">${x[1]}${x[0] === 'signout' && currentUser && (currentUser.email || currentUser.displayName) ? `<small>${escapeHtml(currentUser.email || currentUser.displayName)}</small>` : ''}</button>`).join('');
+            document.getElementById('app-menu-overlay').style.display = 'block';
+        }
+        function closeAppMenu() { document.getElementById('app-menu-overlay').style.display = 'none'; }
+        function appMenuAct(a) {
+            closeAppMenu();
+            if (a === 'backup' || a === 'notes') menuBack = (currentModule && currentModule !== 'none') ? currentModule : 'alerts';
+            if (a === 'page') {
+                if (currentModule === 'expenses') showExpensesHelp();
+                else if (MODULE_ORDER.indexOf(currentModule) !== -1) showGroupPageHelp();
+                else showAlertsPageHelp();
+            }
+            else if (a === 'app') showWelcomeHelp();
+            else if (a === 'backup') openBackupPage();
+            else if (a === 'notes') openNotesPage();
+            else if (a === 'signout') confirmSignOut();
+            else if (a === 'reset') openFactoryResetModal();
+        }
+        function returnFromMenuPage() {
+            if (menuBack === 'expenses') navigateExpensesPage(); else navigateToModule(menuBack || 'alerts');
+        }
+
+        // ===== الملاحظات الحرة: تُحفظ في Firestore (المستند notes). المسودة المؤقتة فقط تبقى على الجهاز =====
+        let notesSaved = '';
+        let notesDraftTimer = null;
+
+        function notesDraftKey() { return 'gmax_notes_draft_v1_' + (currentUser ? currentUser.uid : ''); }
+        function notesReadSaved() {
+            let v = cloudGet('notes');
+            return (typeof v === 'string') ? v : null;
+        }
+        function notesReadDraft() {
+            try { let v = localStorage.getItem(notesDraftKey()); return (typeof v === 'string') ? v : null; } catch (e) { return null; }
+        }
+        function notesSetStatus(text, color) {
+            let el = document.getElementById('notes-status');
+            el.innerText = text || '';
+            el.style.color = color || 'rgba(255,255,255,0.55)';
+        }
+        function notesIsDirty() {
+            return document.getElementById('notes-textarea').value !== notesSaved;
+        }
+        function notesRefreshStatus() {
+            if (notesIsDirty()) notesSetStatus('تعديلات غير محفوظة. اضغط «حفظ».', '#ff9800');
+            else notesSetStatus(notesSaved ? 'محفوظة ✓' : '', '#76ff03');
+        }
+
+        function openNotesPage() {
+            notesSaved = notesReadSaved() || '';
+            let draft = notesReadDraft();
+            let box = document.getElementById('notes-textarea');
+            // إن بقيت مسودة لم تُحفظ (خرجتَ قبل الضغط على حفظ) فهي الأحدث، فنعرضها
+            box.value = (draft !== null) ? draft : notesSaved;
+            hideAllPages();
+            document.getElementById('notes-page-container').style.display = 'block';
+            notesRefreshStatus();
+        }
+
+        function onNotesInput() {
+            // حفظ تلقائي للمسودة فقط (لا يُعدّ حفظاً نهائياً) حتى لا يضيع ما كتبتَه إن خرجتَ فجأة
+            clearTimeout(notesDraftTimer);
+            notesDraftTimer = setTimeout(function () {
+                try { localStorage.setItem(notesDraftKey(), document.getElementById('notes-textarea').value); } catch (e) {}
+            }, 400);
+            notesRefreshStatus();
+        }
+
+        function saveNotes() {
+            let text = document.getElementById('notes-textarea').value;
+            clearTimeout(notesDraftTimer);
+            if (cloudSet('notes', text)) {
+                try { localStorage.removeItem(notesDraftKey()); } catch (e) {}
+                notesSaved = text;
+                notesSetStatus('تم الحفظ ✓', '#76ff03');
+            } else {
+                notesSetStatus('تعذّر الحفظ في السحابة. انسخ ملاحظاتك بزر «نسخ» واحتفظ بها.', '#f44336');
+            }
+        }
+
+        function copyNotes() {
+            let box = document.getElementById('notes-textarea');
+            let text = box.value;
+            if (!text) { notesSetStatus('لا توجد ملاحظات لنسخها.', '#ff9800'); return; }
+            function fallbackCopy() {
+                try {
+                    box.focus();
+                    box.select();
+                    let ok = document.execCommand('copy');
+                    box.setSelectionRange(0, 0);
+                    notesSetStatus(ok ? 'تم النسخ. ألصقها في واتساب ✓' : 'تعذّر النسخ. حدّد النص وانسخه يدوياً.', ok ? '#76ff03' : '#f44336');
+                } catch (e) {
+                    notesSetStatus('تعذّر النسخ. حدّد النص وانسخه يدوياً.', '#f44336');
+                }
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(function () {
+                    notesSetStatus('تم النسخ. ألصقها في واتساب ✓', '#76ff03');
+                }).catch(fallbackCopy);
+            } else {
+                fallbackCopy();
+            }
+        }
+
+        function closeNotesPage() {
+            if (notesIsDirty()) {
+                if (confirm('في الملاحظات تعديلات غير محفوظة.\nموافق = حفظ ثم خروج، إلغاء = خروج دون حفظ (تبقى مسودة عند فتحها مجددًا).')) saveNotes();
+            }
+            returnFromMenuPage();
+        }
+
+        function openBackupPage() {
+            let jsonStorageContent = JSON.stringify(records, null, 4);
+            document.getElementById('backup-textarea-content').textContent = jsonStorageContent;
+            document.getElementById('undo-import-row').style.display = hasPrevBackup() ? 'block' : 'none';
+            hideAllPages();
+            document.getElementById('backup-page-container').style.display = 'block';
+        }
+
+        function closeBackupPageModal() {
+            returnFromMenuPage();
+        }
+
+        function downloadBackupJson() {
+            let jsonStorageContent = JSON.stringify(records, null, 4);
+            let blob = new Blob([jsonStorageContent], { type: 'application/json' });
+            let url = URL.createObjectURL(blob);
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = `gmax_auto_backup_${getTodayDateString()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function triggerUploadJson() {
+            document.getElementById('json-file-input').click();
+        }
+
+        function handleFileSelected(event) {
+            let file = event.target.files[0];
+            if (!file) return;
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    let parsed = JSON.parse(e.target.result);
+                    if (parsed.car && parsed.car.odometer) {
+                        pendingImportData = parsed;
+                        document.getElementById('confirm-filename').innerText = file.name;
+                        let odoVal = parsed.car.odometer.currentEstimatedOdo || parsed.car.odometer.lastManualOdo || 0;
+                        document.getElementById('confirm-odo').innerText = formatNumberWithSpace(odoVal);
+                        document.getElementById('backup-error-msg').innerText = "";
+                        document.getElementById('backup-confirm-overlay').style.display = 'flex';
+                    } else {
+                        alert('ملف JSON غير صالح أو لا يحتوي على بنية بيانات GMax.');
+                    }
+                } catch(err) {
+                    alert('خطأ في قراءة ملف JSON.');
+                }
+                event.target.value = ""; 
+            };
+            reader.readAsText(file);
+        }
+
+        function hasPrevBackup() {
+            return cloudGet('records_prev') !== null;
+        }
+        function undoLastImport() {
+            let raw = cloudGet('records_prev');
+            if (!raw) return;
+            if (!confirm('هل تريد التراجع عن آخر استرجاع وإعادة بياناتك السابقة؟')) return;
+            try { records = mergeSavedRecords(JSON.parse(raw)); } catch (e) { alert('تعذّر قراءة النسخة السابقة.'); return; }
+            saveAppData();
+            cloudRemove('records_prev');
+            refreshDaily();
+            alert('تمت إعادة بياناتك السابقة.');
+            openBackupPage();
+        }
+
+        function closeBackupConfirmModal() {
+            pendingImportData = null;
+            document.getElementById('backup-confirm-overlay').style.display = 'none';
+        }
+
+        function executeBackupImport() {
+            if (!pendingImportData) return;
+            cloudSet('records_prev', JSON.stringify(records));
+            records = mergeSavedRecords(pendingImportData);
+            saveAppData();
+            updateEstimatedOdometerDaily();
+            document.getElementById('welcome-odo-display').innerText = formatNumberWithSpace(records.car.odometer.currentEstimatedOdo);
+            closeBackupConfirmModal();
+            closeBackupPageModal();
+            alert('تم استبدال البيانات بنجاح وتحديث التطبيق!');
+            navigateAlertsPage();
+        }
+
+        function showInfo(title, html) {
+            document.getElementById('info-title').innerText = title;
+            document.getElementById('info-body').innerHTML = html;
+            document.getElementById('date-info-overlay').style.display = 'flex';
+        }
+        function showWelcomeHelp() {
+            showInfo('عن التطبيق', '<b style="color:#b8860b;">فكرة التطبيق</b><br>جي ماكس أوتو يُذكّرك بمواعيد صيانة سيارتك ووثائقها قبل أن تفوتك، وتنبيهاته مبنية على المعلومات التي سجّلتَها فيه.<br><br><b style="color:#b8860b;">الضوء</b><br>يتغيّر لونه بحسب الحالة: أحمر إن كان هناك ما حان موعده، وبرتقالي إن كان هناك ما اقترب، وأخضر إن كانت كل المؤشرات بخير.<br><br><b style="color:#b8860b;">العداد</b><br>رقم يزيد كل يوم بحسب معدل سيرك المعتاد. هذه الخانة للعرض فقط. ولتصحيحه اضغط «Start» ثم بطاقة «العداد التقديري»، واكتب قراءة عدّاد سيارتك الحقيقية من حين لآخر.<br><br><b style="color:#b8860b;">زر Start</b><br>اضغط عليه للدخول إلى صفحة التنبيهات. وللعودة إلى هذه الصفحة اضغط على شعار التطبيق في أعلى أي صفحة.');
+        }
+        function showAlertsPageHelp() {
+            showInfo('عن هذه الصفحة', '<b style="color:#b8860b;">العداد التقديري</b><br>أول بطاقة في الصفحة تعرض عدّاد سيارتك التقديري. اضغط عليها لتصحيحه بقراءة العداد الحقيقية. ويُحسب معدل سيرك الشهري تلقائيًا من قراءاتك.<br><br><b style="color:#b8860b;">البطاقات الأربع</b><br>لكل بطاقة اسمها وضوء يبيّن حالتها: أخضر بخير، برتقالي اقترب موعد شيء فيها، أحمر حان موعده. اضغط على البطاقة لترى مؤشراتها وتحدّثها.<br><br><b style="color:#b8860b;">المفتاح</b><br>عند فتح أي مؤشر تجد في أعلى صفحته مفتاحًا لتفعيله أو تعطيله. المؤشر المعطَّل ضوؤه أبيض ولا يظهر له رقم.<br><br><b style="color:#b8860b;">شريط التنقّل</b><br>يرافقك الشريط السفلي في كل الصفحات. يكفي أن تضغط على أحد أزراره لتنتقل مباشرة من قسم إلى آخر.<br><br><b style="color:#b8860b;">القائمة</b><br>الخطوط الثلاثة في أعلى يمين كل صفحة تفتح قائمة فيها: شرح الصفحة، وشرح التطبيق، والنسخة الاحتياطية، والملاحظات، وإعادة ضبط المصنع.');
+        }
+        function showGroupPageHelp() {
+            showInfo('عن هذه الصفحة', '<b style="color:#b8860b;">المؤشرات</b><br>اضغط على أي مؤشر لتحديث موعده القادم أو لتفعيله وتعطيله. في المؤشرات الزمنية (كالتأمين) تظهر نافذة فيها مفتاح التفعيل والتقويم: اختر التاريخ الجديد ثم أكّد. وفي مؤشرات الكيلومتر تظهر نافذة فيها العداد الحالي والعداد عند التغيير القادم، وبجانب كل منهما زر «تعديل». في تعديل العداد القادم اكتب الرقم، أو اضغط على اقتراح جاهز (مثل +10 000) ليُضاف إلى العداد الحالي. الرقم يبيّن ما بقي بالكيلومتر أو بالأيام، والضوء يبيّن الحالة.<br><br><b style="color:#b8860b;">المؤشرات المعطَّلة</b><br>تظهر تحت الجدول دائرة صفراء فيها علامة +. اضغط عليها لتُظهر المؤشرات المعطَّلة، ثم على علامة − لتُخفيها.<br><br><b style="color:#b8860b;">التنقل</b><br>الأزرار الأربعة في أسفل الصفحة تنقلك مباشرة بين الوثائق والزيت والأحزمة والصيانة. وزر «المواعيد» في الشريط السفلي يعيدك إلى البطاقات.');
+        }
+        function showDateInfo() {
+            showInfo('تاريخ اليوم', 'هذا التاريخ مأخوذ من ساعة هاتفك ولا يمكن تعديله من هنا.<br>إن وجدته غير صحيح، فصحّحه من إعدادات الهاتف (التاريخ والوقت)، ثم عُد إلى التطبيق.');
+        }
+        function openFactoryResetModal() {
+            document.getElementById('factory-reset-overlay').style.display = 'flex';
+        }
+
+        function closeFactoryResetModal() {
+            document.getElementById('factory-reset-overlay').style.display = 'none';
+        }
+
+        function executeFactoryReset() {
+            cloudRemove('records');
+            cloudRemove('records_prev');
+            records = makeEmptyRecords();
+            isFirstRun = true;
+            onboardingStep = null;
+            document.getElementById('startBtn').innerText = 'تنزيل التطبيق';
+            document.getElementById('welcome-odo-display').innerText = formatNumberWithSpace(records.car.odometer.currentEstimatedOdo);
+            updateGlobalLight();
+            closeFactoryResetModal();
+            alert('تم تفريغ الذاكرة وإعادة ضبط المصنع بنجاح!');
+            appStarted = false;
+            document.getElementById('startBtn').style.display = '';
+            goHome();
+        }
+
+        const FORM_EL = () => document.getElementById('editor-form-container');
+
+        // ===== سجل المصاريف: يُحفظ في المستند fuel (قائمة JSON). لكل مصروف: التاريخ d والمبلغ a والمجموعة c وملاحظة اختيارية n =====
+        // التعبئات القديمة بلا حقل c تُعدّ وقودًا تلقائيًا
+        const EXP_CATS = [
+            { k: 'fuel', label: 'الوقود' },
+            { k: 'maint', label: 'الزيت والصيانة' },
+            { k: 'docs', label: 'الوثائق والرسوم' },
+            { k: 'emerg', label: 'الطوارئ' },
+            { k: 'other', label: 'مصاريف أخرى' }
+        ];
+        const expCatLabel = k => (EXP_CATS.find(c => c.k === k) || EXP_CATS[0]).label;
+        let fuelAmountStr = '';
+        let fuelMsg = '';
+        let expCat = 'fuel';
+
+        function fuelLoad() {
+            try {
+                let a = JSON.parse(cloudGet('fuel') || '[]');
+                if (!Array.isArray(a)) return [];
+                return a.filter(x => x && typeof x.d === 'string' && Number(x.a) > 0).map(x => {
+                    if (!EXP_CATS.some(c => c.k === x.c)) x.c = 'fuel';
+                    return x;
+                });
+            } catch (e) { return []; }
+        }
+        function fuelStore(arr) {
+            return cloudSet('fuel', JSON.stringify(arr));
+        }
+        function fuelSorted(arr) {
+            return arr.slice().sort((x, y) => (x.d < y.d ? 1 : x.d > y.d ? -1 : (y.id || 0) - (x.id || 0)));
+        }
+        function fuelDateLabel(d) {
+            let p = String(d).split('-');
+            return p.length === 3 ? `${p[2]}/${p[1]}/${p[0]}` : d;
+        }
+        const expSum = list => list.reduce((t, x) => t + Number(x.a), 0);
+        const expMoney = n => `<span class="num-ltr">${formatNumberWithSpace(n)}</span> دج`;
+
+        let expView = 'home';
+        function expGo(v) { expView = v; renderExpensesPage(); window.scrollTo(0, 0); }
+        const EXP_BACK_ARROW = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+        const expSubHead = title => `<div class="exp-subhead"><button class="exp-back" onclick="expGo('home')" aria-label="رجوع">${EXP_BACK_ARROW}</button><span>${title}</span></div>`;
+
+        function renderExpensesPage() {
+            if (expView === 'stats') return renderStatsPage();
+            if (expView === 'list') return renderExpListPage();
+            const all = fuelLoad();
+            const today = getTodayDateString();
+            const monthTotal = expSum(all.filter(x => x.d.slice(0, 7) === today.slice(0, 7)));
+            const yearTotal = expSum(all.filter(x => x.d.slice(0, 4) === today.slice(0, 4)));
+            FORM_EL().innerHTML =
+                `<div style="padding-top: 10px;">
+                <div class="exp-sum"><div class="fuel-total"><div class="fuel-total-label">هذا الشهر</div><div class="fuel-total-val">${expMoney(monthTotal)}</div></div><div class="fuel-total"><div class="fuel-total-label">هذه السنة</div><div class="fuel-total-val">${expMoney(yearTotal)}</div></div></div>
+                <button class="fuel-add-btn" onclick="fuelOpen()">+ مصروف</button>
+                <button class="exp-big-btn list" onclick="expGo('list')">قائمة المصاريف</button>
+                <button class="exp-big-btn stats" onclick="expGo('stats')">الإحصائيات</button>
+                </div>`;
+            fuelMsg = '';
+        }
+
+        function renderExpListPage() {
+            const list = fuelSorted(fuelLoad());
+            const rows = list.length === 0
+                ? `<div class="fuel-empty">لا توجد مصاريف مسجّلة بعد.<br>اضغط «+ مصروف» بعد كل دفعة.</div>`
+                : list.map(x => `<div class="fuel-row"><span class="fuel-d">${fuelDateLabel(x.d)}</span><span class="exp-mid">${expCatLabel(x.c)}${x.n ? `<small>${escapeHtml(x.n)}</small>` : ''}</span><span class="fuel-a">${expMoney(x.a)}</span><button class="fuel-del" onclick="fuelDelete(${Number(x.id) || 0}, '${escapeHtml(x.d)}', ${Number(x.a)})">✕</button></div>`).join('');
+            FORM_EL().innerHTML =
+                `<div style="padding-top: 6px;">${expSubHead('قائمة المصاريف')}
+                ${rows}
+                ${list.length ? `<button class="fuel-copy" onclick="fuelCopy()">نسخ القائمة (للواتساب)</button>` : ''}
+                <div class="fuel-status" id="fuel-status">${fuelMsg}</div></div>`;
+            fuelMsg = '';
+        }
+
+        function fuelRefreshAmount() {
+            let el = document.getElementById('fuel-amount');
+            if (!fuelAmountStr) { el.className = 'fuel-amount-box empty'; el.innerText = 'اكتب المبلغ'; }
+            else { el.className = 'fuel-amount-box'; el.innerText = formatNumberWithSpace(fuelAmountStr); }
+        }
+        function expShowStep1() {
+            document.getElementById('exp-cats').innerHTML = EXP_CATS.map(c => `<button class="exp-cat-btn" onclick="expPick('${c.k}')">${c.label}</button>`).join('');
+            document.getElementById('exp-step1').style.display = '';
+            document.getElementById('exp-step2').style.display = 'none';
+        }
+        function expPick(k) {
+            expCat = k;
+            fuelAmountStr = '';
+            document.getElementById('exp-title').innerText = expCatLabel(k) + ': المبلغ المدفوع (دج)';
+            document.getElementById('fuel-chips').style.display = k === 'fuel' ? '' : 'none';
+            document.getElementById('exp-note').style.display = k === 'fuel' ? 'none' : '';
+            document.getElementById('exp-note').value = '';
+            document.getElementById('fuel-date').value = getTodayDateString();
+            document.getElementById('fuel-err').innerText = '';
+            fuelRefreshAmount();
+            document.getElementById('exp-step1').style.display = 'none';
+            document.getElementById('exp-step2').style.display = '';
+        }
+        function fuelOpen() {
+            expShowStep1();
+            document.getElementById('fuel-overlay').style.display = 'flex';
+        }
+        function fuelClose() { document.getElementById('fuel-overlay').style.display = 'none'; }
+        function fuelSetAmount(n) { fuelAmountStr = String(n); document.getElementById('fuel-err').innerText = ''; fuelRefreshAmount(); }
+        function fuelKey(k) {
+            document.getElementById('fuel-err').innerText = '';
+            if (k === 'del') fuelAmountStr = fuelAmountStr.slice(0, -1);
+            else {
+                if (fuelAmountStr === '' && (k === '0' || k === '00')) return;
+                if ((fuelAmountStr + k).length > 7) return;
+                fuelAmountStr += k;
+            }
+            fuelRefreshAmount();
+        }
+        function fuelSave() {
+            let err = document.getElementById('fuel-err');
+            let amount = parseInt(fuelAmountStr, 10);
+            let d = document.getElementById('fuel-date').value;
+            if (!amount || amount <= 0) { err.innerText = 'اكتب المبلغ المدفوع أولًا.'; return; }
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) { err.innerText = 'التاريخ غير صحيح.'; return; }
+            let entry = { id: Date.now(), d: d, a: amount, c: expCat };
+            let note = expCat === 'fuel' ? '' : document.getElementById('exp-note').value.trim().slice(0, 40);
+            if (note) entry.n = note;
+            let arr = fuelLoad();
+            arr.push(entry);
+            if (!fuelStore(arr)) { err.innerText = 'تعذّر الحفظ.'; return; }
+            fuelClose();
+            renderExpensesPage();
+        }
+        function fuelDelete(id, d, a) {
+            if (!confirm('حذف مصروف ' + fuelDateLabel(d) + ' بمبلغ ' + formatNumberWithSpace(a) + ' دج؟')) return;
+            let arr = fuelLoad();
+            let i = arr.findIndex(x => (Number(x.id) || 0) === id && x.d === d && Number(x.a) === a);
+            if (i === -1) return;
+            arr.splice(i, 1);
+            if (!fuelStore(arr)) { fuelMsg = 'تعذّر الحذف.'; }
+            renderExpensesPage();
+        }
+        function fuelText() {
+            const list = fuelSorted(fuelLoad());
+            return 'مصاريف السيارة\n'
+                + list.map(x => `${fuelDateLabel(x.d)} - ${expCatLabel(x.c)}${x.n ? ' (' + x.n + ')' : ''}: ${formatNumberWithSpace(x.a)} دج`).join('\n')
+                + `\nالمجموع: ${formatNumberWithSpace(expSum(list))} دج`;
+        }
+        function fuelCopy() {
+            let text = fuelText();
+            function done(ok) {
+                let el = document.getElementById('fuel-status');
+                if (el) { el.style.color = ok ? '#76ff03' : '#f44336'; el.innerText = ok ? 'تم النسخ. ألصقها في واتساب ✓' : 'تعذّر النسخ.'; }
+            }
+            function fallback() {
+                try {
+                    let ta = document.createElement('textarea');
+                    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+                    document.body.appendChild(ta); ta.focus(); ta.select();
+                    let ok = document.execCommand('copy');
+                    document.body.removeChild(ta);
+                    done(ok);
+                } catch (e) { done(false); }
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { done(true); }).catch(fallback);
+            else fallback();
+        }
+
+        // ===== الإحصائيات: أسئلة يطرحها السائق، وجوابها بالمعدل السنوي (يتفادى تقلّب الطريق والسرعة والحمولة) =====
+        // خمس سنوات: تبدأ من أول سنة سجّلتَ فيها مصاريف والباقي سنوات قادمة، فإن زادت عن خمس فآخر خمس سنوات
+        function statsYears() {
+            const cy = parseInt(getTodayDateString().slice(0, 4), 10);
+            const ys = fuelLoad().map(x => parseInt(x.d.slice(0, 4), 10)).filter(Number.isFinite);
+            const first = ys.length ? Math.min(cy, Math.min.apply(null, ys)) : cy;
+            const start = (cy - first + 1 <= 5) ? first : cy - 4;
+            return [0, 1, 2, 3, 4].map(i => start + i);
+        }
+        function odoPoints() {
+            const log = (records.car.odoLog || []).filter(p => p && typeof p.date === 'string' && Number.isFinite(p.odo))
+                .map(p => ({ d: p.date, odo: p.odo }))
+                .sort((a, b) => (a.d < b.d ? -1 : a.d > b.d ? 1 : a.odo - b.odo));
+            const today = getTodayDateString(), est = records.car.odometer.currentEstimatedOdo;
+            if (log.length && est > log[log.length - 1].odo && log[log.length - 1].d < today) log.push({ d: today, odo: est });
+            return log;
+        }
+        function odoAtDay(pts, day) {
+            if (pts.length < 2 || day < pts[0].d || day > pts[pts.length - 1].d) return null;
+            for (let i = 0; i < pts.length - 1; i++) {
+                if (day <= pts[i + 1].d) {
+                    const span = daysBetweenDates(pts[i].d, pts[i + 1].d);
+                    if (span <= 0) return pts[i + 1].odo;
+                    return pts[i].odo + (daysBetweenDates(pts[i].d, day) / span) * (pts[i + 1].odo - pts[i].odo);
+                }
+            }
+            return null;
+        }
+        // تكلفة 100 كم في سنة: المصاريف والكيلومترات تُحسب في المدة نفسها (من أول تسجيل لهذا النوع، ومن أول قراءة عداد)
+        function costPer100(year, pred) {
+            const all = fuelLoad().filter(pred);
+            const pts = odoPoints();
+            if (!all.length || pts.length < 2) return null;
+            const today = getTodayDateString();
+            const first = all.map(x => x.d).sort()[0];
+            const s = [year + '-01-01', pts[0].d, first].sort().pop();
+            const e = [year + '-12-31', today, pts[pts.length - 1].d].sort()[0];
+            if (s >= e || daysBetweenDates(s, e) < 30) return null;
+            const o1 = odoAtDay(pts, s), o2 = odoAtDay(pts, e);
+            if (o1 == null || o2 == null || o2 - o1 < 100) return null;
+            return Math.round(expSum(all.filter(x => x.d >= s && x.d <= e)) * 100 / (o2 - o1));
+        }
+        function yearTotalOf(year) {
+            const l = fuelLoad().filter(x => x.d.slice(0, 4) === String(year));
+            return l.length ? expSum(l) : null;
+        }
+        function trendHtml(vals, years) {
+            const idx = vals.map((v, i) => v != null ? i : -1).filter(i => i >= 0);
+            if (idx.length < 2) return `<div class="st-trend neutral">هذه أول سنة لك في التسجيل. مع مرور السنوات يظهر هنا تطوّر تكلفتك.</div>`;
+            const a = vals[idx[idx.length - 2]], b = vals[idx[idx.length - 1]];
+            const pct = a ? Math.round((b - a) / a * 100) : 0;
+            const yr = years[idx[idx.length - 2]];
+            if (pct > 3) return `<div class="st-trend up">في تزايد: ارتفعت بنحو <span class="num-ltr">${pct}%</span> عن ${yr}</div>`;
+            if (pct < -3) return `<div class="st-trend down">في تناقص: انخفضت بنحو <span class="num-ltr">${-pct}%</span> عن ${yr}</div>`;
+            return `<div class="st-trend neutral">ثابتة تقريبًا مقارنةً بسنة ${yr}</div>`;
+        }
+        function barsSvg(vals, years, sel, clickable) {
+            const max = Math.max.apply(null, vals.map(v => v || 0)) || 1;
+            const W = 300, H = 150, bw = 38, gap = (W - bw * 5) / 6;
+            const cy = parseInt(getTodayDateString().slice(0, 4), 10);
+            let out = '';
+            vals.forEach((v, i) => {
+                const x = gap + (4 - i) * (bw + gap);   // اتجاه عربي: أول سنة على اليمين والسنوات التالية نحو اليسار
+                const h = v != null ? Math.max(6, Math.round(v / max * 100)) : 0;
+                const hi = sel != null ? years[i] === sel : years[i] === cy;
+                if (v != null) {
+                    out += `<rect x="${x}" y="${120 - h}" width="${bw}" height="${h}" rx="6" fill="${hi ? '#ffd54a' : '#b8860b'}" opacity="${hi ? 1 : 0.7}"/>`;
+                    out += `<text x="${x + bw / 2}" y="${114 - h}" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">${formatNumberWithSpace(v)}</text>`;
+                    if (clickable) out += `<rect x="${x - gap / 2}" y="0" width="${bw + gap}" height="${H}" fill="transparent" style="cursor:pointer" onclick="event.stopPropagation();pickStatYear(${years[i]})"/>`;
+                } else {
+                    out += `<rect x="${x}" y="114" width="${bw}" height="6" rx="3" fill="#ffffff" opacity="0.12"/>`;
+                }
+                out += `<text x="${x + bw / 2}" y="140" text-anchor="middle" font-size="11" fill="${hi ? '#ffd54a' : '#9a9a9a'}">${years[i]}</text>`;
+            });
+            return `<svg viewBox="0 0 ${W} ${H}" class="st-chart" direction="ltr">${out}</svg>`;
+        }
+        const STAT_QS = [
+            { k: 'fuel100', q: 'معدل تكلفة الوقود لكل 100 كم' },
+            { k: 'total100', q: 'معدل تكلفة السيارة لكل 100 كم' },
+            { k: 'yearly', q: 'مجموع تكلفة السيارة السنوي' }
+        ];
+        let statYear = null;
+        function pickStatYear(y) { statYear = y; renderStory(); }
+        // تفاصيل سنة: حصة كل مجموعة من مصاريفها
+        function yearDetailsHtml(year) {
+            const list = fuelLoad().filter(x => x.d.slice(0, 4) === String(year));
+            const total = expSum(list);
+            if (!total) return '';
+            const colors = { fuel: '#ffd54a', maint: '#4aa3ff', docs: '#66bb6a', emerg: '#ef5350', other: '#9e9e9e' };
+            const rows = EXP_CATS.map(c => ({ c, v: expSum(list.filter(x => x.c === c.k)) })).filter(r => r.v > 0).sort((a, b) => b.v - a.v)
+                .map(r => { const p = Math.round(r.v / total * 100); return `<div class="st-cat"><div class="st-cat-top"><span>${r.c.label}</span><span><span class="num-ltr">${p}%</span> · ${expMoney(r.v)}</span></div><div class="st-cat-bar"><div style="width:${Math.max(3, p)}%;background:${colors[r.c.k]};"></div></div></div>`; }).join('');
+            return `<div class="st-year-title">تفاصيل ${year}</div><div class="st-cats">${rows}</div>`;
+        }
+        function statSlide(k) {
+            const years = statsYears(), cy = parseInt(getTodayDateString().slice(0, 4), 10);
+            const noData = (msg) => ({ big: '—', unit: '', body: `<div class="st-empty">${msg}</div>` });
+            if (k === 'fuel100' || k === 'total100') {
+                const pred = k === 'fuel100' ? (x => x.c === 'fuel') : (() => true);
+                const vals = years.map(y => costPer100(y, pred));
+                const li = vals.map((v, i) => v != null ? i : -1).filter(i => i >= 0).pop();
+                if (li === undefined) return noData('لا تكفي البيانات بعد. سجّل مصاريفك، وحدّث العداد بقراءتين بينهما شهر على الأقل.');
+                return { big: formatNumberWithSpace(vals[li]), unit: 'دج لكل 100 كم', cap: years[li] === cy ? `المعدل في ${cy} حتى اليوم` : `المعدل في ${years[li]}`, body: barsSvg(vals, years) + trendHtml(vals, years) };
+            }
+            const vals = years.map(yearTotalOf);
+            const li = vals.map((v, i) => v != null ? i : -1).filter(i => i >= 0).pop();
+            if (li === undefined) return noData('لا توجد مصاريف مسجّلة بعد.');
+            const sel = (statYear != null && years.indexOf(statYear) >= 0 && vals[years.indexOf(statYear)] != null) ? statYear : years[li];
+            return { big: formatNumberWithSpace(vals[years.indexOf(sel)]), unit: 'دج', cap: sel === cy ? `مجموع ${cy} حتى اليوم` : `مجموع ${sel}`, body: barsSvg(vals, years, sel, true) + `<div class="st-pick">اضغط على سنة لعرض تفاصيلها</div>` + trendHtml(vals.map((v, i) => years[i] <= sel ? v : null), years) + yearDetailsHtml(sel) };
+        }
+        function renderStatsPage() {
+            FORM_EL().innerHTML = `<div style="padding-top: 6px;">${expSubHead('الإحصائيات')}
+                <div class="st-hint">اختر ما تريد معرفته</div>
+                ${STAT_QS.map((q, i) => `<button class="st-q" onclick="openStory(${i})">${q.q}</button>`).join('')}
+                <div class="st-foot">الأرقام تقريبية، وتعتمد على مصاريفك وقراءات العداد التي سجّلتها.</div></div>`;
+        }
+        let storyIdx = 0;
+        function openStory(i) { storyIdx = i; statYear = null; renderStory(); document.getElementById('story-overlay').style.display = 'flex'; }
+        function closeStory() { document.getElementById('story-overlay').style.display = 'none'; }
+        function storyTap(ev) {
+            const card = document.getElementById('story-card');
+            const r = card.getBoundingClientRect();
+            const forward = (ev.clientX - r.left) < r.width / 2;   // الجهة اليسرى = التالي (اتجاه عربي)
+            const n = storyIdx + (forward ? 1 : -1);
+            if (n < 0 || n >= STAT_QS.length) return;
+            storyIdx = n; renderStory();
+        }
+        function renderStory() {
+            const q = STAT_QS[storyIdx], s = statSlide(q.k);
+            document.getElementById('story-card').innerHTML =
+                `<div class="st-prog">${STAT_QS.map((_, i) => `<span class="${i <= storyIdx ? 'on' : ''}"></span>`).join('')}</div>
+                 <button class="st-close" onclick="event.stopPropagation();closeStory()" aria-label="إغلاق">✕</button>
+                 <div class="st-q-title">${q.q}</div>
+                 <div class="st-big"><span class="num-ltr">${s.big}</span></div>
+                 <div class="st-unit">${s.unit || ''}</div>
+                 <div class="st-cap">${s.cap || ''}</div>
+                 <div class="st-body">${s.body}</div>
+                 <div class="st-nav">اضغط على جانبي الشاشة للتنقل بين الأسئلة</div>`;
+        }
+
+        // الصفحة الثانية: أربع بطاقات، لكل بطاقة اسمها وضوء حالتها؛ الضغط على البطاقة يفتح مؤشراتها الفرعية
+        function renderCardsPage() {
+            groupShowOff = false;
+            const names = { docs: 'الوثائق', oil: 'الزيت', belts: 'الأحزمة', general: 'الصيانة' };
+            const cards = MODULE_ORDER.map(k => {
+                const st = getModuleStatus(k);
+                return `<div class="home-card" onclick="navigateToModule('${k}')">
+                    <span class="home-card-title">${names[k]}</span>
+                    <div class="status-light status-${st}"></div>
+                </div>`;
+            }).join('');
+            const odoCard = `<div class="home-card odo-card" id="odo-card" onclick="openOdoDialog('cards')">
+                    <span class="home-card-title">العداد التقديري</span>
+                    <div class="odo-card-val"><span class="num-ltr">${formatNumberWithSpace(records.car.odometer.currentEstimatedOdo)}</span> كم</div>
+                </div>`;
+            FORM_EL().innerHTML = `<div class="cards-container" style="margin-top:10px;">${odoCard}${cards}</div>`;
+        }
+
+        let groupShowOff = false;
+        function toggleGroupOff() { groupShowOff = !groupShowOff; renderGroupPage(currentModule); }
+
+        function renderGroupPage(mod) {
+            const gNames = { docs: 'الوثائق', oil: 'الزيت', belts: 'الأحزمة', general: 'الصيانة' };
+            const odo = records.car.odometer.currentEstimatedOdo;
+            const isOnItem = it => { const o = records[mod][it.key]; return !!o && o.active !== false; };
+            const activeItems = metadata[mod].filter(isOnItem);
+            const offItems = metadata[mod].filter(it => !isOnItem(it));
+            const list = groupShowOff ? activeItems.concat(offItems) : activeItems;
+            let rows = list.map(item => {
+                const obj = records[mod][item.key];
+                const on = !!obj && obj.active !== false;
+                const isT = item.type === 'time';
+                let cellRem = '', st = 'none';
+                if (on) {
+                    st = getIndicatorStatus(mod, item.key, records[mod]);
+                    const rem = isT ? calculateRemainingDays(obj.expiryDate) : obj.max - odo;
+                    cellRem = `<span class="num-ltr">${formatNumberWithSpace(rem)}</span>${isT ? ' يوم' : ' كم'}`;
+                }
+                return `<tr class="${on ? '' : 'row-off'}" onclick="openDetailModalFromAll('${mod}', '${item.key}')">
+                    <td class="col-indicator"><span class="chev"></span><span>${item.label}</span></td>
+                    <td class="col-remaining">${cellRem}</td>
+                    <td class="col-toggle"><div class="status-light status-${st}"></div></td>
+                </tr>`;
+            }).join('');
+            if (!rows) rows = `<tr><td colspan="3" style="text-align:center;color:#888;padding:18px;font-size:12px;">لا توجد مؤشرات مفعَّلة</td></tr>`;
+            const midBtn = offItems.length
+                ? `<div class="grp-more"><button class="more-circle" onclick="toggleGroupOff()" aria-label="المؤشرات المعطَّلة">${groupShowOff ? '−' : '+'}</button></div>`
+                : '';
+            const pills = MODULE_ORDER.map(k => `<button class="seg-tab ${k === mod ? 'active' : ''}" onclick="navigateToModule('${k}')">${gNames[k]}</button>`).join('');
+            FORM_EL().innerHTML = `
+                <div class="grp-pills"><div class="seg-row">${pills}</div></div>
+                <div class="table-col-titles grp-cols"><span></span><span>الباقي</span><span></span></div>
+                <div class="grp-frame">
+                    <table class="indicators-table"><tbody>${rows}</tbody></table>
+                </div>
+                ${midBtn}`;
+        }
+
+        function renderForm(mod) {
+            { document.querySelector('#main-app-container .page-header').classList.add('compact'); }
+            if (mod === 'expenses') return renderExpensesPage();
+            if (mod === 'alerts') return renderCardsPage();
+            return renderGroupPage(mod);
+        }
+
+        function openDetailModalFromAll(modKey, key) {
+            openTimePop(modKey, key);
+        }
+
+        function specNorm(v) { return (v || '').trim().toLowerCase().replace(/\s+/g, ' '); }
+
+        // ===== نافذة تحديث المؤشر الزمني (تفتح مباشرة من الجدول) =====
+        let tp = null;
+        function tpPad(n) { return String(n).padStart(2, '0'); }
+        function openTimePop(mod, key) {
+            const m = getItemMeta(mod, key), obj = records[mod] && records[mod][key];
+            if (!m || !obj) return;
+            const on = obj.active !== false;
+            const date = isValidDateStr(obj.expiryDate) ? obj.expiryDate : '';
+            const base = date || getTodayDateString();
+            tp = { mod: mod, key: key, kind: isTimeItem(mod, key) ? 'time' : 'km', next: '', mode: null, presetIdx: null, keypad: false, wasActive: on, enabled: on, date: date,
+                   calYear: parseInt(base.slice(0, 4)), calMonth: parseInt(base.slice(5, 7)) - 1,
+                   spec: obj.spec || '', specPrev: obj.spec || '', specUnknown: false, warn: false, warnOk: false };
+            const ov = document.getElementById('time-pop-overlay');
+            ov.style.display = 'block';
+            window.scrollTo(0, 0);
+            const head = document.querySelector('#main-app-container .page-header');
+            const top = (head ? head.getBoundingClientRect().bottom : 60) + 10;
+            const sh = document.getElementById('tp-sheet');
+            sh.style.top = top + 'px';
+            sh.style.maxHeight = Math.max(320, window.innerHeight - top - 14) + 'px';
+            tpRender();
+        }
+        function tpClose() {
+            document.getElementById('time-pop-overlay').style.display = 'none';
+            document.getElementById('spec-pop-overlay').style.display = 'none';
+            tp = null;
+        }
+        function tpToggle() {
+            if (!tp || tp.warn) return;
+            tp.enabled = !tp.enabled;
+            tpRender();
+        }
+        function tpDaysIn(y, mo) { return new Date(y, mo + 1, 0).getDate(); }
+        function tpFollowDate() {
+            // أي تغيير في التقويم يتبعه تغيير في التاريخ: نُبقي رقم اليوم في الشهر الجديد (ضمن عدد أيامه)
+            if (!tp.date) return;
+            const d = Math.min(parseInt(tp.date.slice(8, 10)), tpDaysIn(tp.calYear, tp.calMonth));
+            tp.date = `${tp.calYear}-${tpPad(tp.calMonth + 1)}-${tpPad(d)}`;
+        }
+        function tpNavYear(diff) { tp.calYear += diff; tpFollowDate(); tpRender(); }
+        function tpNavMonth(diff) {
+            tp.calMonth += diff;
+            if (tp.calMonth > 11) { tp.calMonth = 0; tp.calYear++; }
+            else if (tp.calMonth < 0) { tp.calMonth = 11; tp.calYear--; }
+            tpFollowDate(); tpRender();
+        }
+        function tpPickDay(d) {
+            tp.date = `${tp.calYear}-${tpPad(tp.calMonth + 1)}-${tpPad(d)}`;
+            tpRender();
+        }
+        function tpCalendarHtml() {
+            const first = new Date(tp.calYear, tp.calMonth, 1).getDay();
+            const total = tpDaysIn(tp.calYear, tp.calMonth);
+            let cells = '<div></div>'.repeat(first);
+            for (let d = 1; d <= total; d++) {
+                const full = `${tp.calYear}-${tpPad(tp.calMonth + 1)}-${tpPad(d)}`;
+                cells += `<div class="cal-day-cell ${tp.date === full ? 'selected' : ''}" onclick="tpPickDay(${d})">${d}</div>`;
+            }
+            return `<div class="wizard-calendar-box">
+                <div class="cal-nav-row" style="padding: 2px 6px;"><button class="cal-nav-btn" onclick="tpNavYear(-1)">&#10095;</button><span class="cal-nav-label">${tp.calYear}</span><button class="cal-nav-btn" onclick="tpNavYear(1)">&#10094;</button></div>
+                <div class="cal-nav-row" style="padding: 2px 6px;"><button class="cal-nav-btn" onclick="tpNavMonth(-1)">&#10095;</button><span class="cal-nav-label">${monthsAlgeria[tp.calMonth]}</span><button class="cal-nav-btn" onclick="tpNavMonth(1)">&#10094;</button></div>
+                <div class="cal-weekdays" style="margin-top: 2px;">${arabicFullWeekdays.map(d => `<div><span class="cal-weekday-badge">${d}</span></div>`).join('')}</div>
+                <div class="cal-days-grid">${cells}</div>
+            </div>`;
+        }
+        function tpRender() {
+            const m = getItemMeta(tp.mod, tp.key);
+            document.getElementById('tp-title').innerText = m.label;
+            document.getElementById('tp-sw').classList.toggle('on', tp.enabled);
+            document.getElementById('tp-err').innerText = '';
+            let body = '', actions = '';
+            if (tp.warn) {
+                body = `<div class="up-warn-text">غيّرتَ ${m.spec.label} من «${escapeHtml(tp.specPrev)}» إلى «${escapeHtml(tp.spec.trim())}».<br>${m.spec.warn}<br>تأكّد من دليل سيارتك أو من الميكانيكي قبل المتابعة.</div>`;
+                actions = `<button class="up-sheet-x" onclick="tpWarnBack()">رجوع</button><button class="up-sheet-ok" onclick="tpWarnYes()">نعم، أنا متأكد</button>`;
+            } else {
+                if (!tp.enabled) {
+                    body = `<div class="tp-off-msg">هذا المؤشر معطَّل ولا يُتابَع.<br>فعّله بالمفتاح في الأعلى ليبدأ التطبيق بتنبيهك.</div>`;
+                } else if (tp.kind === 'km') {
+                    body = kpBodyHtml(m);
+                } else {
+                    body = `<div class="tp-date-line">تاريخ انتهاء الصلاحية: <b>${tp.date ? convertDateToReadableArabic(tp.date) : '—'}</b></div>` + tpCalendarHtml() +
+                        (m.spec ? tpSpecRowHtml(m) : '');
+                }
+                actions = `<button class="up-sheet-x" onclick="tpClose()">إلغاء</button><button class="up-sheet-ok" onclick="tpConfirm()">تأكيد</button>`;
+            }
+            const bodyEl = document.getElementById('tp-body');
+            const keepScroll = bodyEl.scrollTop;
+            bodyEl.innerHTML = body;
+            bodyEl.scrollTop = keepScroll;
+            document.getElementById('tp-actions').innerHTML = actions;
+        }
+        // ===== مؤشرات الكيلومتر داخل النافذة نفسها =====
+        function kpSteps(m) { return m.presets || [5000, 10000, 15000, 20000]; }
+        function kpNext() {
+            if (!tp) return 0;
+            if (tp.mode === 'preset') return records.car.odometer.currentEstimatedOdo + kpSteps(getItemMeta(tp.mod, tp.key))[tp.presetIdx];
+            return parseInt(tp.next) || 0;
+        }
+        function kpBodyHtml(m) {
+            const odo = records.car.odometer.currentEstimatedOdo;
+            const nxt = kpNext();
+            return `<div class="kp-row"><span class="kp-label">العداد الحالي للسيارة: <b><span class="num-ltr">${formatNumberWithSpace(odo)}</span> كم</b></span><button class="kp-edit" onclick="kpEditOdo()">تعديل</button></div>
+                <div class="kp-row"><span class="kp-label">العداد عند التغيير القادم:${nxt ? ` <b><span class="num-ltr">${formatNumberWithSpace(nxt)}</span> كم</b>` : ''}</span><button class="kp-edit" onclick="kpEditNext()">تعديل</button></div>
+                ${m.spec ? tpSpecRowHtml(m) : ''}`;
+        }
+        function kpEditNext() { openOdoDialog('popupNext'); }
+        function nextSuggestHtml() {
+            const m = getItemMeta(tp.mod, tp.key);
+            const steps = kpSteps(m);
+            return `<div class="up-label" style="margin-top:10px;">أو أضِف إلى العداد الحالي:</div>
+                <div class="suggestions-row" style="grid-template-columns: repeat(${steps.length}, 1fr);">${steps.map((v, i) => `<button class="suggestion-chip-btn" onclick="odoDlgSuggest(${i})">+${formatNumberWithSpace(v)}</button>`).join('')}</div>`;
+        }
+        function odoDlgSuggest(i) {
+            if (tp) { tp.mode = 'preset'; tp.presetIdx = i; tp.next = ''; }
+            closeOdoDialog();
+            if (tp) tpRender();
+        }
+        function kpEditOdo() { openOdoDialog('popup'); }
+
+        function tpSpecRowHtml(m) {
+            const val = tp.spec ? ` <b dir="auto" style="unicode-bidi:isolate;">${escapeHtml(tp.spec)}</b>` : (tp.specUnknown ? ' <b>غير معروف</b>' : '');
+            return `<div class="kp-row"><span class="kp-label">${m.spec.label}:${val}</span><button class="kp-edit" onclick="tpSpecOpen()">تعديل</button></div>`;
+        }
+        function tpSpecUnknown() {
+            document.getElementById('spec-pop-overlay').style.display = 'none';
+            tp.spec = ''; tp.specUnknown = true;
+            tpRender();
+        }
+        function tpSpecOpen() {
+            const m = getItemMeta(tp.mod, tp.key);
+            if (!m || !m.spec) return;
+            document.getElementById('spec-pop-box').innerHTML =
+                `<div class="spec-pop-title">${m.spec.label}</div>` +
+                m.spec.presets.map((v, i) => `<button class="spec-pop-opt ${tp.spec === v ? 'on' : ''}" style="unicode-bidi:plaintext;" onclick="tpSpecChoose(${i})">${escapeHtml(v)}</button>`).join('') +
+                `<button class="spec-pop-opt ${tp.specUnknown ? 'on' : ''}" onclick="tpSpecUnknown()">غير معروف</button>` +
+                `<button class="spec-pop-cancel" onclick="document.getElementById('spec-pop-overlay').style.display='none'">إلغاء</button>`;
+            document.getElementById('spec-pop-overlay').style.display = 'flex';
+        }
+        function tpSpecChoose(i) {
+            const m = getItemMeta(tp.mod, tp.key);
+            document.getElementById('spec-pop-overlay').style.display = 'none';
+            tp.spec = m.spec.presets[i]; tp.specUnknown = false;
+            tpRender();
+        }
+        function tpWarnBack() { tp.warn = false; tpRender(); }
+        function tpWarnYes() { tp.warnOk = true; tp.warn = false; tpConfirm(); }
+        function tpConfirm() {
+            const m = getItemMeta(tp.mod, tp.key), obj = records[tp.mod][tp.key];
+            if (!tp.enabled) {
+                if (tp.wasActive) { obj.active = false; saveAppData(); }
+            } else {
+                if (tp.kind === 'km') {
+                    const odoNow = records.car.odometer.currentEstimatedOdo;
+                    const nxt = kpNext();
+                    if (!nxt) { document.getElementById('tp-err').innerText = 'حدّد العداد عند التغيير القادم.'; return; }
+                    if (nxt <= odoNow) { document.getElementById('tp-err').innerText = 'يجب أن يكون أكبر من العداد الحالي (' + formatNumberWithSpace(odoNow) + ' كم).'; return; }
+                    if (m.spec && !tp.warnOk && specNorm(tp.spec) && specNorm(tp.specPrev) && specNorm(tp.spec) !== specNorm(tp.specPrev)) { tp.warn = true; tpRender(); return; }
+                    obj.max = nxt;
+                    delete obj.linkTarget;
+                    obj.active = true;
+                    if (m.spec) { const v = (tp.spec || '').trim().slice(0, 40); if (v) obj.spec = v; else delete obj.spec; }
+                    saveAppData();
+                    tpClose();
+                    if (document.getElementById('main-app-container').style.display === 'block') renderForm(currentModule);
+                    return;
+                }
+                if (!tp.date) { document.getElementById('tp-err').innerText = 'اختر تاريخ انتهاء الصلاحية من التقويم.'; return; }
+                if (m.spec && !tp.warnOk && specNorm(tp.spec) && specNorm(tp.specPrev) && specNorm(tp.spec) !== specNorm(tp.specPrev)) { tp.warn = true; tpRender(); return; }
+                obj.expiryDate = tp.date;
+                obj.active = true;
+                if (m.spec) { const v = (tp.spec || '').trim().slice(0, 40); if (v) obj.spec = v; else delete obj.spec; }
+                saveAppData();
+            }
+            tpClose();
+            if (document.getElementById('main-app-container').style.display === 'block') renderForm(currentModule);
+        }
+
+        hydrateIcons();
+        initFirebase();
+</script>
+</body>
+</html>
